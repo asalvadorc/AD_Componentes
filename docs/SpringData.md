@@ -2,7 +2,7 @@
 
 Spring Data es un proyecto dentro del ecosistema Spring que proporciona herramientas y abstracciones para facilitar el acceso a bases de datos y otras fuentes de datos de manera eficiente y consistente. Su objetivo principal es simplificar la interacción con diferentes tipos de bases de datos, desde bases de datos relacionales (como PostgreSQL, MySQL) hasta bases de datos NoSQL (como MongoDB, Cassandra).
 
-![](springdata.png)
+![](springdata2.png)
 
 **¿Para qué se utiliza?**{.azul}
 
@@ -52,10 +52,10 @@ JPA es la especificación para persistir, leer y gestionar data desde los objeto
 
 ## Spring Data JPA
 
+![](jpa.png)
+
 Spring Data JPA es parte de Spring Framework. No es una implementación de JPA como Hibernate, sino una abstracción para reducir la complejidad de la integración con bases de datos relacionales desde aplicaciones Java.
 Spring Data JPA puede utilizar Hibernate, Eclipse Link u otra implementación.
-
-![](springjpa.png)
 
 ### Anotaciones Comunes
 
@@ -740,6 +740,8 @@ En este ejemplo vamos a mapear las 3 tablas de la base de datos: comarca, poblac
 ![](listar_instituts.png)
 
 ## Spring Data MongoDB
+
+![](mongodb.png)
 
 El componente Spring MongoDB Es un módulo de Spring Data que facilita la integración de aplicaciones Spring con **MongoDB**. Además proporciona una abstracción sobre las operaciones básicas de MongoDB como CRUD, consultas personalizadas, y soporte para agregaciones.
 
