@@ -1,0 +1,1551 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>5 - Spring Data - AD - Accés a Dades</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="../css/extra.css" rel="stylesheet" />
+        <link href="../img/favicon.ico" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "5 - Spring Data";
+        var mkdocs_page_input_path = "SpringData.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="..">
+          <img src="../assets/logocaminas.png" class="logo" alt="Logo"/>
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption"><span class="caption-text">UD 8. Componentes</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../Spring/">1 - Spring</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../Anotaciones/">2 - Anotaciones</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../SpringBoot/">3 - SpringBoot</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../SpringMVC/">4 - Spring MVC</a>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">5 - Spring Data</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#spring-data-jpa">Spring Data JPA</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#anotaciones-comunes">Anotaciones Comunes</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#1-mapeo-de-entidades-jpa-estandar">1. Mapeo de Entidades (JPA Estándar)</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#2-especificas-de-spring-data-jpa">2. Específicas de Spring Data JPA</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#3-transacciones">3. Transacciones</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#consultas-a-la-base-de-datos">Consultas a la Base de Datos</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#query">@Query</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#convencion-de-nombres-en-spring-jpa">Convención de Nombres en Spring JPA</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#ejemplo-ampliado-de-spring-mvc">Ejemplo ampliado de Spring MVC</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#spring-data-mongodb">Spring Data MongoDB</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#anotaciones-comunes_1">Anotaciones comunes</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#aplicacion-spring-data-mongodb">Aplicación Spring Data MongoDB</a>
+    </li>
+        </ul>
+    </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../Docker/">6 - Docker</a>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">AD - Accés a Dades</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">UD 8. Componentes</li>
+      <li class="breadcrumb-item active">5 - Spring Data</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="spring-data">Spring Data</h1>
+<p>Spring Data es un proyecto dentro del ecosistema Spring que proporciona herramientas y abstracciones para facilitar el acceso a bases de datos y otras fuentes de datos de manera eficiente y consistente. Su objetivo principal es simplificar la interacción con diferentes tipos de bases de datos, desde bases de datos relacionales (como PostgreSQL, MySQL) hasta bases de datos NoSQL (como MongoDB, Cassandra).</p>
+<p><img alt="" src="../springdata2.png" /></p>
+<p><strong class="azul">¿Para qué se utiliza?</strong></p>
+<p>1) <strong>Acceso Simplificado a Datos:</strong> </p>
+<ul>
+<li>Reduce la necesidad de escribir consultas SQL complejas o código JDBC al exponer métodos predefinidos para operaciones comunes.</li>
+<li>Permite realizar operaciones CRUD (Crear, Leer, Actualizar, Eliminar) con facilidad.</li>
+</ul>
+<p>2) <strong>Abstracción de Repositorios:</strong></p>
+<p>Ofrece la interfaz <strong>Repository</strong> y subinterfaces como <strong>CrudRepository</strong> y <strong>JpaRepository</strong> que proporcionan métodos estándar para la gestión de entidades en bases de datos relacionales.</p>
+<p>3) <strong>Consultas Personalizadas:</strong></p>
+<p>Permite escribir consultas personalizadas mediante anotaciones como <strong>@Query</strong>.
+También admite la creación de métodos de consulta basados en el nombre del método, como <strong>findByNombre(String nombre)</strong>.</p>
+<p>4) <strong>Compatibilidad con Múltiples Tecnologías de Bases de Datos:</strong></p>
+<ul>
+<li>Relacionales: Mediante JPA (Java Persistence API).</li>
+<li>NoSQL: MongoDB, Redis, Neo4j, Cassandra, etc.</li>
+<li>Buscadores: Elasticsearch, Solr.</li>
+</ul>
+<p>5) <strong>Configuración Declarativa:</strong></p>
+<p>Al integrar Spring Data con Spring Boot, se pueden configurar muchas opciones mediante propiedades en <strong>application.properties</strong>, evitando configuraciones manuales detalladas.</p>
+<p>6) <strong>Integración con Spring Boot:</strong></p>
+<p>Con dependencias específicas como <strong>spring-boot-starter-data-jpa</strong> o <strong>spring-boot-starter-data-mongodb</strong>, Spring Data se integra perfectamente con el resto del ecosistema de Spring.</p>
+<p><strong class="azul">Principales Módulos de Spring Data</strong> </p>
+<p><strong class="verde">Spring Data JPA:</strong>: Proporciona una integración con JPA para bases de datos relacionales.
+Es ideal para trabajar con entidades Java mapeadas a tablas de bases de datos.
+JPA es la especificación para persistir, leer y gestionar data desde los objetos Java a la base de datos.</p>
+<p><strong class="verde">Spring Data MongoDB:</strong>: Facilita el acceso a bases de datos MongoDB, una base de datos NoSQL orientada a documentos.</p>
+<p><strong class="verde">Spring Data Redis:</strong>: Para aplicaciones que necesitan interactuar con Redis, una base de datos en memoria.</p>
+<p><strong class="verde">Spring Data Cassandra:</strong>: Proporciona soporte para bases de datos distribuidas como Cassandra.</p>
+<p><strong class="verde">Spring Data Elasticsearch:</strong>: Simplifica las interacciones con Elasticsearch, un motor de búsqueda y análisis.</p>
+<h2 id="spring-data-jpa">Spring Data JPA</h2>
+<p><img alt="" src="../jpa.png" /></p>
+<p>Spring Data JPA es parte de Spring Framework. No es una implementación de JPA como Hibernate, sino una abstracción para reducir la complejidad de la integración con bases de datos relacionales desde aplicaciones Java.
+Spring Data JPA puede utilizar Hibernate, Eclipse Link u otra implementación.</p>
+<h3 id="anotaciones-comunes">Anotaciones Comunes</h3>
+<h4 id="1-mapeo-de-entidades-jpa-estandar">1. Mapeo de Entidades (JPA Estándar)</h4>
+<p>Estas anotaciones son parte de JPA y permiten mapear clases y relaciones a tablas en la base de datos.</p>
+<ul>
+<li>
+<p><strong>@Entity</strong> - Marca una clase como una entidad JPA, mapeada a una tabla en la base de datos.</p>
+<pre><code>@Entity
+data class User(
+    @Id
+    val id: Long,
+    val name: String
+)
+</code></pre>
+</li>
+<li>
+<p><strong>@Table</strong> - Especifica el nombre de la tabla que corresponde a la entidad.</p>
+<pre><code>@Entity
+@Table(name = "users")
+data class User(
+    @Id
+    val id: Long,
+    val name: String
+)
+</code></pre>
+</li>
+<li>
+<p><strong>@Id</strong> - Indica que un campo es la clave primaria de la tabla.</p>
+<pre><code>@Id
+val id: Long
+</code></pre>
+</li>
+<li>
+<p><strong>@GeneratedValue</strong> - Define cómo se genera el valor de la clave primaria.</p>
+</li>
+</ul>
+<blockquote>
+<p>Estrategias comunes: <code>GenerationType.IDENTITY</code>, <code>GenerationType.SEQUENCE</code>, etc.</p>
+</blockquote>
+<pre><code>    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    val id: Long
+</code></pre>
+<ul>
+<li>
+<p><strong>@Column</strong> - Configura una columna de la tabla, como nombre, si es nula o única.</p>
+<pre><code>    @Column(name = "user_name", nullable = false, unique = true)
+    val name: String
+</code></pre>
+</li>
+<li>
+<p><strong>@ManyToOne</strong>, <strong>@OneToMany</strong>, <strong>@OneToOne</strong>, <strong>@ManyToMany</strong></p>
+</li>
+</ul>
+<blockquote>
+<p>Define relaciones entre entidades.</p>
+</blockquote>
+<pre><code>        @ManyToOne
+        val department: Department
+</code></pre>
+<ul>
+<li>
+<p><strong>@JoinColumn</strong> - Especifica la columna que actúa como clave foránea.</p>
+<pre><code>    @ManyToOne
+    @JoinColumn(name = "department_id")
+    val department: Department
+</code></pre>
+</li>
+<li>
+<p><strong>@Lob</strong> - Indica que un campo es un objeto grande (texto o binario).</p>
+<pre><code>    @Lob
+    val description: String
+</code></pre>
+</li>
+<li>
+<p><strong>@Transient</strong>  - Excluye un campo del mapeo de base de datos (no se almacena).</p>
+<pre><code>    @Transient
+    val calculatedField: String
+</code></pre>
+</li>
+</ul>
+<hr />
+<h4 id="2-especificas-de-spring-data-jpa"><strong>2. Específicas de Spring Data JPA</strong></h4>
+<p>Estas anotaciones son propias de Spring Data JPA y extienden la funcionalidad de JPA.</p>
+<ul>
+<li>
+<p><strong>@Repository</strong> - Marca una interfaz o clase como repositorio Spring.</p>
+<pre><code>@Repository
+interface UserRepository : JpaRepository&lt;User, Long&gt;
+</code></pre>
+</li>
+<li>
+<p><strong>@Query</strong> - Define una consulta personalizada usando JPQL o SQL nativo.</p>
+</li>
+</ul>
+<blockquote>
+<blockquote>
+<ul>
+<li>Ejemplo (JPQL):</li>
+</ul>
+</blockquote>
+</blockquote>
+<pre><code>    @Query("SELECT u FROM User u WHERE u.name = :name")
+    fun findByName(@Param("name") name: String): List&lt;User&gt;
+</code></pre>
+<blockquote>
+<blockquote>
+<ul>
+<li>Ejemplo (SQL nativo):</li>
+</ul>
+</blockquote>
+</blockquote>
+<pre><code>    @Query(value = "SELECT * FROM users WHERE user_name = :name", nativeQuery = true)
+    fun findByNameNative(@Param("name") name: String): List&lt;User&gt;
+</code></pre>
+<p><strong>@Param</strong> - Define parámetros nombrados para consultas con <code>@Query</code>.</p>
+<pre><code>    @Query("SELECT u FROM User u WHERE u.name = :name")
+    fun findByName(@Param("name") name: String): List&lt;User&gt;
+</code></pre>
+<p><strong>@Modifying</strong> - Se utiliza con consultas <code>@Query</code> para operaciones de actualización o eliminación.</p>
+<pre><code>    @Modifying
+    @Query("UPDATE User u SET u.name = :name WHERE u.id = :id")
+    fun updateName(@Param("id") id: Long, @Param("name") name: String)
+</code></pre>
+<p><strong>@EnableJpaRepositories</strong> - Habilita la funcionalidad de Spring Data JPA y escanea paquetes para detectar repositorios.</p>
+<pre><code>    @EnableJpaRepositories(basePackages = ["com.example.repository"])
+</code></pre>
+<p><strong>@EntityGraph</strong> - Especifica cómo cargar las relaciones en una consulta, evitando lazy loading.</p>
+<pre><code>    @EntityGraph(attributePaths = ["roles"])
+    fun findByName(name: String): User
+</code></pre>
+<hr />
+<h4 id="3-transacciones"><strong>3. Transacciones</strong></h4>
+<ul>
+<li>
+<p><strong>@Transactional</strong> - Marca un método o clase para ejecutar dentro de una transacción.</p>
+<pre><code>@Transactional
+fun updateUserDetails(user: User) { ... }
+</code></pre>
+</li>
+<li>
+<p><strong>@Rollback</strong> - Utilizada en pruebas para forzar la reversión de una transacción.</p>
+<pre><code>@Transactional
+@Rollback
+fun testSaveUser() { ... }
+</code></pre>
+</li>
+</ul>
+<h3 id="consultas-a-la-base-de-datos">Consultas a la Base de Datos</h3>
+<p>Las consultas a la Base de datos las podemos hacer de dos maneras, utilizando la <strong>convención de nombres</strong> en funciones de Spring Data JPA o con la anotación <strong>@Query</strong>.</p>
+<p>La <strong>convención de nombres</strong> se utiliza:</p>
+<ul>
+<li>En consultas sencillas y que no requieren lógica compleja ni múltiples combinaciones.</li>
+<li>Cuando quieres mantener un código más limpio y directo.</li>
+</ul>
+<p>La anotación <strong>@Query</strong> se utiliza:</p>
+<ul>
+<li>En consultas complejas que involucren múltiples tablas, condiciones avanzadas o subconsultas.</li>
+<li>Si prefieres optimizar manualmente las consultas.</li>
+<li>Cuando la convención de nombres generaría un nombre de método excesivamente largo.</li>
+</ul>
+<h4 id="query">@Query</h4>
+<p><u>Estructura básica:</u></p>
+<pre><code>@Query("SELECT e FROM EntityName e WHERE e.property = :value")
+fun findByProperty(@Param("value") value: String): List&lt;EntityName&gt;
+</code></pre>
+<ul>
+<li>Se utilizan nombres de entidades y propiedades de las clases en lugar de nombres de tablas y columnas.</li>
+<li>Se puede navegar por relaciones entre entidades.</li>
+<li>:nombreParametro para parámetros dinámicos.</li>
+</ul>
+<p><u>Ejemplo simple:</u></p>
+<pre><code>@Query("SELECT c FROM Comarca c WHERE c.provincia = :provincia")
+fun findByProvincia(@Param("provincia") provincia: String): List&lt;Comarca&gt;
+</code></pre>
+<p><u>Ejemplo con relaciones:</u> </p>
+<p>Siguiendo con nuestro ejemplo de geo_ad, la consulta par buscar Institutos en una Provincia por Población Mínima quedaría así:</p>
+<pre><code>@Query("""
+    SELECT i FROM Institut i
+    JOIN i.poblacio p
+    JOIN p.comarca c
+    WHERE c.provincia = :provincia AND p.poblacion &gt;= :minPoblacion
+""")
+fun findByProvinciaAndPoblacion(
+    @Param("provincia") provincia: String,
+    @Param("minPoblacion") minPoblacion: Int
+): List&lt;Institut&gt;
+</code></pre>
+<p><strong class="verde">Este mismo ejemplo utilizando convención de nombres quedaría así:</strong></p>
+<pre><code>@Repository
+interface InstitutRepository : JpaRepository&lt;Institut, String&gt; {
+    fun findByPoblacioComarcaProvinciaAndPoblacioPoblacionGreaterThanEqual(
+        provincia: String,
+        minPoblacion: Int
+    ): List&lt;Institut&gt;
+}
+</code></pre>
+<ul>
+<li><strong>findBy</strong>: Indica que es un método de consulta.</li>
+<li><strong>PoblacioComarcaProvincia</strong>: Navega por las relaciones de las entidades Institut  Poblacio -&gt; Comarca para filtrar por la provincia.</li>
+<li><strong>AndPoblacioPoblacionGreaterThanEqual</strong>: Navega por Institut -&gt; Poblacio y aplica el filtro de población mínima.    </li>
+</ul>
+<div class="admonition note">
+<p>A medida que las relaciones aumentan en complejidad, los nombres de los métodos pueden volverse difíciles de leer y mantener.</p>
+</div>
+<h4 id="convencion-de-nombres-en-spring-jpa">Convención de Nombres en Spring JPA</h4>
+<p>Spring Data JPA permite definir métodos en repositorios siguiendo una convención de nombres específica. Esto simplifica la escritura de consultas comunes sin necesidad de usar JPQL o SQL. Para ello analiza el nombre de los métodos en el repositorio e interpreta su significado para generar consultas automáticamente. </p>
+<p>La estructura básica es:</p>
+<pre><code>    findBy + NombreDeCampo + Condición
+</code></pre>
+<p>1) <strong>findBy</strong>:</p>
+<p>Indica que se busca una entidad en la base de datos.
+Alternativas:</p>
+<ul>
+<li>readBy (lectura de datos)</li>
+<li>queryBy (consulta de datos)</li>
+<li>getBy (obtener datos)</li>
+</ul>
+<p>2) <strong>NombreDeCampo</strong>:</p>
+<ul>
+<li>Debe coincidir exactamente con el nombre del atributo en la entidad.</li>
+<li>Se puede incluir navegación de atributos para relaciones (EntidadRelacionada.Atributo).</li>
+</ul>
+<p>3) <strong>Condición</strong> (opcional):</p>
+<ul>
+<li>Permite añadir operadores lógicos como And, Or, etc.</li>
+<li>Ejemplo: findByNombreAndEdad.    </li>
+</ul>
+<p><strong class="azul">Ejemplos de métodos según la convención</strong></p>
+<ul>
+<li>
+<p>Consultas simples</p>
+<ul>
+<li>Método: findByNombre(String nombre)</li>
+<li>Consulta generada: <pre><code>SELECT * FROM entidad WHERE nombre = ?
+</code></pre>
+</li>
+</ul>
+</li>
+<li>
+<p>Consultas con condiciones</p>
+<ul>
+<li>Método: findByNombreAndEdad(String nombre, Integer edad)</li>
+<li>Consulta generada: <pre><code>SELECT * FROM entidad WHERE nombre = ? AND edad = ?
+</code></pre>
+</li>
+</ul>
+</li>
+<li>
+<p>Consultas con orden</p>
+<ul>
+<li>Método: findByNombreOrderByEdadDesc(String nombre)</li>
+<li>Consulta generada: <pre><code>SELECT * FROM entidad WHERE nombre = ? ORDER BY edad DESC
+</code></pre>
+</li>
+</ul>
+</li>
+<li>
+<p>Consultas con relaciones. Si hay una relación entre entidades, se puede navegar por los campos relacionados:</p>
+<ul>
+<li>Método: findByComarcaNomC(String nomC)</li>
+<li>Consulta generada: <pre><code> SELECT * FROM entidad e JOIN comarca c ON e.comarca_id = c.id WHERE c.nomC = ?
+</code></pre>
+</li>
+</ul>
+</li>
+</ul>
+<p><strong>Palabras clave en la convención</strong></p>
+<p><img alt="" src="../convenciones.png" /></p>
+<div class="admonition warning">
+<p class="admonition-title">Consideraciones</p>
+<ul>
+<li><strong>Coincidencia exacta del nombre del campo</strong>: Los nombres deben coincidir con los atributos definidos en la entidad.</li>
+<li><strong>Relaciones</strong>: Usa la notación EntidadRelacionada.Atributo para navegar entre tablas relacionadas.</li>
+<li><strong>Orden</strong>: Los métodos pueden incluir palabras clave de ordenación, como OrderBy.</li>
+<li><strong>Parámetros</strong>: Los métodos generados reciben parámetros en el mismo orden en que se declaran en el nombre del método.  </li>
+</ul>
+</div>
+<h3 id="ejemplo-ampliado-de-spring-mvc"><strong class="azul">Ejemplo ampliado de Spring MVC</strong></h3>
+<p>Para practicar la funcionalidad de Spring Data JPA vamos a seguir con el ejemplo visto en el apartado de Spring MVC <strong>PrimerSpringMVC</strong>. 
+Recordemos que la aplicación accede a la base de datos local en Docker.
+En este ejemplo vamos a mapear las 3 tablas de la base de datos: comarca, poblacio e institut y a realizar los cambios necesarios para crear algunas consultas y operaciones CRUD.</p>
+<p><strong class="verde">Modelo (Entidad JPA)</strong></p>
+<ul>
+<li>Entidad <strong>Comarca</strong>. </li>
+</ul>
+<blockquote>
+<p>La única diferencia con el ejemplo que tenemos es que mapea el nombre de la columna nom_c por <strong>nomC</strong> para evitar problemas de convenció de nombres.</p>
+</blockquote>
+<pre><code>    import jakarta.persistence.*
+
+        @Entity
+        @Table(name = "comarca")
+        data class comarca(
+            @Id
+            @Column(name = "nom_c")
+            val nomC: String = "",
+
+            @Column(name = "provincia")
+            val provincia: String? = null
+        )
+</code></pre>
+<ul>
+<li>
+<p>Entidad <strong>Poblacio</strong></p>
+<pre><code>import jakarta.persistence.*
+
+@Entity
+@Table(name = "poblacio")
+data class poblacio(
+    @Id
+    @Column(name = "cod_m")
+    val codM: Int = 0,
+
+    @Column(name = "nom")
+    val nom: String = "",
+
+    @Column(name = "poblacio")
+    val poblacio: Int? = null,
+
+    @Column(name = "extensio")
+    val extensio: Double? = null,
+
+    @Column(name = "altura")
+    val altura: Int? = null,
+
+    @Column(name = "longitud")
+    val longitud: String? = null,
+
+    @Column(name = "latitud")
+    val latitud: String? = null,
+
+    @Column(name = "llengua")
+    val llengua: String? = null,
+
+    @ManyToOne //clave ajena a comarca
+    @JoinColumn(name = "nom_c", referencedColumnName = "nom_c")
+    val comarca: comarca? = null
+)
+</code></pre>
+</li>
+<li>
+<p>Entidad <strong>Institut</strong></p>
+<pre><code>import jakarta.persistence.*
+
+@Entity
+@Table(name = "institut")
+data class institut(
+    @Id
+    @Column(name = "codi")
+    val codi: String = "",
+
+    @Column(name = "adreca")
+    val adreca: String? = null,
+
+    @Column(name = "codpostal")
+    val codPostal: Int? = null,
+
+    @Column(name = "nom")
+    val nom: String? = null,
+
+    @Column(name = "numero")
+    val numero: String? = null,
+
+    @ManyToOne //clave ajena a poblacio
+    @JoinColumn(name = "cod_m", referencedColumnName = "cod_m")
+    val poblacio: poblacio? = null
+)
+</code></pre>
+</li>
+</ul>
+<p><strong class="verde">Repositorio</strong></p>
+<ul>
+<li>
+<p>Repositorio para Comarca: <strong>ComarcaRepository</strong>. </p>
+<pre><code>import org.example.primerspringmvc.model.comarca
+import org.springframework.data.jpa.repository.JpaRepository
+import org.springframework.stereotype.Repository
+
+@Repository
+
+    interface ComarcaRepository : JpaRepository&lt;comarca, String&gt; {
+
+    // Obtener comarcas de una provincia
+    fun findByProvincia(provincia: String): List&lt;comarca&gt;
+
+}
+</code></pre>
+</li>
+<li>
+<p>Repositorio para Institut: <strong>InstitutRepository</strong></p>
+<pre><code>package org.example.primerspringmvc.repository
+
+import org.example.primerspringmvc.model.institut
+import org.springframework.data.jpa.repository.JpaRepository
+
+interface InstitutRepository : JpaRepository&lt;institut, String&gt; {
+    // Obtener institutos de una población
+    fun findByPoblacioNom(nom: String): List&lt;institut&gt;
+
+    // Obtener institutos de una comarca
+    fun findByPoblacioComarcaNomC(nomC: String): List&lt;institut&gt;
+
+    // Obtener institutos de una provincia
+    fun findByPoblacioComarcaProvincia(provincia: String): List&lt;institut&gt;
+
+    // Obtener institutos cuya población es mayor a
+    fun findByPoblacioPoblacioGreaterThan(poblacio: Int): List&lt;institut&gt;
+
+}
+</code></pre>
+</li>
+<li>
+<p>Repositorio para Poblacio: <strong>PoblacioRepository</strong></p>
+<pre><code>import org.example.primerspringmvc.model.poblacio
+import org.springframework.data.jpa.repository.JpaRepository
+
+interface PoblacioRepository : JpaRepository&lt;poblacio, String&gt; {
+
+    // Obtener poblaciones de una comarca
+    fun findByComarcaNomC(nomC: String): List&lt;poblacio&gt;
+
+    // Obtener poblaciones de una provincia
+    fun findByComarcaProvincia(provincia: String): List&lt;poblacio&gt;
+
+}
+</code></pre>
+</li>
+</ul>
+<p><strong class="verde">Controlador</strong></p>
+<ul>
+<li>
+<p>ComarcaController</p>
+<pre><code>import org.example.primerspringmvc.model.comarca
+import org.springframework.stereotype.Controller
+import org.example.primerspringmvc.repository.*
+import org.springframework.ui.Model
+import org.springframework.web.bind.annotation.*
+</code></pre>
+<p>// Muestra todas las poblaciones
+        @GetMapping
+        fun listarTodasPoblacions(model: Model): String {
+            val poblacions = poblacioRepository.findAll()
+            model.addAttribute("poblacions", poblacions)
+            return "poblacions" // Vista Thymeleaf para mostrar todas las poblaciones
+        }</p>
+<pre><code>    // Muestra las poblaciones por comarca
+    @GetMapping("/por-comarca")
+    fun listarPoblacionsPorComarca(@RequestParam comarca: String, model: Model): String {
+        val poblacions = poblacioRepository.findByComarcaNomC(comarca)
+        model.addAttribute("poblacions", poblacions)
+        return "poblacions" // Vista Thymeleaf para mostrar las poblaciones por comarca
+    }
+</code></pre>
+</li>
+<li>
+<p>InstitutController</p>
+<pre><code>import org.example.primerspringmvc.model.institut
+import org.example.primerspringmvc.repository.InstitutRepository
+import org.springframework.stereotype.Controller
+import org.springframework.ui.Model
+import org.springframework.web.bind.annotation.*
+
+@Controller
+@RequestMapping("/instituts")
+class InstitutController(private val institutRepository: InstitutRepository) {
+
+    //Muestra todos los intitutos
+    @GetMapping
+    fun listarInstituts(model: Model): String {
+        val instituts = institutRepository.findAll()
+        model.addAttribute("instituts", instituts)
+        return "instituts"
+    }
+
+    // Muestra institutos de una población
+    @GetMapping("/por-poblacio")
+    fun obtenerInstitutsPoblacio(@RequestParam poblacio: String, model: Model): String {
+        val institutsPoblacio = institutRepository.findByPoblacioNom(poblacio)
+        model.addAttribute("instituts", institutsPoblacio)
+        return "instituts" // Plantilla para mostrar la lista de institutos
+    }
+
+    // Muestra institutos de una comarca
+    @GetMapping("/por-comarca")
+    fun obtenerInstitutsComarca(@RequestParam comarca: String, model: Model): String {
+        val institutsComarca = institutRepository.findByPoblacioComarcaNomC(comarca)
+        model.addAttribute("instituts", institutsComarca)
+        return "instituts" // Plantilla para mostrar la lista de institutos
+    }
+
+    // Muestra institutos de una provincia
+    @GetMapping("/por-provincia")
+    fun obtenerInstitutsProvincia(@RequestParam provincia: String, model: Model): String {
+        val institutsProvincia = institutRepository.findByPoblacioComarcaProvincia(provincia)
+        model.addAttribute("instituts", institutsProvincia)
+        return "instituts" // Plantilla para mostrar la lista de institutos
+    }
+
+    // Muestra institutos con población superior a un valor
+    @GetMapping("/poblacion-superior")
+    fun obtenerInstitutsPoblacionSuperior(@RequestParam poblacio: Int, model: Model): String {
+        val institutsConPoblacionSuperiorA = institutRepository.findByPoblacioPoblacioGreaterThan(poblacio)
+        model.addAttribute("instituts", institutsConPoblacionSuperiorA)
+        return "instituts" // Plantilla para mostrar la lista de institutos
+    }
+}
+</code></pre>
+</li>
+<li>
+<p>PoblacioController</p>
+<pre><code>    import org.example.primerspringmvc.repository.PoblacioRepository
+    import org.springframework.stereotype.Controller
+    import org.springframework.ui.Model
+    import org.springframework.web.bind.annotation.*
+
+    @Controller
+    @RequestMapping("/poblacions")
+    class PoblacioController(private val poblacioRepository: PoblacioRepository) {
+
+        // Muestra todas las poblaciones
+        @GetMapping
+        fun listarTodasPoblacions(model: Model): String {
+            val poblacions = poblacioRepository.findAll()
+            model.addAttribute("poblacions", poblacions)
+            return "poblacions" // Vista Thymeleaf para mostrar todas las poblaciones
+        }
+
+        // Muestra las poblaciones por comarca
+        @GetMapping("/por-comarca")
+        fun listarPoblacionsPorComarca(@RequestParam comarca: String, model: Model): String {
+            val poblacions = poblacioRepository.findByComarcaNomC(comarca)
+            model.addAttribute("poblacions", poblacions)
+            return "poblacions" // Vista Thymeleaf para mostrar las poblaciones por comarca
+        }
+
+        @GetMapping("/por-provincia")
+        fun listarPoblacionsPorProvincia(@RequestParam provincia: String, model: Model): String {
+            val poblacions = poblacioRepository.findByComarcaProvincia(provincia)
+            model.addAttribute("poblacions", poblacions)
+            return "poblacions" // Vista Thymeleaf para mostrar las poblaciones por comarca
+        }
+    }
+</code></pre>
+</li>
+</ul>
+<p><strong class="verde">Vistas Thymeleaf</strong></p>
+<ul>
+<li>
+<p>Vista <strong>comarcas.html</strong></p>
+<pre><code>&lt;!DOCTYPE html&gt;
+&lt;html xmlns:th="http://www.thymeleaf.org"&gt;
+&lt;head&gt;
+    &lt;title&gt;Lista de Comarcas&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;h1&gt;Lista de Comarcas&lt;/h1&gt;
+&lt;table border="1"&gt;
+    &lt;tr&gt;
+        &lt;th&gt;Comarca&lt;/th&gt;
+        &lt;th&gt;Provincia&lt;/th&gt;
+
+    &lt;/tr&gt;
+    &lt;tr th:each="comarca : ${comarcas}"&gt;
+        &lt;td th:text="${comarca.nomC}"&gt;Comarca&lt;/td&gt;
+        &lt;td th:text="${comarca.provincia}"&gt;Provincia&lt;/td&gt;
+
+    &lt;/tr&gt;
+&lt;/table&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+</li>
+<li>
+<p>Vista <strong>nueva-comarca.html</strong></p>
+<pre><code>&lt;!DOCTYPE html&gt;
+&lt;html xmlns:th="http://www.thymeleaf.org"&gt;
+
+&lt;head&gt;
+&lt;title&gt;Nueva Comarca&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;h1&gt;Nueva Comarca&lt;/h1&gt;
+&lt;form th:action="@{/comarcas/nueva}" th:object="${comarca}" method="post"&gt;
+&lt;label for="nomC"&gt;Comarca:&lt;/label&gt;
+&lt;input type="text" id="nomC" name="nomC" th:value="*{nomC}" required&gt;&lt;br&gt;
+
+&lt;label for="provincia"&gt;Provincia:&lt;/label&gt;
+&lt;input type="text" id="provincia" name="provincia" th:value="*{provincia}" required&gt;&lt;br&gt;
+
+&lt;button type="submit"&gt;Guardar&lt;/button&gt;
+&lt;/form&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+</li>
+<li>
+<p>Vista <strong>instituts.html</strong></p>
+<pre><code>&lt;!DOCTYPE html&gt;
+&lt;html xmlns:th="http://www.thymeleaf.org"&gt;
+
+&lt;head&gt;
+    &lt;title&gt;Instituts&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;h1&gt;Llista d'Instituts&lt;/h1&gt;
+&lt;table border="1"&gt;
+    &lt;tr&gt;
+        &lt;th&gt;Codi&lt;/th&gt;
+        &lt;th&gt;Nom&lt;/th&gt;
+        &lt;th&gt;Adreça&lt;/th&gt;
+        &lt;th&gt;Població&lt;/th&gt;
+        &lt;th&gt;Habitants&lt;/th&gt;
+        &lt;th&gt;Comarca&lt;/th&gt;
+        &lt;th&gt;Provincia&lt;/th&gt;
+
+    &lt;/tr&gt;
+    &lt;tr th:each="institut : ${instituts}"&gt;
+        &lt;td th:text="${institut.codi}"&gt;Codi&lt;/td&gt;
+        &lt;td th:text="${institut.nom}"&gt;Nom&lt;/td&gt;
+        &lt;td th:text="${institut.adreca}"&gt;Adreça&lt;/td&gt;
+        &lt;td th:text="${institut.poblacio?.nom}"&gt;Població&lt;/td&gt;
+        &lt;td th:text="${institut.poblacio?.poblacio}"&gt;Habitants&lt;/td&gt;
+        &lt;td th:text="${institut.poblacio?.comarca?.nomC}"&gt;Comarca&lt;/td&gt;
+        &lt;td th:text="${institut.poblacio?.comarca?.provincia}"&gt;Provincia&lt;/td&gt;
+
+    &lt;/tr&gt;
+&lt;/table&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+</li>
+<li>
+<p>Vista <strong>poblacions.html</strong></p>
+<pre><code>&lt;!DOCTYPE html&gt;
+&lt;html xmlns:th="http://www.thymeleaf.org"&gt;
+
+&lt;head&gt;
+&lt;title&gt;Poblacions&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;h1&gt;Llista de Poblacions per Comarca&lt;/h1&gt;
+&lt;table border="1"&gt;
+&lt;tr&gt;
+    &lt;th&gt;Codi&lt;/th&gt;
+    &lt;th&gt;Nom&lt;/th&gt;
+    &lt;th&gt;Comarca&lt;/th&gt;
+    &lt;th&gt;Provincia&lt;/th&gt;
+&lt;/tr&gt;
+&lt;tr th:each="poblacio : ${poblacions}"&gt;
+    &lt;td th:text="${poblacio.codM}"&gt;Codi&lt;/td&gt;
+    &lt;td th:text="${poblacio.nom}"&gt;Nom&lt;/td&gt;
+    &lt;td th:text="${poblacio.comarca?.nomC}"&gt;Comarca&lt;/td&gt;
+    &lt;td th:text="${poblacio.comarca?.provincia}"&gt;Provincia&lt;/td&gt;
+
+&lt;/tr&gt;
+&lt;/table&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+</li>
+</ul>
+<p><strong class="verde">Con esta configuración podemos listar los siguientes ejemplos</strong>:</p>
+<ul>
+<li>Todos los institutos: http://localhost:8888/instituts</li>
+<li>Todas las poblaciones: http://localhost:8888/poblacions</li>
+<li>Todas las comarcas: http://localhost:8888/comarcas</li>
+<li>Listar institutos de una población: http://localhost:8888/instituts/por-poblacio?poblacio=Gandia</li>
+<li>Listar institutos de una comarca: http://localhost:8888/instituts/por-comarca?comarca=Safor</li>
+<li>Listar institutos de una provincia: http://localhost:8888/instituts/por-provincia?provincia=Alacant</li>
+<li>Listar comarcas de una provincia: http://localhost:8888/comarcas/por-provincia?provincia=Alacant</li>
+<li>Listar poblaciones de una comarca http://localhost:8888/poblacions/por-comarca?comarca=Safor</li>
+<li>Listar poblaciones de una provincia: http://localhost:8888/poblacions/por-provincia?provincia=Alacant</li>
+<li>Listar institutos con población superior a un valor: http://localhost:8888/instituts/poblacion-superior?poblacio=20000</li>
+</ul>
+<p><img alt="" src="../listar_instituts.png" /></p>
+<h2 id="spring-data-mongodb">Spring Data MongoDB</h2>
+<p><img alt="" src="../mongodb.png" /></p>
+<p>El componente Spring MongoDB Es un módulo de Spring Data que facilita la integración de aplicaciones Spring con <strong>MongoDB</strong>. Además proporciona una abstracción sobre las operaciones básicas de MongoDB como CRUD, consultas personalizadas, y soporte para agregaciones.</p>
+<p><strong class="azul">Requisitos</strong></p>
+<ul>
+<li>
+<p>Tener MongoDB instalado o utilizar una instancia en la nube o en un contenedor Docker.</p>
+</li>
+<li>
+<p>Spring Boot configurado con Maven (en nuestro caso) o Gradle.</p>
+</li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Dependencias Maven</p>
+</div>
+<pre><code>    &lt;dependency&gt;
+        &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+        &lt;artifactId&gt;spring-boot-starter-data-mongodb&lt;/artifactId&gt;
+    &lt;/dependency&gt;
+</code></pre>
+<p><strong class="azul">Configuración de las propiedades</strong></p>
+<div class="admonition note">
+<p class="admonition-title">application.properties</p>
+</div>
+<pre><code>    spring.data.mongodb.host=localhost
+    spring.data.mongodb.port=27017
+    spring.data.mongodb.database=nombre_base_de_datos
+</code></pre>
+<p>Si estás usando MongoDB con autenticación, añade:</p>
+<pre><code>    spring.data.mongodb.username=usuario
+    spring.data.mongodb.password=contraseña
+</code></pre>
+<h3 id="anotaciones-comunes_1">Anotaciones comunes</h3>
+<p>Estas anotaciones permiten mapear documentos, gestionar colecciones y realizar operaciones de manera sencilla. Las principales anotaciones utilizadas en Spring Data MongoDB son:</p>
+<p><strong class="azul">@Document</strong></p>
+<p>Se utiliza para marcar una clase como un documento MongoDB que será persistido en una colección.</p>
+<pre><code>@Document(collection = "coleccion")
+
+* collection : Especifica el nombre de la colección. Si no se define, se usa el nombre de la clase en minúsculas.
+</code></pre>
+<p><strong class="azul">@Id</strong></p>
+<p>Marca un campo como identificador único del documento. Este campo se mapea al campo <strong>_id</strong> en MongoDB.</p>
+<p><strong class="azul">@Field</strong></p>
+<p>Se utiliza para mapear un campo de la clase a un campo específico en el documento MongoDB.</p>
+<pre><code>@Field("descripcion")
+val descripcionProducto: String
+</code></pre>
+<p><strong class="azul">@Transient</strong></p>
+<p>Indica que un campo no debe ser persistido en la base de datos.</p>
+<pre><code>@Transient
+val temporal: String = "No se guarda en MongoDB"
+</code></pre>
+<p><strong class="azul">@DBRef</strong></p>
+<p>Se utiliza para definir una relación entre documentos, similar a una clave foránea.
+El atributo se mapea a una referencia en MongoDB.</p>
+<pre><code>@DBRef
+val categoria: Categoria
+</code></pre>
+<p><strong class="azul">@CompoundIndex</strong></p>
+<p>Define índices compuestos en la colección para optimizar consultas.</p>
+<pre><code>@CompoundIndex(def = "{'nombre': 1, 'precio': -1}", unique = true)
+
+* def: Define los campos que forman el índice.
+* unique: Indica si el índice debe ser único.
+</code></pre>
+<h3 id="aplicacion-spring-data-mongodb">Aplicación Spring Data MongoDB</h3>
+<p>En este apartado del tema ya tenemos que saber como crear una aplicaicón Spring Boot desde IntelliJ, solo necesitas saber las dependencias necesarias y las anotaciones para incorporar <strong>Spring Data MongoDB</strong> y poco más. El resto ya depende de lo que quieras construir con la base de datos.</p>
+<p>Para este ejemplo partiremos de un archivo json que contiene 10 menús con sus correspondientes platos. Has de añadir este documento como una colección a tu BD Mongo.
+Lo tienes disponible en la carpeta recursos y también lo puedes copiar directamente.</p>
+<p>Lo primero que debes hacer es insertar este archivo en tu MongoDB local, como una colección (InsertMany)</p>
+<p><strong>Archivo json con los menus:</strong></p>
+<pre><code>[
+{
+    "_id": "1",
+    "nombre": "Menú Mediterráneo",
+    "descripcion": "Un menú saludable inspirado en la dieta mediterránea.",
+    "fecha": "2025-01-08",
+    "platos": [
+    {
+        "nombre": "Ensalada Griega",
+        "categoria": "Entrante",
+        "ingredientes": ["Lechuga", "Tomate", "Pepino", "Aceitunas", "Queso Feta"],
+        "precio": 5.5
+    },
+    {
+        "nombre": "Moussaka",
+        "categoria": "Principal",
+        "ingredientes": ["Berenjena", "Carne de Cordero", "Tomate", "Bechamel", "Queso"],
+        "precio": 12.0
+    }
+    ],
+    "precioTotal": 17.5
+},
+{
+    "_id": "2",
+    "nombre": "Menú Asiático",
+    "descripcion": "Sabores frescos y auténticos de Asia.",
+    "fecha": "2025-01-09",
+    "platos": [
+    {
+        "nombre": "Rollitos de Primavera",
+        "categoria": "Entrante",
+        "ingredientes": ["Zanahoria", "Col", "Brotes de Soja", "Fideos de Arroz"],
+        "precio": 4.0
+    },
+    {
+        "nombre": "Pad Thai",
+        "categoria": "Principal",
+        "ingredientes": ["Fideos de Arroz", "Camarones", "Tofu", "Maní"],
+        "precio": 10.0
+    }
+    ],
+    "precioTotal": 14.0
+},
+{
+    "_id": "3",
+    "nombre": "Menú Vegetariano",
+    "descripcion": "Opciones deliciosas sin carne.",
+    "fecha": "2025-01-10",
+    "platos": [
+    {
+        "nombre": "Hummus con Pan de Pita",
+        "categoria": "Entrante",
+        "ingredientes": ["Garbanzos", "Tahini", "Limón", "Ajo"],
+        "precio": 4.5
+    },
+    {
+        "nombre": "Lasaña Vegetariana",
+        "categoria": "Principal",
+        "ingredientes": ["Pasta", "Espinacas", "Ricotta", "Tomate"],
+        "precio": 9.0
+    }
+    ],
+    "precioTotal": 13.5
+},
+{
+    "_id": "4",
+    "nombre": "Menú Italiano",
+    "descripcion": "Especialidades clásicas de Italia.",
+    "fecha": "2025-01-11",
+    "platos": [
+    {
+        "nombre": "Bruschetta",
+        "categoria": "Entrante",
+        "ingredientes": ["Pan", "Tomate", "Albahaca", "Aceite de Oliva"],
+        "precio": 5.0
+    },
+    {
+        "nombre": "Pizza Margarita",
+        "categoria": "Principal",
+        "ingredientes": ["Masa de Pizza", "Tomate", "Mozzarella", "Albahaca"],
+        "precio": 10.0
+    }
+    ],
+    "precioTotal": 15.0
+},
+{
+    "_id": "5",
+    "nombre": "Menú Mexicano",
+    "descripcion": "Platos picantes y llenos de sabor.",
+    "fecha": "2025-01-12",
+    "platos": [
+    {
+        "nombre": "Guacamole con Totopos",
+        "categoria": "Entrante",
+        "ingredientes": ["Aguacate", "Limón", "Cilantro", "Totopos"],
+        "precio": 4.5
+    },
+    {
+        "nombre": "Tacos al Pastor",
+        "categoria": "Principal",
+        "ingredientes": ["Tortilla", "Carne de Cerdo", "Piña", "Cebolla"],
+        "precio": 9.0
+    }
+    ],
+    "precioTotal": 13.5
+},
+{
+    "_id": "6",
+    "nombre": "Menú Americano",
+    "descripcion": "Comida clásica de los Estados Unidos.",
+    "fecha": "2025-01-13",
+    "platos": [
+    {
+        "nombre": "Alitas de Pollo",
+        "categoria": "Entrante",
+        "ingredientes": ["Pollo", "Salsa BBQ", "Especias"],
+        "precio": 6.0
+    },
+    {
+        "nombre": "Hamburguesa con Queso",
+        "categoria": "Principal",
+        "ingredientes": ["Pan", "Carne de Res", "Queso", "Lechuga"],
+        "precio": 10.0
+    }
+    ],
+    "precioTotal": 16.0
+},
+{
+    "_id": "7",
+    "nombre": "Menú de Mariscos",
+    "descripcion": "Frescos sabores del océano.",
+    "fecha": "2025-01-14",
+    "platos": [
+    {
+        "nombre": "Cóctel de Camarones",
+        "categoria": "Entrante",
+        "ingredientes": ["Camarones", "Salsa Cóctel", "Limón"],
+        "precio": 7.0
+    },
+    {
+        "nombre": "Paella de Mariscos",
+        "categoria": "Principal",
+        "ingredientes": ["Arroz", "Camarones", "Mejillones", "Calamares"],
+        "precio": 12.0
+    }
+    ],
+    "precioTotal": 19.0
+},
+{
+    "_id": "8",
+    "nombre": "Menú Francés",
+    "descripcion": "Platos refinados y elegantes.",
+    "fecha": "2025-01-15",
+    "platos": [
+    {
+        "nombre": "Quiche Lorraine",
+        "categoria": "Entrante",
+        "ingredientes": ["Huevo", "Nata", "Tocino", "Queso Gruyère"],
+        "precio": 6.5
+    },
+    {
+        "nombre": "Ratatouille",
+        "categoria": "Principal",
+        "ingredientes": ["Berenjena", "Calabacín", "Tomate", "Pimiento"],
+        "precio": 9.5
+    }
+    ],
+    "precioTotal": 16.0
+},
+{
+    "_id": "9",
+    "nombre": "Menú Indio",
+    "descripcion": "Sabores especiados y exóticos.",
+    "fecha": "2025-01-16",
+    "platos": [
+    {
+        "nombre": "Samosas",
+        "categoria": "Entrante",
+        "ingredientes": ["Papas", "Especias", "Masa Frita"],
+        "precio": 4.0
+    },
+    {
+        "nombre": "Pollo Tikka Masala",
+        "categoria": "Principal",
+        "ingredientes": ["Pollo", "Salsa de Tomate", "Especias", "Crema"],
+        "precio": 11.0
+    }
+    ],
+    "precioTotal": 15.0
+},
+{
+    "_id": "10",
+    "nombre": "Menú Japonés",
+    "descripcion": "Delicados sabores de Japón.",
+    "fecha": "2025-01-17",
+    "platos": [
+    {
+        "nombre": "Sopa de Miso",
+        "categoria": "Entrante",
+        "ingredientes": ["Miso", "Tofu", "Alga Wakame"],
+        "precio": 3.5
+    },
+    {
+        "nombre": "Sushi Variado",
+        "categoria": "Principal",
+        "ingredientes": ["Arroz", "Pescado", "Alga Nori", "Vegetales"],
+        "precio": 12.5
+    }
+    ],
+    "precioTotal": 16.0
+}
+]
+</code></pre>
+<p><strong class="azul">Modelo MVC</strong></p>
+<p>Lo siguiente será crear la estructura del modelo MVC con los archivos necesarios. En la siguiene imagen podeis ver como quedará:</p>
+<p><img alt="" src="../act_momgo_estructura.png" /></p>
+<p><strong class="verde">Modelo</strong></p>
+<p>Los modelos son las clases que representan las colecciones en MongoDB.</p>
+<p><strong>Menu.kt</strong></p>
+<pre><code>import org.springframework.data.annotation.Id
+import org.springframework.data.mongodb.core.mapping.Document
+
+@Document(collection = "menus") // Nombre de la colección en MongoDB
+data class Menu(
+    @Id
+    val id: String, // Identificador único del menú
+    val nombre: String, // Nombre del menú
+    val descripcion: String, // Descripción del menú
+    val fecha: String, // Fecha asociada al menú
+    val platos: List&lt;Plato&gt; = emptyList(), // Lista de platos
+    val precioTotal: Double = 0.0 // Precio total del menú
+)
+
+data class Plato(
+    val nombre: String,
+    val categoria: String,
+    val ingredientes: List&lt;String&gt; = emptyList(),
+    val precio: Double = 0.0
+)
+</code></pre>
+<p><strong class="verde">Repositorios</strong></p>
+<p>Proporciona una interfaz MongoRepository que simplifica las operaciones CRUD.</p>
+<p><strong>MenuRepository.kt</strong></p>
+<p>import org.springframework.data.mongodb.repository.MongoRepository
+import org.springframework.stereotype.Repository
+import org.example.primerspringmongo.model.*</p>
+<pre><code>@Repository
+interface MenuRepository : MongoRepository&lt;Menu, String&gt; {
+    fun findByNombre(nombre: String): List&lt;Menu&gt;
+    fun findByPlatosCategoria(categoria: String): List&lt;Menu&gt;
+
+}
+</code></pre>
+<p><strong class="verde">Controlador</strong></p>
+<p>Gestiona las solicitudes entrantes, procesa datos y determina las respuestas adecuadas.</p>
+<p><strong>MenuController.kt</strong></p>
+<pre><code>import org.example.primerspringmongo.model.Menu
+import org.example.primerspringmongo.repository.MenuRepository
+import org.springframework.stereotype.Controller
+import org.springframework.ui.Model
+import org.springframework.web.bind.annotation.*
+
+@Controller
+@RequestMapping("/menus")
+class MenuController(private val menuRepository: MenuRepository) {
+
+    // Listar todos los menús
+    @GetMapping
+    fun listarMenus(model: Model): String {
+        val menus = menuRepository.findAll()
+        model.addAttribute("menus", menus)
+        return "menus/listar"
+    }
+
+    @GetMapping("/buscar")
+    fun buscarPorNombre(@RequestParam nombre: String, model: Model): String {
+        val menus = menuRepository.findByNombre(nombre) // Consulta en el repositorio
+        model.addAttribute("menus", menus) // Pasar los menús al modelo
+        model.addAttribute("nombre", nombre) // Pasar el nombre buscado
+        return "menus/listar" // Nombre de la plantilla Thymeleaf
+    }
+
+    // Guardar un nuevo menú
+    @PostMapping("/guardar")
+    fun guardarMenu(@ModelAttribute menu: Menu): String {
+        menuRepository.save(menu)
+        return "redirect:/menus"
+    }
+
+    // Ver detalles de un menú
+    @GetMapping("/{id}")
+    fun verDetalles(@PathVariable id: String, model: Model): String {
+        val menu = menuRepository.findById(id)
+        if (menu.isPresent) {
+            model.addAttribute("menu", menu.get())
+            return "menus/detalles"
+        }
+        return "redirect:/menus"
+    }
+
+    // Mostrar formulario para editar un menú
+    @GetMapping("/editar/{id}")
+    fun mostrarFormularioEditar(@PathVariable id: String, model: Model): String {
+        val menu = menuRepository.findById(id)
+        if (menu.isPresent) {
+            model.addAttribute("menu", menu.get())
+            return "menus/editar"
+        }
+        return "redirect:/menus"
+    }
+
+    // Actualizar un menú existente
+    @PostMapping("/actualizar/{id}")
+    fun actualizarMenu(@PathVariable id: String, @ModelAttribute menu: Menu): String {
+        if (menuRepository.existsById(id)) {
+            menuRepository.save(menu)
+        }
+        return "redirect:/menus"
+    }
+
+    // Eliminar un menú
+    @GetMapping("/eliminar/{id}")
+    fun eliminarMenu(@PathVariable id: String): String {
+        menuRepository.deleteById(id)
+        return "redirect:/menus"
+    }
+}
+</code></pre>
+<p><strong>PlatoController.kt</strong></p>
+<pre><code>import org.example.primerspringmongo.repository.MenuRepository
+import org.springframework.stereotype.Controller
+import org.springframework.ui.Model
+import org.springframework.web.bind.annotation.*
+
+@Controller
+@RequestMapping("/platos")
+class PlatoController(private val menuRepository: MenuRepository) {
+
+    // Listar todos los platos de un menú
+    @GetMapping("/{menuId}")
+    fun listarPlatos(@PathVariable menuId: String, model: Model): String {
+        val menu = menuRepository.findById(menuId)
+        if (menu.isPresent) {
+            model.addAttribute("menu", menu.get())
+            model.addAttribute("platos", menu.get().platos)
+            return "platos/listar"
+        }
+        return "redirect:/menus"
+    }
+
+    @GetMapping("/categoria")
+    fun buscarPorCategoria(@RequestParam categoria: String, model: Model): String {
+        val menus = menuRepository.findByPlatosCategoria(categoria) // Consulta en el repositorio
+        model.addAttribute("menus", menus) // Lista de menús encontrados
+        model.addAttribute("categoriaBuscada", categoria) // Categoría buscada
+        return "platos/buscarPorCategoria" // Plantilla Thymeleaf
+    }
+
+    @GetMapping("/{menuId}/ingredientes/{platoNombre}")
+    fun verIngredientes(
+        @PathVariable menuId: String,
+        @PathVariable platoNombre: String,
+        model: Model
+    ): String {
+        val menu = menuRepository.findById(menuId)
+        if (menu.isPresent) {
+            val plato = menu.get().platos.find { it.nombre == platoNombre }
+            if (plato != null) {
+                println("Plato encontrado: $plato")
+                println("Ingredientes: ${plato.ingredientes}")
+                model.addAttribute("menu", menu.get())
+                model.addAttribute("plato", plato)
+                model.addAttribute("ingredientes", plato.ingredientes ?: emptyList&lt;String&gt;())
+                return "platos/ingredientes"
+            }
+        }
+        model.addAttribute("error", "El plato o el menú no existen.")
+        return "error"
+    }
+
+}
+</code></pre>
+<p><strong class="verde">Vista</strong>   </p>
+<p>Permiten visualizar los resultados con un formato personalizado. En la siguiente imagen tenéis la estructura de los archivos:</p>
+<p><img alt="" src="../act_momgo_templates.png" /></p>
+<p><strong>Vistas para visualizar los menus: /menus</strong></p>
+<p><strong>listar.html</strong></p>
+<pre><code>&lt;!DOCTYPE html&gt;
+&lt;html xmlns:th="http://www.thymeleaf.org"&gt;
+&lt;head&gt;
+&lt;title&gt;Lista de Menús&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;h1&gt;Lista de Menús&lt;/h1&gt;
+&lt;a href="/menus/crear"&gt;Crear Nuevo Menú&lt;/a&gt;
+&lt;table border="1"&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+    &lt;th&gt;Nombre&lt;/th&gt;
+    &lt;th&gt;Descripción&lt;/th&gt;
+    &lt;th&gt;Acciones&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr th:each="menu : ${menus}"&gt;
+    &lt;td th:text="${menu.nombre}"&gt;&lt;/td&gt;
+    &lt;td th:text="${menu.descripcion}"&gt;&lt;/td&gt;
+    &lt;td&gt;
+    &lt;a th:href="@{'/menus/' + ${menu.id}}"&gt;Detalles&lt;/a&gt;
+    &lt;a th:href="@{'/menus/editar/' + ${menu.id}}"&gt;Editar&lt;/a&gt;
+    &lt;a th:href="@{'/menus/eliminar/' + ${menu.id}}" onclick="return confirm('¿Seguro que quieres eliminar este menú?')"&gt;Eliminar&lt;/a&gt;
+    &lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+<p><strong>crear.html</strong></p>
+<pre><code>    &lt;!DOCTYPE html&gt;
+    &lt;html xmlns:th="http://www.thymeleaf.org"&gt;
+    &lt;head&gt;
+        &lt;title&gt;Crear/Editar Menú&lt;/title&gt;
+    &lt;/head&gt;
+    &lt;body&gt;
+    &lt;h1 th:text="${#strings.equals(menu.id, '') ? 'Crear Nuevo Menú' : 'Editar Menú'}"&gt;&lt;/h1&gt;
+    &lt;form th:action="@{${#strings.equals(menu.id, '') ? '/menus/guardar' : '/menus/actualizar/' + menu.id}}" th:object="${menu}" method="post"&gt;
+        &lt;label for="nombre"&gt;Nombre:&lt;/label&gt;
+        &lt;input type="text" id="nombre" name="nombre" th:value="${menu.nombre}" required&gt;&lt;br&gt;
+
+        &lt;label for="descripcion"&gt;Descripción:&lt;/label&gt;
+        &lt;textarea id="descripcion" name="descripcion" th:text="${menu.descripcion}" required&gt;&lt;/textarea&gt;&lt;br&gt;
+
+        &lt;label for="fecha"&gt;Fecha:&lt;/label&gt;
+        &lt;input type="date" id="fecha" name="fecha" th:value="${menu.fecha}" required&gt;&lt;br&gt;
+
+        &lt;label for="precioTotal"&gt;Precio Total:&lt;/label&gt;
+        &lt;input type="number" id="precioTotal" name="precioTotal" th:value="${menu.precioTotal}" step="0.01" required&gt;&lt;br&gt;
+
+        &lt;button type="submit"&gt;Guardar&lt;/button&gt;
+        &lt;a href="/menus"&gt;Cancelar&lt;/a&gt;
+    &lt;/form&gt;
+    &lt;/body&gt;
+    &lt;/html&gt;
+</code></pre>
+<p><strong>detalles.html</strong></p>
+<pre><code>&lt;!DOCTYPE html&gt;
+&lt;html xmlns:th="http://www.thymeleaf.org"&gt;
+&lt;head&gt;
+    &lt;title&gt;Detalles del Menú&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;h1&gt;Detalles del Menú&lt;/h1&gt;
+&lt;p&gt;&lt;strong&gt;Nombre:&lt;/strong&gt; &lt;span th:text="${menu.nombre}"&gt;&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Descripción:&lt;/strong&gt; &lt;span th:text="${menu.descripcion}"&gt;&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Fecha:&lt;/strong&gt; &lt;span th:text="${menu.fecha}"&gt;&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Precio Total:&lt;/strong&gt; &lt;span th:text="${menu.precioTotal}"&gt;&lt;/span&gt;&lt;/p&gt;
+
+&lt;h2&gt;Platos&lt;/h2&gt;
+&lt;ul&gt;
+    &lt;li th:each="plato : ${menu.platos}"&gt;
+        &lt;strong th:text="${plato.nombre}"&gt;&lt;/strong&gt; - &lt;span th:text="${plato.categoria}"&gt;&lt;/span&gt;
+        (&lt;span th:text="${plato.precio}"&gt;&lt;/span&gt; €)
+    &lt;/li&gt;
+&lt;/ul&gt;
+&lt;a href="/menus"&gt;Volver&lt;/a&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+<p><strong>editar.html</strong></p>
+<pre><code>&lt;!DOCTYPE html&gt;
+&lt;html xmlns:th="http://www.thymeleaf.org"&gt;
+&lt;head&gt;
+&lt;title&gt;Crear/Editar Menú&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;h1 th:text="${#strings.equals(menu.id, '') ? 'Crear Nuevo Menú' : 'Editar Menú'}"&gt;&lt;/h1&gt;
+&lt;form th:action="@{${#strings.equals(menu.id, '') ? '/menus/guardar' : '/menus/actualizar/' + menu.id}}" th:object="${menu}" method="post"&gt;
+&lt;label for="nombre"&gt;Nombre:&lt;/label&gt;
+&lt;input type="text" id="nombre" name="nombre" th:value="${menu.nombre}" required&gt;&lt;br&gt;
+
+&lt;label for="descripcion"&gt;Descripción:&lt;/label&gt;
+&lt;textarea id="descripcion" name="descripcion" th:text="${menu.descripcion}" required&gt;&lt;/textarea&gt;&lt;br&gt;
+
+&lt;label for="fecha"&gt;Fecha:&lt;/label&gt;
+&lt;input type="date" id="fecha" name="fecha" th:value="${menu.fecha}" required&gt;&lt;br&gt;
+
+&lt;label for="precioTotal"&gt;Precio Total:&lt;/label&gt;
+&lt;input type="number" id="precioTotal" name="precioTotal" th:value="${menu.precioTotal}" step="0.01" required&gt;&lt;br&gt;
+
+&lt;button type="submit"&gt;Guardar&lt;/button&gt;
+&lt;a href="/menus"&gt;Cancelar&lt;/a&gt;
+&lt;/form&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+<p><strong>Vistas para visualizar los platos: /platos</strong></p>
+<p><strong>listar.kt</strong></p>
+<pre><code>&lt;!DOCTYPE html&gt;
+&lt;html xmlns:th="http://www.thymeleaf.org"&gt;
+&lt;head&gt;
+    &lt;title&gt;Platos del Menú&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;h1 th:text="'Platos del Menú: ' + ${menu.nombre}"&gt;&lt;/h1&gt;
+&lt;a th:href="@{/menus}"&gt;Volver a Menús&lt;/a&gt;
+&lt;table border="1"&gt;
+    &lt;thead&gt;
+    &lt;tr&gt;
+        &lt;th&gt;Nombre&lt;/th&gt;
+        &lt;th&gt;Categoría&lt;/th&gt;
+        &lt;th&gt;Precio&lt;/th&gt;
+        &lt;th&gt;Ingredientes&lt;/th&gt;
+    &lt;/tr&gt;
+    &lt;/thead&gt;
+    &lt;tbody&gt;
+    &lt;tr th:each="plato : ${platos}"&gt;
+        &lt;td th:text="${plato.nombre}"&gt;&lt;/td&gt;
+        &lt;td th:text="${plato.categoria}"&gt;&lt;/td&gt;
+        &lt;td th:text="${plato.precio} + ' €'"&gt;&lt;/td&gt;
+        &lt;td&gt;
+            &lt;a th:href="@{'/platos/' + ${menu.id} + '/ingredientes/' + ${plato.nombre}}"&gt;Ver Ingredientes&lt;/a&gt;
+        &lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+<p><strong>ingredientes.html</strong></p>
+<pre><code>&lt;!DOCTYPE html&gt;
+&lt;html xmlns:th="http://www.thymeleaf.org"&gt;
+&lt;head&gt;
+    &lt;title&gt;Ingredientes&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;h1 th:text="'Ingredientes del plato: ' + ${plato?.nombre}"&gt;&lt;/h1&gt;
+
+&lt;div th:if="${error}"&gt;
+    &lt;p th:text="${error}" style="color: red;"&gt;&lt;/p&gt;
+&lt;/div&gt;
+
+&lt;ul th:if="${ingredientes != null &amp;&amp; !ingredientes.isEmpty()}"&gt;
+    &lt;li th:each="ingrediente : ${ingredientes}" th:text="${ingrediente}"&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p th:if="${ingredientes == null || ingredientes.isEmpty()}" style="color: gray;"&gt;
+    No hay ingredientes disponibles para este plato.
+&lt;/p&gt;
+
+&lt;a th:href="@{'/platos/' + ${menu.id}}"&gt;Volver a los platos&lt;/a&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+<p><strong>buscarPorCategoria.html</strong></p>
+<pre><code>&lt;!DOCTYPE html&gt;
+&lt;html xmlns:th="http://www.thymeleaf.org"&gt;
+&lt;head&gt;
+&lt;title&gt;Buscar Menús por Categoría&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;h1&gt;Resultados para categoría: &lt;span th:text="${categoriaBuscada}"&gt;&lt;/span&gt;&lt;/h1&gt;
+
+&lt;table border="1" th:if="${menus}"&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+    &lt;th&gt;ID&lt;/th&gt;
+    &lt;th&gt;Nombre&lt;/th&gt;
+    &lt;th&gt;Descripción&lt;/th&gt;
+    &lt;th&gt;Platos&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr th:each="menu : ${menus}"&gt;
+    &lt;td th:text="${menu.id}"&gt;&lt;/td&gt;
+    &lt;td th:text="${menu.nombre}"&gt;&lt;/td&gt;
+    &lt;td th:text="${menu.descripcion}"&gt;&lt;/td&gt;
+    &lt;td&gt;
+    &lt;ul&gt;
+        &lt;li th:each="plato : ${menu.platos}" th:if="${plato.categoria == categoriaBuscada}" th:text="${plato.nombre}"&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+    &lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p th:if="${menus == null || menus.isEmpty()}" style="color: gray;"&gt;
+No se encontraron menús con platos de la categoría &lt;span th:text="${categoriaBuscada}"&gt;&lt;/span&gt;.
+&lt;/p&gt;
+
+&lt;a href="/menus"&gt;Volver a la lista de menús&lt;/a&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+<p><strong class="verde">Con esta configuración podemos listar los siguientes ejemplos:</strong></p>
+<p>http://localhost:8888/menus : Lista todos los menús</p>
+<p>http://localhost:8888/menus/buscar?nombre=Menú Vegetariano: Busca un menú concreto.</p>
+<p>http://localhost:8888/platos/1: Lista los platos del menú 1.</p>
+<p>http://localhost:8888/platos/1/ingredientes/Ensalada Griega: Lista los ingredients del plato del menú 1.</p>
+<p><img alt="" src="../menu.png" /></p>
+<div class="admonition note">
+<p class="admonition-title">Nota</p>
+<p>Estos son alugunos ejemplos pero podéis modificar el controlador y crear nuevas vistas para añadir funcionalidad al programa y que muestre más resultados.</p>
+</div>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../SpringMVC/" class="btn btn-neutral float-left" title="4 - Spring MVC"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../Docker/" class="btn btn-neutral float-right" title="6 - Docker">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../SpringMVC/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../Docker/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+      <script src="../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

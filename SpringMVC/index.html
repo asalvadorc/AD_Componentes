@@ -1,0 +1,1113 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>4 - Spring MVC - AD - Accés a Dades</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="../css/extra.css" rel="stylesheet" />
+        <link href="../img/favicon.ico" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "4 - Spring MVC";
+        var mkdocs_page_input_path = "SpringMVC.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="..">
+          <img src="../assets/logocaminas.png" class="logo" alt="Logo"/>
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption"><span class="caption-text">UD 8. Componentes</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../Spring/">1 - Spring</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../Anotaciones/">2 - Anotaciones</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../SpringBoot/">3 - SpringBoot</a>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">4 - Spring MVC</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#modelo-vista-controlador-mvc">Modelo-Vista-Controlador (MVC)</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#mvc-en-spring">MVC en Spring</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#anotaciones-comunes-de-spring-mvc">Anotaciones comunes de Spring MVC:</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#primera-aplicacion-spring-mvc">Primera Aplicación Spring MVC</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#ejemplo-con-acceso-a-bases-de-datos-postgres">Ejemplo con acceso a Bases de Datos Postgres.</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#base-de-datos-en-contenedor-docker">Base de datos en contenedor Docker</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#operaciones-crud-sobre-base-de-datos-en-contenedor-docker">Operaciones CRUD sobre base de datos en contenedor Docker</a>
+    </li>
+        </ul>
+    </li>
+        </ul>
+    </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../SpringData/">5 - Spring Data</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../Docker/">6 - Docker</a>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">AD - Accés a Dades</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">UD 8. Componentes</li>
+      <li class="breadcrumb-item active">4 - Spring MVC</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="spring-mvc">Spring MVC</h1>
+<h2 id="modelo-vista-controlador-mvc">Modelo-Vista-Controlador (MVC)</h2>
+<p>El ejemplo visto en Spring Boot es tan sencillo que no necesita un patrón de diseño especial. Para aplicaciones más complejas necesitamos de un patrón que nos permita crear aplicaciones con un código bien estructurado y más fácil de modificar, así como reutilizar sus componentes en diferentes puntos de la aplicación y que puedan evolucionar de manera independiente.</p>
+<p>Spring MVC nos proporciona un marco estructurado, flexible y eficiente para construir aplicaciones basadas en el patrón Modelo-Vista-Controlador (MVC) que cumplan todas estas funcionalidades.</p>
+<p>El Modelo-Vista-Controlador (MVC) es un patrón de diseño que organiza una aplicación en tres <strong>componentes principales</strong>:</p>
+<ul>
+<li>
+<p><strong>Modelo</strong>: Representa la lógica del negocio y los datos de la aplicación. Es responsable de:</p>
+<ul>
+<li>
+<p>Gestionar el estado de la aplicación.</p>
+</li>
+<li>
+<p>Interactuar con la base de datos u otros servicios para obtener y procesar datos.</p>
+</li>
+<li>
+<p>Proveer datos a la vista.</p>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>Vista</strong>: Maneja la presentación de los datos al usuario. Es responsable de:</p>
+<ul>
+<li>
+<p>Renderizar información en un formato adecuado, como HTML.</p>
+</li>
+<li>
+<p>Mostrar al usuario los resultados de las acciones ejecutadas.</p>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>Controlador</strong>: Actúa como intermediario entre el modelo y la vista. Es responsable de:</p>
+<ul>
+<li>
+<p>Procesar las solicitudes del usuario (peticiones HTTP).</p>
+</li>
+<li>
+<p>Interactuar con el modelo para obtener o modificar datos.</p>
+</li>
+<li>
+<p>Seleccionar y devolver la vista adecuada para responder al usuario.</p>
+<p><img alt="" src="../MVC2.png" /></p>
+</li>
+</ul>
+</li>
+</ul>
+<div class="admonition tip">
+<p class="admonition-title">Flujo de trabajo en MVC</p>
+<p>1) El usuario interactúa con la interfaz (Vista), como enviar un formulario o hacer clic en un enlace.</p>
+<p>2) La petición es enviada al Controlador.</p>
+<p>3) El Controlador procesa la petición, interactúa con el Modelo si es necesario, y selecciona la Vista que debe renderizar la respuesta.</p>
+<p>4) La Vista presenta la respuesta al usuario.</p>
+</div>
+<h2 id="mvc-en-spring">MVC en Spring</h2>
+<p>Spring MVC está implementado como un servlet (el front controller)
+que implementa la gestión de las peticiones del cliente web, y se
+encarga de transmitirlas a un controlador adecuado. El controlador
+procesa la petición y crea un modelo que contiene los datos a
+devolver al usuario. Una vista se encarga de traducir el modelo a una
+representación adecuada para el cliente (por ejemplo una página
+HTML)</p>
+<h3 id="anotaciones-comunes-de-spring-mvc">Anotaciones comunes de Spring MVC:</h3>
+<p>A continuación se describen las anotaciones más utilizadas en cada uno de los componentes del modelo MVC en el entorno de Spring:</p>
+<p>1) <strong class="verde">Controlador</strong></p>
+<ul>
+<li><strong>@Controller</strong>: Define una clase como un controlador de Spring MVC. Es la principal anotación utilizada para que Spring la gestione como parte del patrón MVC.</li>
+<li><strong>@RestController</strong>: Si el controlador está destinado a manejar solicitudes RESTful y no necesita devolver vistas, se utiliza esta anotación, que es una combinación de @Controller y @ResponseBody. Devuelve datos directamente como JSON o XML.</li>
+<li><strong>@RequestMapping</strong>: Se usa para mapear solicitudes HTTP a métodos de un controlador. Puede configurarse para manejar diferentes tipos de solicitudes HTTP (GET, POST, etc.).</li>
+<li><strong>@GetMapping, @PostMapping, @PutMapping, @DeleteMapping</strong>: Variantes de @RequestMapping para manejar solicitudes de tipos específicos (GET, POST, PUT, DELETE).</li>
+<li><strong>@RequestParam</strong>: Usada para obtener parámetros de la URL (query parameters) de la solicitud HTTP.</li>
+<li><strong>@ModelAttribute</strong>: Usada para pre-poblar un modelo con atributos antes de que se ejecute un método del controlador. Esto es útil, por ejemplo, cuando se usa en formularios.</li>
+</ul>
+<p>2) <strong class="verde">Modelo</strong></p>
+<ul>
+<li><strong>@Entity</strong>: Si estás utilizando JPA para la persistencia de datos, esta anotación define una clase como una entidad que será mapeada a una tabla de la base de datos.</li>
+<li>
+<p><strong>@Table</strong>: Usada junto con @Entity para especificar la tabla en la base de datos que corresponde a la entidad.</p>
+<pre><code>@Entity
+@Table(name = "comarcas")
+data class Comarca(
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    val id: Int,
+    val nombre: String,
+    val poblacion: Int
+)
+</code></pre>
+</li>
+<li>
+<p><strong>@Value</strong>: Si estás utilizando Spring Expression Language (SpEL) en el modelo o en los controladores para asignar valores, puedes usar esta anotación.</p>
+<pre><code>@Value("\${comarca.nombre}")
+var nombre: String = ""
+</code></pre>
+</li>
+</ul>
+<p>3) <strong class="verde">Vista</strong></p>
+<p>La vista no tiene anotaciones propias en el código fuente, sin embargo, si estás utilizando <strong>Thymeleaf</strong> o <strong>JSP</strong>,  la vista incluye elementos y sintaxis específicos que actúan como directrices para renderizar contenido dinámico.
+La vista será un archivo HTML ubicado en <strong>src/main/resources/templates</strong>.</p>
+<p>Las anotaciones <strong>@RequestMapping</strong> o <strong>@GetMapping</strong> en el controlador, especifican que el controlador debe devolver una vista. </p>
+<p>En el siguiente ejemplo, en la carpeta <strong>src/main/resources/templates/comarca/</strong>, puedes tener un archivo <strong>listar.html</strong>, que corresponde a la vista que se renderizará en el navegador. </p>
+<pre><code>@GetMapping("/comarcas")
+fun listarComarcas(model: Model): String {
+    model.addAttribute("comarcas", comarcaService.obtenerComarcas())
+    return "comarca/listar"  // Devuelve el nombre de la plantilla Thymeleaf
+}
+</code></pre>
+<p><strong class="rojo">Vista con Thymeleaf</strong></p>
+<ul>
+<li>Si usas <strong>Thymeleaf</strong> para la vista, las anotaciones en los archivos de plantilla son prefijos para atributos de HTML. Estos prefijos permiten el manejo dinámico de datos en la vista.</li>
+</ul>
+<p><u>Ejemplo</u></p>
+<pre><code>&lt;h1&gt;Lista de Comarcas&lt;/h1&gt;
+&lt;table&gt;
+    &lt;tr th:each="comarca : ${comarcas}"&gt;
+        &lt;td th:text="${comarca.nombre}"&gt;&lt;/td&gt;
+        &lt;td th:text="${comarca.poblacion}"&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+&lt;/table&gt;
+</code></pre>
+<p>A continuación, se detallan los elementos comunes de las vistas con <strong>Thymeleaf</strong>:</p>
+<ul>
+<li>
+<p><strong>th:text</strong>: Rellena el contenido de un elemento HTML con el valor dinámico.</p>
+<pre><code>&lt;p th:text="${mensaje}"&gt;Mensaje por defecto&lt;/p&gt;
+</code></pre>
+</li>
+<li>
+<p><strong>th:each</strong>: Itera sobre una colección.</p>
+<pre><code>&lt;ul&gt;
+    &lt;li th:each="item : ${items}" th:text="${item}"&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</code></pre>
+</li>
+</ul>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>Esto genera una lista basada en los elementos de la colección items.</p>
+</blockquote>
+</blockquote>
+</blockquote>
+<ul>
+<li>
+<p><strong>th:if</strong> y <strong>th:unless</strong>: Renderiza un contenido condicionalmente.</p>
+<pre><code>&lt;p th:if="${condicion}"&gt;Esto se muestra si la condición es verdadera&lt;/p&gt;
+&lt;p th:unless="${condicion}"&gt;Esto se muestra si la condición es falsa&lt;/p&gt;
+</code></pre>
+</li>
+<li>
+<p><strong>th:href</strong> y <strong>th:src</strong>: Construye enlaces dinámicos para atributos como href o src.</p>
+<pre><code>&lt;a th:href="@{/ruta/{id}(id=${itemId})}"&gt;Ver detalle&lt;/a&gt;
+&lt;img th:src="@{/imagenes/logo.png}" alt="Logo"&gt;
+</code></pre>
+</li>
+<li>
+<p><strong>th:action</strong>: Define la URL para un formulario.</p>
+<pre><code>&lt;form th:action="@{/procesar}" method="post"&gt;
+    &lt;input type="text" name="nombre"&gt;
+    &lt;button type="submit"&gt;Enviar&lt;/button&gt;
+&lt;/form&gt;
+</code></pre>
+</li>
+<li>
+<p><strong>th:value</strong> y <strong>th:field</strong>: Usado para rellenar valores dinámicos en campos de formulario.</p>
+<pre><code>&lt;input type="text" th:field="*{nombre}" /&gt;
+</code></pre>
+</li>
+</ul>
+<p><strong class="rojo">Vista sin motores de plantilla</strong></p>
+<p>Si tu aplicación no utiliza motores de plantillas y solo devuelve datos en formatos como JSON o XML, entonces las vistas suelen ser gestionadas directamente por el controlador. En este caso:</p>
+<p><strong>@RestController</strong> en el controlador garantiza que el contenido se devuelva en el formato adecuado, sin necesidad de vistas explícitas.
+El contenido es generado dinámicamente a través de bibliotecas como Jackson (para JSON).</p>
+<p><u>Ejemplo</u> de un controlador que devuelve JSON:</p>
+<pre><code>@RestController
+class PersonaRestController {
+    @GetMapping("/api/personas")
+    fun listarPersonas(): List&lt;Persona&gt; {
+        return listOf(
+            Persona(1, "Juan"),
+            Persona(2, "Ana")
+        )
+    }
+}
+</code></pre>
+<h3 id="primera-aplicacion-spring-mvc">Primera Aplicación Spring MVC</h3>
+<p>Al igual que se describe en el apartado de Spring Boot, podemos crear los proyectos Spring MVC de dos maneras:</p>
+<ul>
+<li>
+<p>Mediante una herramienta web online (<a href="https://start.spring.io/">https://start.spring.io/</a>) denominada <strong>Spring Initializr</strong>, donde por medio de unos parámetros de configuración, genera automáticamente un proyecto Maven o Gradle, según elijamos, en un archivo comprimido Zip, con la estructura de la aplicación para ser importada directamente desde un IDE. </p>
+</li>
+<li>
+<p>Mediante un IDE, como Eclipse, IntelliJ...etc, teniendo instalados los plugins necesarios. </p>
+</li>
+</ul>
+<p>En nuestro caso crearemos un proyecto <strong>Maven</strong> de Spring Boot en <strong>IntelliJ</strong>. La estructura general de un proyecto Spring MVC en IntelliJ sería esta:</p>
+<p><img alt="" src="../mvc_estructura.png" /> </p>
+<p>Los pasos a seguir serían:</p>
+<ul>
+<li>Configurar el proyecto</li>
+<li>Añadir las dependencias necesarias.</li>
+<li>Estructurar el proyecto en los componentes MVC.</li>
+<li>Configurar el fichero de propiedades.</li>
+</ul>
+<div class="admonition tip">
+<p class="admonition-title">Enunciado de la aplicación</p>
+<p>En este ejemplo vamos a crear una aplicación sencilla que muestre una lista de nombres de personas, y también permita añadir un nombre de persona nuevo. Todo mediantes <strong>Spring MVC</strong> y <strong>Thymeleaf</strong>.</p>
+</div>
+<p><strong class="azul">Configurar el proyecto</strong></p>
+<p>1) En <strong>IntelliJ</strong> creamos el proyecto y lo configuramos desde <strong>File--&gt;New--&gt;Project</strong>:</p>
+<ul>
+<li>Elige <strong>Spring Boot</strong>.</li>
+<li>
+<p>Configura las siguientes opciones:</p>
+<ul>
+<li>Language: <strong>Kotlin</strong></li>
+<li>Build System: <strong>Maven</strong></li>
+</ul>
+</li>
+<li>
+<p>Especifica un nombre para el proyecto: <strong>PrimerSpringMVCsencllo</strong></p>
+</li>
+<li>Última versión de <strong>JDK</strong></li>
+<li>Última versión de <strong>Java</strong></li>
+</ul>
+<p>2) Posteriormente seleccionamos las <strong>dependencias</strong> necesarias:</p>
+<ul>
+<li><strong>Spring Web</strong> (para el desarrollo de aplicaciones web)</li>
+<li><strong>Thymeleaf</strong> (motor de plantillas para la vista)</li>
+<li><strong>Spring Boot DevTools</strong> (opcional, para facilitar el desarrollo)</li>
+</ul>
+<p>Después de aceptar, y si todo ha ido correctamente, ya tendremos nuestro proyecto creado y preparado para añadir los elementos de programación.</p>
+<table>
+<thead>
+<tr>
+<th><img alt="ref" src="../mvc_sencillo1.png" /></th>
+<th><img alt="ref" src="../mvc_sencillo2.png" /></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>Al iniciar nuestra aplicación, lo primero que observamos es que se crea
+una clase <strong>PrimerSpringMVCsenclloApplication</strong>  que sirve como contenedor para la configuración de la aplicación. No necesita implementar métodos adicionales, ya que Spring Boot se encarga de todo gracias a la anotación <strong>@SpringBootApplication</strong>.</p>
+<p><img alt="ref" src="../mvc_sencillo0.png" /></p>
+<p><strong class="azul">Estructura del proyecto</strong></p>
+<p>La estructura del proyecto podría ser esta:</p>
+<p><img alt="" src="../mvc_estructurasimple.png" /> </p>
+<ul>
+<li>
+<p>En la carperta <strong>src/main/kotlin/org/example/primerspringmvcsencillo</strong> crearemos los paquetes:</p>
+<ul>
+<li>controller</li>
+<li>model</li>
+<li>service</li>
+</ul>
+</li>
+<li>
+<p>En la carperta <strong>src/main/resources/template</strong> crearemos la carpeta <strong>persona</strong> donde añadiremos las vistas que muestren el resultado de la aplicación.</p>
+</li>
+</ul>
+<p><img alt="" src="../mvc_sencillo_estructura.png" /> </p>
+<p><strong class="azul">Implementación de la aplicación</strong></p>
+<p>Ahora ya podemos añadir la programación necesaria para nuestra aplicación siguiendo la estructura MVC creada. Dentro de cada paquete crearemos los siguientes archivos:</p>
+<ul>
+<li><strong>Model/Persona.kt</strong>:</li>
+</ul>
+<p>El modelo Persona es muy simple, solo tendrá un nombre.</p>
+<pre><code>package com.ejemplo.model
+
+data class Persona(
+    val id: Int,
+    val nombre: String
+)
+</code></pre>
+<ul>
+<li><strong>Service/PersonaService.kt</strong>: </li>
+</ul>
+<p>El servicio se encargará de la lógica de negocio. En este caso, solo vamos a mantener una lista de personas en memoria.</p>
+<pre><code>package com.ejemplo.service
+
+import org.example.primerspringmvcsencllo.model.Persona
+import org.springframework.stereotype.Service
+
+@Service
+class PersonaService {
+
+    private val personas = mutableListOf(
+        Persona(1, "Juan"),
+        Persona(2, "Ana"),
+        Persona(3, "Luis")
+    )
+
+    fun obtenerPersonas(): List&lt;Persona&gt; = personas
+
+    fun agregarPersona(persona: Persona) {
+        personas.add(persona)
+    }
+}
+</code></pre>
+<ul>
+<li><strong>Controller/PersonaController.kt</strong></li>
+</ul>
+<p>El controlador maneja las solicitudes de las vistas y realiza la interacción con el servicio.</p>
+<pre><code>package com.ejemplo.controller
+
+import org.example.primerspringmvcsencllo.model.Persona
+import org.example.primerspringmvcsencllo.service.PersonaService
+import org.springframework.stereotype.Controller
+import org.springframework.ui.Model
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestParam
+
+    @Controller
+    class PersonaController(private val personaService: PersonaService) {
+
+        @GetMapping("/personas")
+        fun listarPersonas(model: Model): String {
+            model.addAttribute("personas", personaService.obtenerPersonas())
+            return "persona/listar"
+        }
+
+        @GetMapping("/personas/agregar")
+        fun mostrarFormularioAgregar(): String {
+            return "persona/agregar"
+        }
+
+        @PostMapping("/personas/agregar")
+        fun agregarPersona(@RequestParam nombre: String): String {
+            val persona = Persona(0, nombre)  // ID auto-generado
+            personaService.agregarPersona(persona)
+            return "redirect:/personas"
+        }
+    }
+</code></pre>
+<table>
+<thead>
+<tr>
+<th><img alt="ref" src="../mvc_sencillo4.png" /></th>
+<th><img alt="ref" src="../mvc_sencillo3.png" /></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><strong>Plantillas Thymeleaf</strong></li>
+</ul>
+<p>Para la vista utilizaremos dos plantillas Thymeleaf, una para listar los nombres de la personas y otra para agregar una persona nueva. En la carpeta <strong>src/resources/templates/persona</strong>, crearemos los siguienes archivos html:</p>
+<p>a) Plantilla <strong>listar.html</strong></p>
+<pre><code>&lt;!DOCTYPE html&gt;
+&lt;html xmlns:th="http://www.thymeleaf.org"&gt;
+&lt;head&gt;
+    &lt;title&gt;Lista de Personas&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;h1&gt;Lista de Personas&lt;/h1&gt;
+&lt;ul&gt;
+    &lt;li th:each="persona : ${personas}" th:text="${persona.nombre}"&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;a href="/personas/agregar"&gt;Agregar Persona&lt;/a&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+<p>b) Plantilla <strong>agregar.html</strong></p>
+<p>Esta plantilla proporciona un formulario para agregar una nueva persona.</p>
+<pre><code>&lt;!DOCTYPE html&gt;
+&lt;html xmlns:th="http://www.thymeleaf.org"&gt;
+&lt;head&gt;
+    &lt;title&gt;Agregar Persona&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;h1&gt;Agregar Persona&lt;/h1&gt;
+    &lt;form action="/personas/agregar" method="post"&gt;
+        &lt;label for="nombre"&gt;Nombre:&lt;/label&gt;
+        &lt;input type="text" id="nombre" name="nombre" required/&gt;
+        &lt;button type="submit"&gt;Agregar&lt;/button&gt;
+    &lt;/form&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+<p><img alt="ref" src="../mvc_sencillo5.png" />     </p>
+<p><strong class="azul">Configurar el Archivo application.properties</strong></p>
+<p>En el directorio src/main/resources, configura el archivo <strong>application.properties</strong> con las propiedades básicas:</p>
+<pre><code>spring.thymeleaf.prefix=classpath:/templates/
+spring.thymeleaf.suffix=.html
+server.port=8080
+</code></pre>
+<div class="admonition warning">
+<p>Recuerda que puedes cambiar el puerto si lo tienes ocupado. Puedes probar con el puerto 8888.</p>
+</div>
+<p><strong class="azul">Ejecutar la aplicación</strong></p>
+<p>La aplicación estará disponible en http://localhost:8080. </p>
+<p>Aquí podrás:</p>
+<ul>
+<li>Ver la lista de personas al acceder a <strong>/personas</strong>.</li>
+<li>Agregar una nueva persona a través del formulario en <strong>/personas/agregar</strong>.</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><img alt="" src="../mvc_sencillo6.png" /></th>
+<th><img alt="" src="../mvc_sencillo7.png" /></th>
+<th><img alt="" src="../mvc_sencillo8.png" /></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="admonition-title">Nota</p>
+<p>Gracias a <strong>Spring DevTools</strong>, cualquier cambio que realices en el código (por ejemplo, en las plantillas o en los controladores) se reflejará automáticamente en la aplicación sin tener que reiniciarla manualmente.</p>
+</div>
+<h3 id="ejemplo-con-acceso-a-bases-de-datos-postgres">Ejemplo con acceso a Bases de Datos Postgres.</h3>
+<p>En este ejemplo vamos a crear una aplicación sencilla que acceda a una base de datos Postgres. Para ello utilizaremos la base de datos <strong>geo_ad</strong>, que ya conocemos de temas anteriores, y que se encuentra en el servidor externo <strong>89.36.214.106</strong>.
+La aplicación simplemente mostrará la información de la tabla <strong>comarcas</strong>.</p>
+<p>Para esta aplicación crearemos un nuevo proyecto, con la misma configuración que el anterior, pero añadiremos las dependencias necesarias de acceso a la Base de Datos. </p>
+<p><strong class="azul">Configurar el proyecto</strong></p>
+<p>1) Creamos el proyecto y lo configuramos desde <strong>File--&gt;New--&gt;Project</strong>:</p>
+<ul>
+<li>Elige <strong>Spring Boot</strong>.</li>
+<li>
+<p>Configura las siguientes opciones:</p>
+<ul>
+<li>Language: <strong>Kotlin</strong></li>
+<li>Build System: <strong>Maven</strong></li>
+</ul>
+</li>
+<li>
+<p>Especifica un nombre para el proyecto: <strong>PrimerSpringMVC</strong></p>
+</li>
+<li>Última versión de <strong>JDK</strong></li>
+<li>Última versión de <strong>Java</strong></li>
+</ul>
+<p>2) Posteriormente seleccionamos las dependencias necesarias:</p>
+<div class="admonition note nota">
+<p class="admonition-title">Note</p>
+<p>Como la aplicación accede a una Base de datos, necesitaremos las dependencias adicionales <strong>Spring Data JPA</strong> y <strong>PostgreSQL Driver</strong>.</p>
+<ul>
+<li><strong>Spring Web</strong> (para el desarrollo de aplicaciones web)</li>
+<li><strong>Thymeleaf</strong> (motor de plantillas para la vista)</li>
+<li><strong>Spring Boot DevTools</strong> (opcional, para facilitar el desarrollo)</li>
+<li><strong>Spring Data JPA</strong> (facilita la integración de aplicaciones Spring con bases de datos relacionales utilizando el marco JPA (Java Persistence API))</li>
+<li><strong>PostgresSQL Driver</strong> (proporciona el controlador JDBC para conectarse a bases de datos PostgreSQL.)</li>
+</ul>
+</div>
+<p>Después de aceptar, y si todo ha ido correctamente, ya tendremos nuestro proyecto creado y preparado para añadir los elementos de programación.</p>
+<table>
+<thead>
+<tr>
+<th><img alt="ref" src="../mvc1.png" /></th>
+<th><img alt="ref" src="../mvc2_1.png" /></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>Al iniciar nuestra aplicación, lo primero que observamos es que se crea
+una clase <strong>PrimerSpringMVCApplication</strong>  que sirve como contenedor para la configuración de la aplicación. No necesita implementar métodos adicionales, ya que Spring Boot se encarga de todo gracias a la anotación <strong>@SpringBootApplication</strong>.</p>
+<p><img alt="ref" src="../mvc3.png" /></p>
+<p><strong class="azul">Crear la estructura del Proyecto</strong></p>
+<p>La estructura básica del proyecto debe reflejar el patrón MVC. Organiza las carpetas de la siguiente forma:</p>
+<ul>
+<li><strong>Controladores</strong>: src/main/kotlin/org/tuapp/controller</li>
+<li><strong>Vistas</strong>: src/main/resources/templates</li>
+<li><strong>Recursos estáticos</strong>: src/main/resources/static</li>
+<li><strong>Datos</strong>: src/main/kotlin/org/tuapp/model</li>
+<li><strong>Repositorio</strong>: src/main/kotlin/org/tuapp/repository</li>
+</ul>
+<p>Para ello crea los paquetes: <strong>controller</strong>, <strong>model</strong> y <strong>repository</strong> dentro de la carpeta <strong>src/main/kotlin/org/tuapp</strong>.</p>
+<p><img alt="ref" src="../estructura.png" /></p>
+<p><strong class="azul">Implementación de la aplicación</strong></p>
+<p>Ahora ya podemos añadir la programación necesaria para nuestra aplicación siguiendo la estructura MVC creada. Dentro de cada paquete crearemos los siguientes archivos:</p>
+<ul>
+<li><strong>Entidad JPA</strong></li>
+</ul>
+<p>Define las entidades que corresponden a las tablas existentes en la base de datos. No necesitas configuraciones especiales más allá de mapear las columnas.
+En nuestro caso definimos la entidad comarca y sus campos.</p>
+<p>En el paquete <strong>model</strong> crea un archivo llamado <strong>comarca.kt</strong></p>
+<pre><code>import jakarta.persistence.*
+
+@Entity /*Define una clase como una entidad JPA, lo que significa que estará mapeada a una tabla en la base de datos.*/
+@Table(name = "comarca")
+data class comarca(
+    @Id /*dentifica el campo como la clave primaria de la entidad.*/
+    val nom_c: String = "",
+    val provincia: String = ""
+)
+</code></pre>
+<ul>
+<li><strong>Repositorio</strong></li>
+</ul>
+<p>Crea un repositorio que permita ejecutar consultas sobre la tabla correspondiente.</p>
+<p>Dentro del paquete <strong>repository</strong>, crea un archivo llamado <strong>ComarcaRepository.kt</strong></p>
+<pre><code>import org.example.primerspringmvc.model.comarca
+import org.springframework.data.jpa.repository.JpaRepository
+import org.springframework.stereotype.Repository
+
+@Repository
+interface ComarcaRepository : JpaRepository&lt;comarca, String&gt; {
+fun findByProvincia(provincia: String): List&lt;comarca&gt;
+}
+</code></pre>
+<ul>
+<li><strong>Controlador</strong></li>
+</ul>
+<p>El controlador manejará las solicitudes GET para obtener información de la base de datos.</p>
+<p>Dentro del paquete <strong>controller</strong>, crea un archivo llamado <strong>ComarcaController.kt</strong></p>
+<pre><code>import org.example.primerspringmvc.model.comarca
+import org.example.primerspringmvc.repository.ComarcaRepository
+import org.springframework.web.bind.annotation.*
+
+@RestController
+@RequestMapping("/comarcas")
+class ComarcaController(private val comarcaRepository: ComarcaRepository) {
+
+    // Endpoint para obtener todas las comarcas
+    @GetMapping
+    fun obtenerComarcas(): List&lt;comarca&gt; = comarcaRepository.findAll()
+}
+</code></pre>
+<div class="admonition note">
+<ul>
+<li>
+<p><strong>@RestController:</strong> Combina <strong>@Controller</strong> y <strong>@ResponseBody</strong>.
+Devuelve directamente datos en formato JSON en lugar de buscar vistas como Thymeleaf.</p>
+</li>
+<li>
+<p><strong>ObtenerComarcas()</strong>: Devuelve una lista de objetos comarca.
+Spring automáticamente convierte esta lista a JSON usando Jackson (que viene incluido con Spring Boot).</p>
+</li>
+</ul>
+</div>
+<p><img alt="ref" src="../estructura_archivos.png" /></p>
+<ul>
+<li><strong>Vistas</strong></li>
+</ul>
+<p>Las vistas pueden ser representadas por tecnologías como JSP, Thymeleaf, o JSON (en caso de APIs).</p>
+<p>En este ejemplo vamos a visualizar los datos en un navegador con formato <strong>JSON</strong> y más adelante lo haremos mediante <strong>Thymeleaf</strong> para ver ambos casos. </p>
+<p><strong class="azul">Configurar la conexión al Servidor Postgres:</strong></p>
+<p>En el archivo <strong>src/main/resources/application.properties</strong>  configura la conexión a tu base de datos existente:</p>
+<pre><code>spring.datasource.url=jdbc:postgresql://&lt;HOST&gt;:&lt;PUERTO&gt;/&lt;DB_NAME&gt;
+spring.datasource.username=&lt;USUARIO&gt;
+spring.datasource.password=&lt;CONTRASEÑA&gt;
+spring.jpa.hibernate.ddl-auto=update
+</code></pre>
+<p>Cambiaremos los datos de conexión al servidor externo:</p>
+<p><img alt="ref" src="../Postgres.png" /></p>
+<div class="admonition warning">
+<p>Recuerda que puedes cambiar el puerto si lo tienes ocupado. Puedes probar con el puerto 8888.</p>
+</div>
+<p><strong class="azul">Ejecutar la aplicación</strong></p>
+<p>La aplicación estará disponible en http://localhost:8080, o el puerto que hayas especificado, para listar las comarcas.</p>
+<p><img alt="" src="../resultadojson.png" /></p>
+<div class="admonition warning">
+<p>Sería deseable que el resultado se mostrara de manera más amigable para el usuario, por lo que en el siguiente ejemplo haremos los cambios necesarios para utilizar <strong>Thymeleaf</strong> y que el resultado se muetre en cajas de texto.</p>
+</div>
+<p><strong class="verde">Thymeleaf para mostrar los resultados:</strong></p>
+<p>1) <strong>Configuración de dependencias</strong>. Asegúrate de tener la dependencia de Thymeleaf en tu archivo pom.xml. Esta dependencia la hemos seleccionado al configurar la aplicación y seguramente ya la tengamos incluida.</p>
+<pre><code>&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-boot-starter-thymeleaf&lt;/artifactId&gt;
+&lt;/dependency&gt;
+</code></pre>
+<p>2) Configurar Thymeleaf en <strong>application.properties</strong></p>
+<p>Añade las siguientes propiedades:</p>
+<pre><code>spring.thymeleaf.prefix=classpath:/templates/
+spring.thymeleaf.suffix=.html
+spring.thymeleaf.cache=false
+</code></pre>
+<p>3) <strong>Modificar el Controlador con datos del repositorio</strong>. El controlador debe recuperar los datos desde el repositorio y pasarlos a la vista usando un modelo. Cambia la implementación del controlador:</p>
+<pre><code>import org.springframework.stereotype.Controller
+import org.example.primerspringmvc.repository.ComarcaRepository
+import org.springframework.ui.Model
+import org.springframework.web.bind.annotation.*
+
+@Controller
+@RequestMapping("/comarcas")
+class ComarcaController(private val ComarcaRepository: ComarcaRepository) {
+    @GetMapping
+    fun listarComarcas(model:Model): String {
+        val comarcas = ComarcaRepository.findAll()
+        model.addAttribute("comarcas", comarcas)
+        return "comarcas" // Nombre de la plantilla HTML
+    }
+}
+</code></pre>
+<p>4) <strong>Vistas</strong></p>
+<p>Para agregar un entorno de usuario amigable con cajas de texto y que los datos de la base de datos se muestren en una aplicación web, crea un archivo <strong>comarcas.html</strong> en el directorio <strong>src/main/resources/templates</strong>. </p>
+<!DOCTYPE html>
+<pre><code>&lt;html xmlns:th="http://www.thymeleaf.org"&gt;
+&lt;head&gt;
+    &lt;title&gt;Lista de Comarcas&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;h1&gt;Lista de Comarcas&lt;/h1&gt;
+&lt;table border="1"&gt;
+    &lt;tr&gt;
+        &lt;th&gt;ID&lt;/th&gt;
+        &lt;th&gt;Provincia&lt;/th&gt;
+
+    &lt;/tr&gt;
+    &lt;tr th:each="comarca : ${comarcas}"&gt;
+        &lt;td th:text="${comarca.nom_c}"&gt;ID&lt;/td&gt;
+        &lt;td th:text="${comarca.provincia}"&gt;Provincia&lt;/td&gt;
+    &lt;/tr&gt;
+&lt;/table&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+<div class="admonition note">
+<ul>
+<li><strong>th:each</strong>: Itera sobre la lista de comarcas.</li>
+<li><strong>th:text</strong>: Inserta dinámicamente el valor de un campo en el HTML.     </li>
+</ul>
+</div>
+<p><strong class="azul">Ejecuatar la aplicación</strong></p>
+<ul>
+<li>Accede a http://localhost:8888/comarcas  para listar las comarcas.</li>
+</ul>
+<p>En el navegador, se mostrará una tabla HTML con las comrcas almacenadas en la base de datos. Los datos dinámicos se renderizan usando <strong>Thymeleaf</strong>. Este enfoque permite crear interfaces web amigables y bien estructuradas.</p>
+<p><img alt="" src="../comarcas_mejor.png" /></p>
+<p><strong class="verde">Ejemplo de consulta a la Base de datos</strong></p>
+<p>Con la anotación <strong>@Query</strong> en el repositorio, podemos realizar consultas personalizadas a la base de datos. </p>
+<p>A continuación veremos los cambios que deberíamos hacer en los ficheros para poder hacer una consulta con parámetros y visualizar los datos tanto en json com con thymeleaf:</p>
+<div class="admonition tip">
+<p class="admonition-title">Cambios en los ficheros .kt:</p>
+<p><strong>ComarcaRepository</strong></p>
+<pre><code>import org.springframework.data.jpa.repository.Query
+import org.springframework.data.repository.query.Param
+import org.example.primerspringmvc.model.comarca
+import org.springframework.data.jpa.repository.JpaRepository
+import org.springframework.stereotype.Repository
+
+@Repository
+interface ComarcaRepository : JpaRepository&lt;comarca, Long&gt; {
+    @Query("SELECT c FROM comarca c WHERE c.provincia = :provincia")
+    fun findComarcasporProvincia(@Param("provincia") provincia: String): List&lt;comarca&gt;
+}
+</code></pre>
+<p><strong>ComarcaController</strong></p>
+<pre><code>import org.example.primerspringmvc.model.comarca
+import org.springframework.stereotype.Controller
+import org.example.primerspringmvc.repository.ComarcaRepository
+import org.springframework.ui.Model
+import org.springframework.web.bind.annotation.*
+
+@RestController //en lugar de @Controller
+@RequestMapping("/comarcas")
+class ComarcaController(private val ComarcaRepository: ComarcaRepository) {
+    @GetMapping("/buscar")
+    fun buscarComarcasPorProvincia(@RequestParam provincia: String): List&lt;comarca&gt; {
+        return ComarcaRepository.findComarcasporProvincia(provincia)
+    }
+}
+</code></pre>
+</div>
+<hr />
+<p><strong><u>Anotaciones importantes</u></strong></p>
+<p><strong>@Query</strong>: Permite definir consultas SQL personalizadas directamente en el repositorio.
+La consulta SELECT c FROM Comarca c WHERE c.provincia = :provincia selecciona todas las comarcas donde la columna provincia coincide con el parámetro provincia.</p>
+<p><strong>@Param</strong>: Vincula el parámetro de la consulta con el valor que se pasa desde el método.
+En este caso, @Param("provincia") conecta el parámetro provincia de la consulta SQL con el argumento del método.</p>
+<p><strong>@GetMapping</strong> y <strong>@RequestParam</strong>: Define un endpoint HTTP GET en el controlador.
+El parámetro provincia se obtiene de la URL. Por ejemplo, si queremos listar las comarcas de la provincia de Alacant, obtenemos:</p>
+<p><img alt="" src="../comarcasbuscarjson.png" /> </p>
+<p><strong><u>Visualizar la salida con Thymeleaf</u></strong></p>
+<p>Si la visualización la queremos hacer con Thymeleaf los cambios a realizar se harían solo en  <strong>ComarcasController</strong>, ya que el formulaio comarcas.html se puede seguir utilizando si queremos mostrar los mismos campos:</p>
+<pre><code>import org.springframework.stereotype.Controller
+import org.example.primerspringmvc.repository.ComarcaRepository
+import org.springframework.ui.Model
+import org.springframework.web.bind.annotation.*
+
+@Controller     //en lugar de @RestController
+@RequestMapping("/comarcas")
+class ComarcaController(private val ComarcaRepository: ComarcaRepository) {
+    @GetMapping
+    fun listarComarcas(model:Model): String {
+        val comarcas = ComarcaRepository.findAll()
+        model.addAttribute("comarcas", comarcas)
+        return "comarcas" // Nombre de la plantilla HTML
+    }
+
+    @GetMapping("/buscar")
+    fun buscarComarcasPorProvincia(@RequestParam provincia: String, model: Model): String {
+        val comarcas= ComarcaRepository.findComarcasporProvincia(provincia)
+        model.addAttribute("comarcas", comarcas)
+        return "comarcas" // Nombre de la plantilla HTML
+    }
+}
+</code></pre>
+<p>Y el resultado se vería así:</p>
+<p><img alt="" src="../comarcasbuscarhtml.png" /> </p>
+<hr />
+<h4 id="base-de-datos-en-contenedor-docker"><strong class="verde">Base de datos en contenedor Docker</strong></h4>
+<p>Para no tener que instalarnos un servidor Postgres en nuestro equipo, podemos tener nuestra base de datos en un contenedor Docker.</p>
+<p>En este caso, los cambios principales se centran en la configuración de conexión en la aplicación y en el despliegue del contenedor de PostgreSQL. </p>
+<p>Antes de acceder al contenedor tenemos que crearlo. En nuestro caso crearemos un contenedor Docker de Postgres y posteriormente restauraremos la base de datos <strong>geo_ad</strong> en dicho contenedor, para poder disponer de la misma configuracion y los mismos datos que en el servidor externo. </p>
+<p>Partimos del hecho que tenemos instalado Docker en nuesto equipo, en caso contario te dejo un pequeño tutorial de como instalarlo en el apartado <strong>Docker</strong> de esta unidad. Los pasos a seguir para crear dicho contendor son:</p>
+<p>1) <strong>Ejecutar PostgreSQL en Docker</strong></p>
+<ul>
+<li>Crea y ejecuta el contenedor de PostgreSQL:</li>
+</ul>
+<pre><code class="language-bash">docker run --name postgres-container -e POSTGRES_USER=admin -e POSTGRES_PASSWORD=admin -e POSTGRES_DB=demo -p 5432:5432 -d postgres
+</code></pre>
+<div class="admonition note">
+<ul>
+<li>POSTGRES_USER: Usuario de la base de datos.</li>
+<li>POSTGRES_PASSWORD: Contraseña del usuario.</li>
+<li>POSTGRES_DB: Nombre de la base de datos.</li>
+<li>-p 5432:5432: Mapea el puerto 5432 del contenedor al puerto 5432 de tu máquina.</li>
+</ul>
+</div>
+<ul>
+<li>Verifica que el contenedor esté corriendo:</li>
+</ul>
+<pre><code class="language-bash">docker ps
+</code></pre>
+<ul>
+<li>(Opcional) Conéctate al contenedor para verificar la base de datos, desde <strong>DBeaver</strong>, o desde el terminal:</li>
+</ul>
+<pre><code class="language-bash">docker exec -it postgres-container psql -U admin -d demo
+</code></pre>
+<p>1) <strong>Restaurar la base de datos en el contenedor con DBeaver</strong>:</p>
+<p>Vamos a restaurar la base de datos <strong>geo_ad</strong> en la base de datos <strong>demo</strong>, que hemos creado con docker. Para ello os he dejado un archivo <strong>dump</strong>, en el apartado <strong>recursos de Aules</strong>, que contiene el backup de geo_ad. Lo siguiente será restaurar este backup en <strong>demo</strong>, siguiendo esto pasos:</p>
+<div class="admonition note">
+<ul>
+<li>
+<p>Crear una <strong>nueva conexión</strong> en DBeaver al contenedor local:</p>
+<ul>
+<li>Host: localhost</li>
+<li>Puerto: 5432</li>
+<li>Usuario y contraseña: admin</li>
+<li>Base de datos: demo</li>
+</ul>
+</li>
+<li>
+<p><strong>Restaurar</strong> el archivo de respaldo: Haz clic derecho en la base de datos en el contenedor → Herramientas &gt; Restaurar (Restore).</p>
+<p><img alt="" src="../restore_1.png" /> </p>
+</li>
+<li>
+<p><strong>Archivo de respaldo</strong>: Selecciona el archivo de respaldo exportado, disponible en el aula virtual en la carpeta de recursos del tema.</p>
+<p>Pulsa Start y espera a que termine la restauración. Una vez terminado selecciona cancelar para que no vuelva a realizar la restauración.</p>
+<table>
+<thead>
+<tr>
+<th><img alt="" src="../restore_2.png" /></th>
+<th><img alt="" src="../restore_3.png" /></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</li>
+</ul>
+</div>
+<p>3) <strong>Cambios en la Configuración de la Aplicación</strong></p>
+<p>En el archivo <strong>application.properties</strong>, configura la conexión a PostgreSQL en el contenedor Docker. Asegúrate de usar la IP del contenedor o localhost si estás ejecutando la aplicación desde la misma máquina.</p>
+<ul>
+<li>
+<p>Opción 1: Usar localhost (si el contenedor está corriendo en tu máquina)</p>
+<pre><code>spring.datasource.url=jdbc:postgresql://localhost:5432/demo
+spring.datasource.username=admin
+spring.datasource.password=admin
+spring.jpa.hibernate.ddl-auto=none
+spring.jpa.show-sql=true
+spring.jpa.properties.hibernate.format_sql=true
+</code></pre>
+</li>
+<li>
+<p>Opción 2: Utilizar la IP del contenedor (si la aplicación está en otro contenedor)</p>
+</li>
+</ul>
+<blockquote>
+<blockquote>
+<ul>
+<li>Para encontrar la IP del contenedor PostgreSQL:</li>
+</ul>
+</blockquote>
+</blockquote>
+<pre><code>    docker inspect postgres-container | grep IPAddress
+</code></pre>
+<blockquote>
+<blockquote>
+<ul>
+<li>Utiliza la IP encontrada para configurar la conexión:</li>
+</ul>
+</blockquote>
+</blockquote>
+<pre><code>    spring.datasource.url=jdbc:postgresql://&lt;IP_DEL_CONTENEDOR&gt;:5432/demo
+    spring.datasource.username=admin
+    spring.datasource.password=admin
+    spring.jpa.hibernate.ddl-auto=none
+    spring.jpa.show-sql=true
+    spring.jpa.properties.hibernate.format_sql=true
+</code></pre>
+<div class="admonition warning">
+<p>Todos los cambios que necesitas para ejecutar la aplicación y que acceda a la base de datos que se encuentra en el contenedor son los anteriormente descritos. El resto de ficheros y estructura no se verá afectada.</p>
+</div>
+<div class="admonition tip">
+<p>Una vez tenemos la base de datos restaurada con los datos de <strong>geo_ad</strong> ya podemos ejecutar la aplicación y comprobar que los resultados son los mismos que si accedemos a la base de datos del servidor.</p>
+</div>
+<h4 id="operaciones-crud-sobre-base-de-datos-en-contenedor-docker"><strong class="verde">Operaciones CRUD sobre base de datos en contenedor Docker</strong></h4>
+<p>Siguiendo con el ejemplo visto en Spring MVC, de acceder a una base de datos relacional Postgres en un contenedor Docker, en este apartado iremos más allá y veremos como realizar operaciones CRUD, ya que ahora la base de datos está en local y podemos hacer todas las modificaciones que necesitemos.
+Como ejemplo, haremos modificaciones sobre la tabla <strong>comarcas</strong>.</p>
+<p>El único fichero a modificar será el <strong>controlador (ComarcaController.kt)</strong> y la creación de nuevas <strong>vistas</strong> para visualizar los resultados:</p>
+<p>1) <strong>Create</strong></p>
+<ul>
+<li>
+<p><strong>Controlador</strong></p>
+<pre><code>@Controller
+@RequestMapping("/comarcas")
+class ComarcaController(private val comarcaRepository: ComarcaRepository) {
+
+    @GetMapping("/nueva")
+    fun mostrarFormularioNuevaComarca(model: Model): String {
+        model.addAttribute("comarca", comarca())
+        return "nueva-comarca"
+    }
+
+    @PostMapping("/nueva")
+    fun guardarComarca(@ModelAttribute comarca: comarca): String {
+        comarcaRepository.save(comarca)
+        return "redirect:/comarcas"
+    }
+}
+</code></pre>
+</li>
+<li>
+<p><strong>Vista (nueva-comarca.html)</strong></p>
+<pre><code>&lt;!DOCTYPE html&gt;
+&lt;html xmlns:th="http://www.thymeleaf.org"&gt;
+
+&lt;head&gt;
+    &lt;title&gt;Nueva Comarca&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;h1&gt;Nueva Comarca&lt;/h1&gt;
+    &lt;form th:action="@{/comarcas/nueva}" th:object="${comarca}" method="post"&gt;
+        &lt;label for="nom_c"&gt;Nombre:&lt;/label&gt;
+        &lt;input type="text" id="nom_c" name="nom_c" th:value="*{nom_c}" required&gt;&lt;br&gt;
+
+        &lt;label for="provincia"&gt;Provincia:&lt;/label&gt;
+        &lt;input type="text" id="provincia" name="provincia" th:value="*{provincia}" required&gt;&lt;br&gt;
+
+        &lt;button type="submit"&gt;Guardar&lt;/button&gt;
+    &lt;/form&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+</li>
+</ul>
+<p>2) <strong>Read</strong></p>
+<ul>
+<li>
+<p><strong>Controlador</strong>: Ya implementado en el ejercicio anterior.</p>
+<p>@GetMapping
+fun listarComarcas(model: Model): String {
+    val comarcas = comarcaRepository.findAll()
+    model.addAttribute("comarcas", comarcas)
+    return "comarcas"
+}</p>
+</li>
+<li>
+<p><strong>Vista (comarcas.html)</strong>: Ya creada en el ejercicio anterior.</p>
+</li>
+</ul>
+<p>3) <strong>Update</strong></p>
+<ul>
+<li>
+<p><strong>Controlador</strong></p>
+<pre><code>@GetMapping("/editar/{id}")
+fun mostrarFormularioEditarComarca(@PathVariable id: String, model: Model): String {
+    val comarca = comarcaRepository.findById(id).orElseThrow { IllegalArgumentException("Comarca no encontrada: $id") }
+    model.addAttribute("comarca", comarca)
+    return "editar-comarca"
+}
+
+@PostMapping("/editar/{id}")
+fun actualizarComarca(@PathVariable id: String, @ModelAttribute comarca: comarca): String {
+    if (!comarcaRepository.existsById(id)) {
+        throw IllegalArgumentException("Comarca no encontrada: $id")
+    }
+    comarcaRepository.save(comarca)
+    return "redirect:/comarcas"
+}
+</code></pre>
+</li>
+<li>
+<p><strong>Vista (editar-comarca.html)</strong></p>
+<pre><code>&lt;!DOCTYPE html&gt;
+&lt;html xmlns:th="http://www.thymeleaf.org"&gt;
+
+&lt;head&gt;
+    &lt;title&gt;Editar Comarca&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;h1&gt;Editar Comarca&lt;/h1&gt;
+    &lt;form th:action="@{/comarcas/editar/{id}(id=${comarca.nom_c})}" th:object="${comarca}" method="post"&gt;
+        &lt;label for="nom_c"&gt;Nombre:&lt;/label&gt;
+        &lt;input type="text" id="nom_c" name="nom_c" th:value="*{nom_c}" readonly&gt;&lt;br&gt;
+
+        &lt;label for="provincia"&gt;Provincia:&lt;/label&gt;
+        &lt;input type="text" id="provincia" name="provincia" th:value="*{provincia}" required&gt;&lt;br&gt;
+
+        &lt;button type="submit"&gt;Actualizar&lt;/button&gt;
+    &lt;/form&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+</li>
+</ul>
+<p>4) <strong>Delete</strong></p>
+<ul>
+<li>
+<p><strong>Controlador</strong></p>
+<pre><code>@GetMapping("/eliminar/{id}")
+fun eliminarComarca(@PathVariable id: String): String {
+    if (!comarcaRepository.existsById(id)) {
+        throw IllegalArgumentException("Comarca no encontrada: $id")
+    }
+    comarcaRepository.deleteById(id)
+    return "redirect:/comarcas"
+}
+</code></pre>
+</li>
+<li>
+<p><strong>Vista</strong>  (Modificar comarcas.html para agregar la opción de eliminar)</p>
+<pre><code>&lt;tr th:each="comarca : ${comarcas}"&gt;
+    &lt;td th:text="${comarca.nom_c}"&gt;ID&lt;/td&gt;
+    &lt;td th:text="${comarca.provincia}"&gt;Provincia&lt;/td&gt;
+    &lt;td&gt;
+        &lt;a th:href="@{/comarcas/editar/{id}(id=${comarca.nom_c})}"&gt;Editar&lt;/a&gt;
+        &lt;a th:href="@{/comarcas/eliminar/{id}(id=${comarca.nom_c})}" onclick="return confirm('¿Estás seguro?')"&gt;Eliminar&lt;/a&gt;
+    &lt;/td&gt;
+&lt;/tr&gt;
+</code></pre>
+<hr />
+</li>
+</ul>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../SpringBoot/" class="btn btn-neutral float-left" title="3 - SpringBoot"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../SpringData/" class="btn btn-neutral float-right" title="5 - Spring Data">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../SpringBoot/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../SpringData/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+      <script src="../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>
