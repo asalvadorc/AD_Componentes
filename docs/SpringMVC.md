@@ -819,7 +819,7 @@ El único fichero a modificar será el **controlador (ComarcaController.kt)** y 
 
 1) **Create**
 
-* **Controlador **
+* **Controlador**
 
         @Controller
         @RequestMapping("/comarcas")
