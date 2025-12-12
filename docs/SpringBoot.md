@@ -1,12 +1,19 @@
 # Spring Boot
 
-**¿Qué es Spring Boot?**
+**Spring** es el framework completo; **Spring Boot** es la forma fácil y moderna de usar Spring. Tradicionalmente Spring era complicado de configurar, había que preparar servidores, XML, dependencias, etc. Spring Boot se enfoca en simplificar y acelerar el desarrollo de aplicaciones web y microservicios, ofreciendo una configuración automática y la capacidad de crear aplicaciones que se ejecutan de forma independiente sin necesidad de un servidor web externo.
 
-Spring Boot es una herramienta de desarrollo que se basa en Spring Framework. Se enfoca en simplificar y acelerar el desarrollo de aplicaciones web y microservicios, ofreciendo una configuración automática y la capacidad de crear aplicaciones que se ejecutan de forma independiente sin necesidad de un servidor web externo.
+**Spring Boot** es una capa por encima de Spring que lo hace fácil:
 
-Para entender el concepto, primero debemos reflexionar sobre cómo construimos aplicaciones con Spring
+- configura todo automáticamente
+- trae un servidor web incorporado
+- evita escribir XML
+- permite arrancar una app con un botón
+- usa starters (dependencias ya preparadas)
+- permite crear proyectos en segundos
 
-![](spring_pasos.png)
+**Pasos para crear una aplicación con Spring Boot**{.azul}
+
+
 
 **Fundamentalmente existen tres pasos a realizar**. El primero es crear un proyecto
 Maven/Gradle y descargar las dependencias necesarias. En segundo lugar desarrollamos
@@ -20,140 +27,9 @@ centrar en el desarrollo de nuestra aplicación. ¿Cómo funciona? El enfoque es
 También tendrá especial importancia el archivo **applicantion.properties** que será donde
 configuraremos aspectos relativos con nuestra aplicación, tales como las conexiones a base de datos o el puerto por donde acceder a nuestra aplicación por ejemplo. También podemos ver todas las dependencias que se han añadido gracias al archivo **pom.xml**
 
-
-<!--
-**Usos comunes de Spring Boot:**
-
-* APIs RESTful
-* Aplicaciones web basadas en MVC
-* Microservicios
-* Aplicaciones de procesamiento de datos
-* Integraciones con bases de datos y mensajería (Kafka, RabbitMQ, etc.) 
+![](spring_pasos.png)
 
 
-
-Antes de crear una aplicación en SpringBoot, en neceario conocer algunas partes de la aplicación:
-
-* Dependencias de inicio (starters)
-* Anotación de inicio de Aplicación (@SpringBootApplication)
-* Archivo application.properties
-
-
-**Dependencias de inicio (starters)**{.azul}
-
-Un **Spring Boot Starter** es un paquete (dependencia) proporcionado por Spring Boot que incluye todas las bibliotecas necesarias para una funcionalidad específica de manera preconfigurada, eliminando la necesidad de configurar cada librería individualmente.
-
-Un starter es esencialmente una dependencia Maven (o Gradle) con un identificador **spring-boot-starter-`<`funcionalidad`>`**. Cada starter agrupa varias bibliotecas relacionadas.
-
-Por ejemplo: **spring-boot-starter-web** incluye todo lo necesario para desarrollar aplicaciones web, como el servidor embebido Tomcat, Spring MVC, y otras dependencias esenciales.
-
-       pom.xml
-        <dependencia> 
-            <groupId> org.springframework.boot </groupId> 
-            <artefacto> spring-boot-starter-web </artefacto> 
-        </dependencia>
-
-<u>Propiedades:</u>
-
-* Incorporación fácil: Solo necesitas incluir el starter correspondiente en el archivo de configuración de dependencias.
-* Configuración automática: Los starters están diseñados para aprovechar el principio de convención sobre configuración. Esto significa que la configuración predeterminada ya está lista para funcionar, y tú solo necesitas personalizarla si es necesario. 
-* Reducción de complejidad: Evitas buscar manualmente qué librerías necesitas o resolver conflictos entre dependencias.
-* Spring Boot configura automáticamente tu aplicación en función de las dependencias que haya agregado al proyecto mediante **anotaciones**.
-
-Algunos de esos **starters** son:
-
-* **spring-boot-starter-parent**: define los valores predeterminados comunes, como la versión de Java, la codificación de fuente, o varias configuraciones de complementos de Maven.
-* **spring-boot-starter-web**: específica un grupo de dependencias para
-desarrollar aplicaciones web como Spring web MVC y el servidor Tomcat.
-* **spring-boot-maven-plugin**: permite la creación automática de un archivo
-JAR ejecutable para una aplicación web Java independiente con un
-servidor Tomcat incorporado.
-* **spring-boot-starter-data-jpa**: incluye todas las dependencias
-necesarias para usar Spring Data JPA, junto con las dependencias de la
-biblioteca Hibernate, la implementación de JPA más utilizada.
-* **spring-boot-starter-thymeleaf**: Para trabajar con plantillas HTML usando Thymeleaf.
-* **spring-boot-starter-security**: Proporciona autenticación y autorización con Spring Security.
-
-Estos **starters** se han de inluir manualmente en el archivo pom.xml, si utilizas Maven, o seleccionarlos en la pestaña de dependencias del asistente del IDE, al crear el proyecto SpringBoot.
-
-
-| pom.xml      | IntelliJ     |
-|--------------|--------------|
-| ![](pom.png) | ![](componentes.png) |
-
-
-
-**Anotación de inicio de Aplicación (@SpringBootApplication)**{.azul}
-
-Cuando creas una aplicación Spring Boot, el proyecto generado incluye, por defecto, la anotación más básica y fundamental de Spring Boot, que es: **@SpringBootApplication**
-
-Esta anotación se agrega automáticamente a la clase principal de la aplicación. 
-
-    @SpringBootApplication
-    class MyApplication 
-    fun main(args: Array<String>) {
-        runApplication<MyApplicationion>(*args)
-    }
-
-!!!note "Nota"
-    Al igual que cualquier otro programa Java, una aplicación Spring Boot debe tener un método principal. Este método sirve como punto de entrada, que invoca el método **runApplication** para iniciar la aplicación.
-
-**@SpringBootApplication** es una combinación de tres anotaciones clave:
-
->>1) **@Configuration**  
->>Indica que la clase puede contener definiciones de beans que se registrarán en el contenedor de Spring.
-
->>2) **@EnableAutoConfiguration**  
->>Habilita la configuración automática basada en las dependencias que encuentres en el classpath.
-
->>3) **@ComponentScan**  
->>Escanea automáticamente los paquetes del proyecto para detectar componentes, servicios, y configuraciones (@Component, @Service, @Repository, @Controller, etc.).
-
-!!!note "Nota"
-    Aunque no hayas añadido dependencias, **@EnableAutoConfiguration** intentará configurar un entorno básico. Sin dependencias, esta configuración será mínima.
-    **@ComponentScan** buscará automáticamente cualquier clase anotada con **@Component**, **@Service**, o similares, dentro del paquete raíz y sus subpaquetes.
-
-**Archivo application.properties**{.azul}
-
-Este archivo se utiliza para externalizar propiedades de configuración, lo que le permite definir configuraciones, como puertos de servidor, conexiones de base de datos y propiedades específicas de la aplicación. Se coloca en la carpeta **src/main/resources** del proyecto Spring Boot. 
-
-<u>Ejemplos:</u>
-
-**Configuración del servidor:**{.verde}
-
-    # Puerto del servidor
-    server.port=8080
-
-    # Contexto de la aplicación (URL base)
-    server.servlet.context-path=/miapp
-
-**Configuración de la base de datos**{.verde}
-
-    # Configuración de la base de datos
-    spring.datasource.url=jdbc:mysql://localhost:3306/mi_base_de_datos
-    spring.datasource.username=usuario
-    spring.datasource.password=contraseña
-
-    # Tipo de conexión (opcional, detectado automáticamente)
-    spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
-
-**Configuración de correo electrónico**{.verde}
-
-    # Configuración del servidor SMTP
-    spring.mail.host=smtp.gmail.com
-    spring.mail.port=587
-    spring.mail.username=tu_correo@gmail.com
-    spring.mail.password=tu_contraseña
-    spring.mail.properties.mail.smtp.auth=true
-    spring.mail.properties.mail.smtp.starttls.enable=true
-
-**Configuración personalizada**{.verde}
-
-    # Propiedades definidas por el usuario
-    miapp.nombre=Mi Aplicación
-    miapp.version=1.0.0
-    
--->
 
 ## Primera aplicación SpringBoot
 
@@ -170,7 +46,7 @@ En nuestro caso crearemos un proyecto **Maven** de Spring Boot en **IntelliJ**:
 
 **Crear la aplicación y añadir dependencias**{.azul}
 
-  1) Creamos el proyecto y lo configuramos desde **File-->New-->Project**:
+  1️⃣ Creamos el proyecto y lo configuramos desde **File-->New-->Project**:
    
 * Elige **Spring Boot**.
 * Configura las siguientes opciones:
@@ -182,11 +58,11 @@ En nuestro caso crearemos un proyecto **Maven** de Spring Boot en **IntelliJ**:
   * Última versión de **JDK**
   * Última versión de **Java**
 
-  2) Posteriormente seleccionamos las dependencias necesarias:
+  2️⃣ Posteriormente seleccionamos las dependencias necesarias:
    
 >>**Spring Web** (para el desarrollo de aplicaciones web)
   
-  3) Después de aceptar, y si todo ha ido correctamente, ya tendremos nuestro proyecto creado.
+  3️⃣ Después de aceptar, y si todo ha ido correctamente, ya tendremos nuestro proyecto creado.
 
 
 |   ![ref](Intellij_0.png)  |   ![ref](Intellij_0_2.png)    |
@@ -313,12 +189,30 @@ Para entender el funcionamiento de la aplicación, aquí tienes resumido su fluj
 
 **Añadir una página de inicio**{.azul}
 
-La aplicación Spring Boot creada tiene un punto final disponible en /hello. Sin embargo, si abres el contexto raíz de tu aplicación en [http://localhost:8080/](http://localhost:8080/), obtendrás un error porque no hay ningún recurso raíz definido. 
-Añade una página de inicio HTML estática con enlaces a su punto final.
+La aplicación Spring Boot creada tiene un punto final disponible en **/hello**. Sin embargo, si abres el contexto raíz de tu aplicación en [http://localhost:8080/](http://localhost:8080/), obtendrás un error porque no hay ningún recurso raíz definido. 
+
+!!!Note ""
+    Spring Boot está configurado para servir automáticamente cualquier archivo colocado en:
+
+    - static/
+    - public/
+    - resources/
+    - META-INF/resources/
+
+    Esto significa que si pones un archivo estático ahí:
+
+    - el servidor embebido (Tomcat) lo devuelve tal cual
+    - no pasa por ningún controlador
+    - no necesita anotaciones 
+    - no tienes que hacer un @GetMapping.    
+
+1️⃣ Añade una página de inicio HTML estática con enlaces a su punto final.
 
 * **Crea** el archivo **index.html** en **/src /main /resources /static/** .
 
-Modifica la plantilla predeterminada o reemplázala con el siguiente código HTML:
+![alt text](image-3.png)
+
+2️⃣ Modifica la plantilla predeterminada o reemplázala con el siguiente código HTML:
 
     <!DOCTYPE HTML>
     <html>
@@ -339,7 +233,7 @@ Modifica la plantilla predeterminada o reemplázala con el siguiente código HTM
         </body>
     </html>
 
-* **Ejecuta** la aplicación de nuevo.
+3️⃣ **Ejecuta** la aplicación de nuevo.
 
 Ahora tu aplicación servirá index.html como recurso raíz en 
 [http://localhost:8080/](http://localhost:8080/) . 

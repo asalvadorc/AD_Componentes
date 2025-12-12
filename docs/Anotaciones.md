@@ -1,7 +1,42 @@
 # Anotaciones
 
-Las anotaciones en Spring simplifican enormemente la configuración y el manejo de los componentes de una aplicación. Estas anotaciones eliminan la necesidad de configuraciones extensas en archivos XML y hacen que el código sea más legible y fácil de mantener.
-La clave es aprender a usarlas en el contexto adecuado para lograr aplicaciones modulares, escalables y fácilmente configurables.
+Las anotaciones son etiquetas especiales que se colocan encima de clases, funciones o atributos para decirle a Spring cómo debe comportarse con ese código.  
+Las anotaciones son, por tanto, la forma en la que Spring entiende tu aplicación.
+
+Spring tiene muchísimas anotaciones, porque es un framework muy grande y sirve para muchos tipos de proyectos (web MVC, microservicios, seguridad, batch, mensajería, etc.).
+
+Pero en nuestro caso, como solo vamos a trabajar con **Spring Boot + API REST + JPA**,
+solo necesitamos aprender un conjunto pequeño y básico de anotaciones, suficientes para crear un backend completo.
+
+**Tabla de anotaciones básicas en Spring (para API REST + JPA)**{.azul}
+
+
+| Categoría                     | Anotación              | Para qué sirve                                                                 |
+|------------------------------|-------------------------|---------------------------------------------------------------------------------|
+| **API REST** 🌐              | `@RestController`       | Indica que la clase devuelve JSON; combina @Controller + @ResponseBody          |
+|                              | `@GetMapping`           | Define una ruta HTTP GET (obtener datos)                                        |
+|                              | `@PostMapping`          | Define una ruta HTTP POST (crear datos)                                         |
+|                              | `@PutMapping`           | Define una ruta HTTP PUT (actualizar datos)                                     |
+|                              | `@DeleteMapping`        | Define una ruta HTTP DELETE (borrar datos)                                      |
+|                              | `@RequestBody`          | Indica que el cuerpo de la petición contiene un JSON que se debe convertir en objeto |
+|                              | `@PathVariable`         | Extrae parámetros de la URL (por ejemplo el id en /alumnos/{id})                |
+|------------------------------|-------------------------|---------------------------------------------------------------------------------|
+| **Lógica de negocio** 🧠     | `@Service`              | Indica que la clase contiene lógica y debe ser gestionada por Spring            |
+|------------------------------|-------------------------|---------------------------------------------------------------------------------|
+| **JPA / Base de datos** 🗄️    | `@Entity`               | Indica que la clase representa una tabla en la base de datos                    |
+|                              | `@Id`                   | Marca el campo que es clave primaria                                            |
+|                              | `@GeneratedValue`       | Indica que el ID se genera automáticamente                                      |
+|------------------------------|-------------------------|---------------------------------------------------------------------------------|
+| **Arranque de la app** 🚀    | `@SpringBootApplication`| Marca la clase principal y activa la configuración automática de Spring Boot    |
+
+
+
+
+
+
+
+<!--
+
 
 **Principales propósitos de las anotaciones en Spring:**
 
@@ -286,7 +321,7 @@ Anotaciones para Spring Data
 
 
 
-
+-->
 
 
 

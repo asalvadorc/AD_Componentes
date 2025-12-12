@@ -8,7 +8,7 @@ Spring MVC nos proporciona un marco estructurado, flexible y eficiente para cons
 
 El Modelo-Vista-Controlador (MVC) es un patrón de diseño que organiza una aplicación en tres **componentes principales**:
 
-* **Modelo**: Representa la lógica del negocio y los datos de la aplicación. Es responsable de:
+* **Modelo**: Son los datos. Es responsable de:
 
     * Gestionar el estado de la aplicación.
 
@@ -16,7 +16,7 @@ El Modelo-Vista-Controlador (MVC) es un patrón de diseño que organiza una apli
 
     * Proveer datos a la vista.
 
-* **Vista**: Maneja la presentación de los datos al usuario. Es responsable de:
+* **Vista**: Es lo que ve el usuario. Es responsable de:
 
     * Renderizar información en un formato adecuado, como HTML.
 
@@ -95,6 +95,7 @@ La vista será un archivo HTML ubicado en **src/main/resources/templates**.
 
 Las anotaciones **@RequestMapping** o **@GetMapping** en el controlador, especifican que el controlador debe devolver una vista. 
 
+<!--
 En el siguiente ejemplo, en la carpeta **src/main/resources/templates/comarca/**, puedes tener un archivo **listar.html**, que corresponde a la vista que se renderizará en el navegador. 
 
     @GetMapping("/comarcas")
@@ -103,9 +104,11 @@ En el siguiente ejemplo, en la carpeta **src/main/resources/templates/comarca/**
         return "comarca/listar"  // Devuelve el nombre de la plantilla Thymeleaf
     }
 
-**Vista con Thymeleaf**{.rojo}
+-->
 
-* Si usas **Thymeleaf** para la vista, las anotaciones en los archivos de plantilla son prefijos para atributos de HTML. Estos prefijos permiten el manejo dinámico de datos en la vista.
+**Vista con Thymeleaf**{.azul}
+
+Si usas **Thymeleaf** para la vista, las anotaciones en los archivos de plantilla son prefijos para atributos de HTML. Estos prefijos permiten el manejo dinámico de datos en la vista.
 
 <u>Ejemplo</u>
 
@@ -153,7 +156,9 @@ A continuación, se detallan los elementos comunes de las vistas con **Thymeleaf
 
         <input type="text" th:field="*{nombre}" />
 
-**Vista sin motores de plantilla**{.rojo}
+<!--        
+
+**Vista sin motores de plantilla**{.azul}
 
 Si tu aplicación no utiliza motores de plantillas y solo devuelve datos en formatos como JSON o XML, entonces las vistas suelen ser gestionadas directamente por el controlador. En este caso:
 
@@ -173,6 +178,7 @@ El contenido es generado dinámicamente a través de bibliotecas como Jackson (p
         }
     }
 
+-->
 
 ### Primera Aplicación Spring MVC
 
@@ -209,7 +215,7 @@ Los pasos a seguir serían:
     * Language: **Kotlin**
     * Build System: **Maven**
 
-* Especifica un nombre para el proyecto: **PrimerSpringMVCsencllo**
+* Especifica un nombre para el proyecto: **PrimerSpringMVCsencillo**
 * Última versión de **JDK**
 * Última versión de **Java**
 
@@ -226,7 +232,7 @@ Después de aceptar, y si todo ha ido correctamente, ya tendremos nuestro proyec
 |---|---|
 
 Al iniciar nuestra aplicación, lo primero que observamos es que se crea
-una clase **PrimerSpringMVCsenclloApplication**  que sirve como contenedor para la configuración de la aplicación. No necesita implementar métodos adicionales, ya que Spring Boot se encarga de todo gracias a la anotación **@SpringBootApplication**.
+una clase **PrimerSpringMVCsencilloApplication**  que sirve como contenedor para la configuración de la aplicación. No necesita implementar métodos adicionales, ya que Spring Boot se encarga de todo gracias a la anotación **@SpringBootApplication**.
 
 ![ref](mvc_sencillo0.png)
 
@@ -396,549 +402,4 @@ Aquí podrás:
 
 !!!note "Nota"
     Gracias a **Spring DevTools**, cualquier cambio que realices en el código (por ejemplo, en las plantillas o en los controladores) se reflejará automáticamente en la aplicación sin tener que reiniciarla manualmente.
-
-### Ejemplo con acceso a Bases de Datos Postgres.
-
-En este ejemplo vamos a crear una aplicación sencilla que acceda a una base de datos Postgres. Para ello utilizaremos la base de datos **geo_ad**, que ya conocemos de temas anteriores, y que se encuentra en el servidor externo **89.36.214.106**.
-La aplicación simplemente mostrará la información de la tabla **comarcas**.
-
-Para esta aplicación crearemos un nuevo proyecto, con la misma configuración que el anterior, pero añadiremos las dependencias necesarias de acceso a la Base de Datos. 
-
-**Configurar el proyecto**{.azul}
-   
-1) Creamos el proyecto y lo configuramos desde **File-->New-->Project**:
-   
-* Elige **Spring Boot**.
-* Configura las siguientes opciones:
-  
-    * Language: **Kotlin**
-    * Build System: **Maven**
-
-* Especifica un nombre para el proyecto: **PrimerSpringMVC**
-* Última versión de **JDK**
-* Última versión de **Java**
-
-
-2) Posteriormente seleccionamos las dependencias necesarias:
-  
-!!!note nota
-    Como la aplicación accede a una Base de datos, necesitaremos las dependencias adicionales **Spring Data JPA** y **PostgreSQL Driver**.
-    
-    * **Spring Web** (para el desarrollo de aplicaciones web)
-    * **Thymeleaf** (motor de plantillas para la vista)
-    * **Spring Boot DevTools** (opcional, para facilitar el desarrollo)
-    * **Spring Data JPA** (facilita la integración de aplicaciones Spring con bases de datos relacionales utilizando el marco JPA (Java Persistence API))
-    * **PostgresSQL Driver** (proporciona el controlador JDBC para conectarse a bases de datos PostgreSQL.)
-
-Después de aceptar, y si todo ha ido correctamente, ya tendremos nuestro proyecto creado y preparado para añadir los elementos de programación.
-
-|   ![ref](mvc1.png)  |   ![ref](mvc2_1.png)    |
-|---|---|
-
-Al iniciar nuestra aplicación, lo primero que observamos es que se crea
-una clase **PrimerSpringMVCApplication**  que sirve como contenedor para la configuración de la aplicación. No necesita implementar métodos adicionales, ya que Spring Boot se encarga de todo gracias a la anotación **@SpringBootApplication**.
-
-![ref](mvc3.png)
-
-**Crear la estructura del Proyecto**{.azul}
-
-La estructura básica del proyecto debe reflejar el patrón MVC. Organiza las carpetas de la siguiente forma:
-   
-   * **Controladores**: src/main/kotlin/org/tuapp/controller
-   * **Vistas**: src/main/resources/templates
-   * **Recursos estáticos**: src/main/resources/static
-   * **Datos**: src/main/kotlin/org/tuapp/model
-   * **Repositorio**: src/main/kotlin/org/tuapp/repository
-
-Para ello crea los paquetes: **controller**, **model** y **repository** dentro de la carpeta **src/main/kotlin/org/tuapp**.
-
-
-![ref](estructura.png)
-
-**Implementación de la aplicación**{.azul}
-
-Ahora ya podemos añadir la programación necesaria para nuestra aplicación siguiendo la estructura MVC creada. Dentro de cada paquete crearemos los siguientes archivos:
-
-* **Entidad JPA**
-
-Define las entidades que corresponden a las tablas existentes en la base de datos. No necesitas configuraciones especiales más allá de mapear las columnas.
-En nuestro caso definimos la entidad comarca y sus campos.
-
-En el paquete **model** crea un archivo llamado **comarca.kt**
-
-    import jakarta.persistence.*
-
-    @Entity /*Define una clase como una entidad JPA, lo que significa que estará mapeada a una tabla en la base de datos.*/
-    @Table(name = "comarca")
-    data class comarca(
-        @Id /*dentifica el campo como la clave primaria de la entidad.*/
-        val nom_c: String = "",
-        val provincia: String = ""
-    )
-
-    
-* **Repositorio**
-
-Crea un repositorio que permita ejecutar consultas sobre la tabla correspondiente.
-
-Dentro del paquete **repository**, crea un archivo llamado **ComarcaRepository.kt**
-
-    import org.example.primerspringmvc.model.comarca
-    import org.springframework.data.jpa.repository.JpaRepository
-    import org.springframework.stereotype.Repository
-
-    @Repository
-    interface ComarcaRepository : JpaRepository<comarca, String> {
-    fun findByProvincia(provincia: String): List<comarca>
-    } 
-
-* **Controlador**
-
-El controlador manejará las solicitudes GET para obtener información de la base de datos.
-
-Dentro del paquete **controller**, crea un archivo llamado **ComarcaController.kt**
-
-    import org.example.primerspringmvc.model.comarca
-    import org.example.primerspringmvc.repository.ComarcaRepository
-    import org.springframework.web.bind.annotation.*
-
-    @RestController
-    @RequestMapping("/comarcas")
-    class ComarcaController(private val comarcaRepository: ComarcaRepository) {
-
-        // Endpoint para obtener todas las comarcas
-        @GetMapping
-        fun obtenerComarcas(): List<comarca> = comarcaRepository.findAll()
-    }    
-!!!note ""
-    * **@RestController:** Combina **@Controller** y **@ResponseBody**.
-    Devuelve directamente datos en formato JSON en lugar de buscar vistas como Thymeleaf.
-
-    * **ObtenerComarcas()**: Devuelve una lista de objetos comarca.
-    Spring automáticamente convierte esta lista a JSON usando Jackson (que viene incluido con Spring Boot).
-
-![ref](estructura_archivos.png)
-
-* **Vistas**
-
-Las vistas pueden ser representadas por tecnologías como JSP, Thymeleaf, o JSON (en caso de APIs).
-
-En este ejemplo vamos a visualizar los datos en un navegador con formato **JSON** y más adelante lo haremos mediante **Thymeleaf** para ver ambos casos. 
-
-**Configurar la conexión al Servidor Postgres:**{.azul}
-
- En el archivo **src/main/resources/application.properties**  configura la conexión a tu base de datos existente:
-
-    spring.datasource.url=jdbc:postgresql://<HOST>:<PUERTO>/<DB_NAME>
-    spring.datasource.username=<USUARIO>
-    spring.datasource.password=<CONTRASEÑA>
-    spring.jpa.hibernate.ddl-auto=update
-
-Cambiaremos los datos de conexión al servidor externo:
-
-![ref](Postgres.png)
-
-!!!warning ""
-    Recuerda que puedes cambiar el puerto si lo tienes ocupado. Puedes probar con el puerto 8888.
-
-**Ejecutar la aplicación**{.azul}
-
-La aplicación estará disponible en http://localhost:8080, o el puerto que hayas especificado, para listar las comarcas.
-  
-![](resultadojson.png)
-
-!!!warning "" 
-    Sería deseable que el resultado se mostrara de manera más amigable para el usuario, por lo que en el siguiente ejemplo haremos los cambios necesarios para utilizar **Thymeleaf** y que el resultado se muetre en cajas de texto.
-   
-
-**Thymeleaf para mostrar los resultados:**{.verde}
-
-1) **Configuración de dependencias**. Asegúrate de tener la dependencia de Thymeleaf en tu archivo pom.xml. Esta dependencia la hemos seleccionado al configurar la aplicación y seguramente ya la tengamos incluida.
-
-    <dependency>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-thymeleaf</artifactId>
-    </dependency>
-
-
-2) Configurar Thymeleaf en **application.properties**
-
-Añade las siguientes propiedades:
-   
-    spring.thymeleaf.prefix=classpath:/templates/
-    spring.thymeleaf.suffix=.html
-    spring.thymeleaf.cache=false  
-
-3) **Modificar el Controlador con datos del repositorio**. El controlador debe recuperar los datos desde el repositorio y pasarlos a la vista usando un modelo. Cambia la implementación del controlador:
-
-    import org.springframework.stereotype.Controller
-    import org.example.primerspringmvc.repository.ComarcaRepository
-    import org.springframework.ui.Model
-    import org.springframework.web.bind.annotation.*
-
-    @Controller
-    @RequestMapping("/comarcas")
-    class ComarcaController(private val ComarcaRepository: ComarcaRepository) {
-        @GetMapping
-        fun listarComarcas(model:Model): String {
-            val comarcas = ComarcaRepository.findAll()
-            model.addAttribute("comarcas", comarcas)
-            return "comarcas" // Nombre de la plantilla HTML
-        }
-    }
-      
-
-4) **Vistas**
-   
-Para agregar un entorno de usuario amigable con cajas de texto y que los datos de la base de datos se muestren en una aplicación web, crea un archivo **comarcas.html** en el directorio **src/main/resources/templates**. 
-
-<!DOCTYPE html>
-    <html xmlns:th="http://www.thymeleaf.org">
-    <head>
-        <title>Lista de Comarcas</title>
-    </head>
-    <body>
-    <h1>Lista de Comarcas</h1>
-    <table border="1">
-        <tr>
-            <th>ID</th>
-            <th>Provincia</th>
-            
-        </tr>
-        <tr th:each="comarca : ${comarcas}">
-            <td th:text="${comarca.nom_c}">ID</td>
-            <td th:text="${comarca.provincia}">Provincia</td>
-        </tr>
-    </table>
-    </body>
-    </html>
-   
-!!!note ""
-      * **th:each**: Itera sobre la lista de comarcas.
-      * **th:text**: Inserta dinámicamente el valor de un campo en el HTML.     
-
-
-**Ejecuatar la aplicación**{.azul}
-
-* Accede a http://localhost:8888/comarcas  para listar las comarcas.
- 
-
-En el navegador, se mostrará una tabla HTML con las comrcas almacenadas en la base de datos. Los datos dinámicos se renderizan usando **Thymeleaf**. Este enfoque permite crear interfaces web amigables y bien estructuradas.
- 
-
-![](comarcas_mejor.png)
-
-
-**Ejemplo de consulta a la Base de datos**{.verde}
-
-Con la anotación **@Query** en el repositorio, podemos realizar consultas personalizadas a la base de datos. 
-        
-A continuación veremos los cambios que deberíamos hacer en los ficheros para poder hacer una consulta con parámetros y visualizar los datos tanto en json com con thymeleaf:
-
-!!!tip "Cambios en los ficheros .kt:"
-    **ComarcaRepository**
-
-        import org.springframework.data.jpa.repository.Query
-        import org.springframework.data.repository.query.Param
-        import org.example.primerspringmvc.model.comarca
-        import org.springframework.data.jpa.repository.JpaRepository
-        import org.springframework.stereotype.Repository
-
-        @Repository
-        interface ComarcaRepository : JpaRepository<comarca, Long> {
-            @Query("SELECT c FROM comarca c WHERE c.provincia = :provincia")
-            fun findComarcasporProvincia(@Param("provincia") provincia: String): List<comarca>
-        }
-
-    **ComarcaController**
-
-        import org.example.primerspringmvc.model.comarca
-        import org.springframework.stereotype.Controller
-        import org.example.primerspringmvc.repository.ComarcaRepository
-        import org.springframework.ui.Model
-        import org.springframework.web.bind.annotation.*
-
-        @RestController //en lugar de @Controller
-        @RequestMapping("/comarcas")
-        class ComarcaController(private val ComarcaRepository: ComarcaRepository) {
-            @GetMapping("/buscar")
-            fun buscarComarcasPorProvincia(@RequestParam provincia: String): List<comarca> {
-                return ComarcaRepository.findComarcasporProvincia(provincia)
-            }
-        }
-
---------------
-**<u>Anotaciones importantes</u>**
-
-**@Query**: Permite definir consultas SQL personalizadas directamente en el repositorio.
-La consulta SELECT c FROM Comarca c WHERE c.provincia = :provincia selecciona todas las comarcas donde la columna provincia coincide con el parámetro provincia.
-
-**@Param**: Vincula el parámetro de la consulta con el valor que se pasa desde el método.
-En este caso, @Param("provincia") conecta el parámetro provincia de la consulta SQL con el argumento del método.
-
-**@GetMapping** y **@RequestParam**: Define un endpoint HTTP GET en el controlador.
-El parámetro provincia se obtiene de la URL. Por ejemplo, si queremos listar las comarcas de la provincia de Alacant, obtenemos:
-
-![](comarcasbuscarjson.png) 
-
-**<u>Visualizar la salida con Thymeleaf</u>**
-
-Si la visualización la queremos hacer con Thymeleaf los cambios a realizar se harían solo en  **ComarcasController**, ya que el formulaio comarcas.html se puede seguir utilizando si queremos mostrar los mismos campos:
-
-    import org.springframework.stereotype.Controller
-    import org.example.primerspringmvc.repository.ComarcaRepository
-    import org.springframework.ui.Model
-    import org.springframework.web.bind.annotation.*
-
-    @Controller     //en lugar de @RestController
-    @RequestMapping("/comarcas")
-    class ComarcaController(private val ComarcaRepository: ComarcaRepository) {
-        @GetMapping
-        fun listarComarcas(model:Model): String {
-            val comarcas = ComarcaRepository.findAll()
-            model.addAttribute("comarcas", comarcas)
-            return "comarcas" // Nombre de la plantilla HTML
-        }
-
-        @GetMapping("/buscar")
-        fun buscarComarcasPorProvincia(@RequestParam provincia: String, model: Model): String {
-            val comarcas= ComarcaRepository.findComarcasporProvincia(provincia)
-            model.addAttribute("comarcas", comarcas)
-            return "comarcas" // Nombre de la plantilla HTML
-        }
-    }
-
-Y el resultado se vería así:
-
-![](comarcasbuscarhtml.png) 
-
-----------
-
-#### **Base de datos en contenedor Docker**{.verde}
-
-Para no tener que instalarnos un servidor Postgres en nuestro equipo, podemos tener nuestra base de datos en un contenedor Docker.
-
-En este caso, los cambios principales se centran en la configuración de conexión en la aplicación y en el despliegue del contenedor de PostgreSQL. 
-
-Antes de acceder al contenedor tenemos que crearlo. En nuestro caso crearemos un contenedor Docker de Postgres y posteriormente restauraremos la base de datos **geo_ad** en dicho contenedor, para poder disponer de la misma configuracion y los mismos datos que en el servidor externo. 
-
-Partimos del hecho que tenemos instalado Docker en nuesto equipo, en caso contario te dejo un pequeño tutorial de como instalarlo en el apartado **Docker** de esta unidad. Los pasos a seguir para crear dicho contendor son:
-
-1) **Ejecutar PostgreSQL en Docker**
-
-* Crea y ejecuta el contenedor de PostgreSQL:
-
-```bash
-docker run --name postgres-container -e POSTGRES_USER=admin -e POSTGRES_PASSWORD=admin -e POSTGRES_DB=demo -p 5432:5432 -d postgres
-```
-!!!note ""
-    * POSTGRES_USER: Usuario de la base de datos.
-    * POSTGRES_PASSWORD: Contraseña del usuario.
-    * POSTGRES_DB: Nombre de la base de datos.
-    * -p 5432:5432: Mapea el puerto 5432 del contenedor al puerto 5432 de tu máquina.
-
-* Verifica que el contenedor esté corriendo:
-
-```bash
-docker ps
-```
-
-* (Opcional) Conéctate al contenedor para verificar la base de datos, desde **DBeaver**, o desde el terminal:
-
-```bash
-docker exec -it postgres-container psql -U admin -d demo
-```
-
-1) **Restaurar la base de datos en el contenedor con DBeaver**:
-
-Vamos a restaurar la base de datos **geo_ad** en la base de datos **demo**, que hemos creado con docker. Para ello os he dejado un archivo **dump**, en el apartado **recursos de Aules**, que contiene el backup de geo_ad. Lo siguiente será restaurar este backup en **demo**, siguiendo esto pasos:
-
-!!!note ""
-      * Crear una **nueva conexión** en DBeaver al contenedor local:
-          
-          * Host: localhost
-          * Puerto: 5432
-          * Usuario y contraseña: admin
-          * Base de datos: demo
-       
-      * **Restaurar** el archivo de respaldo: Haz clic derecho en la base de datos en el contenedor → Herramientas > Restaurar (Restore).
-
-        ![](restore_1.png) 
-
-       * **Archivo de respaldo**: Selecciona el archivo de respaldo exportado, disponible en el aula virtual en la carpeta de recursos del tema.
-
-        Pulsa Start y espera a que termine la restauración. Una vez terminado selecciona cancelar para que no vuelva a realizar la restauración.
-
-        |![](restore_2.png) |![](restore_3.png) |
-        |---|---|
-            
-
-3) **Cambios en la Configuración de la Aplicación**
-
-En el archivo **application.properties**, configura la conexión a PostgreSQL en el contenedor Docker. Asegúrate de usar la IP del contenedor o localhost si estás ejecutando la aplicación desde la misma máquina.
-
-* Opción 1: Usar localhost (si el contenedor está corriendo en tu máquina)
-
-
-        spring.datasource.url=jdbc:postgresql://localhost:5432/demo
-        spring.datasource.username=admin
-        spring.datasource.password=admin
-        spring.jpa.hibernate.ddl-auto=none
-        spring.jpa.show-sql=true
-        spring.jpa.properties.hibernate.format_sql=true
-
-
-* Opción 2: Utilizar la IP del contenedor (si la aplicación está en otro contenedor)
-
->>* Para encontrar la IP del contenedor PostgreSQL:
-    
-        docker inspect postgres-container | grep IPAddress
-    
->>* Utiliza la IP encontrada para configurar la conexión:
-
-
-        spring.datasource.url=jdbc:postgresql://<IP_DEL_CONTENEDOR>:5432/demo
-        spring.datasource.username=admin
-        spring.datasource.password=admin
-        spring.jpa.hibernate.ddl-auto=none
-        spring.jpa.show-sql=true
-        spring.jpa.properties.hibernate.format_sql=true
-
-!!!warning ""
-    Todos los cambios que necesitas para ejecutar la aplicación y que acceda a la base de datos que se encuentra en el contenedor son los anteriormente descritos. El resto de ficheros y estructura no se verá afectada.
-
-!!!tip ""
-    Una vez tenemos la base de datos restaurada con los datos de **geo_ad** ya podemos ejecutar la aplicación y comprobar que los resultados son los mismos que si accedemos a la base de datos del servidor.
-
-#### **Operaciones CRUD sobre base de datos en contenedor Docker**{.verde}
-
-Siguiendo con el ejemplo visto en Spring MVC, de acceder a una base de datos relacional Postgres en un contenedor Docker, en este apartado iremos más allá y veremos como realizar operaciones CRUD, ya que ahora la base de datos está en local y podemos hacer todas las modificaciones que necesitemos.
-Como ejemplo, haremos modificaciones sobre la tabla **comarcas**.
-
-El único fichero a modificar será el **controlador (ComarcaController.kt)** y la creación de nuevas **vistas** para visualizar los resultados:
-
-1) **Create**
-
-* **Controlador**
-
-        @Controller
-        @RequestMapping("/comarcas")
-        class ComarcaController(private val comarcaRepository: ComarcaRepository) {
-
-            @GetMapping("/nueva")
-            fun mostrarFormularioNuevaComarca(model: Model): String {
-                model.addAttribute("comarca", comarca())
-                return "nueva-comarca"
-            }
-
-            @PostMapping("/nueva")
-            fun guardarComarca(@ModelAttribute comarca: comarca): String {
-                comarcaRepository.save(comarca)
-                return "redirect:/comarcas"
-            }
-        }
-
-* **Vista (nueva-comarca.html)**
-
-        <!DOCTYPE html>
-        <html xmlns:th="http://www.thymeleaf.org">
-
-        <head>
-            <title>Nueva Comarca</title>
-        </head>
-        <body>
-            <h1>Nueva Comarca</h1>
-            <form th:action="@{/comarcas/nueva}" th:object="${comarca}" method="post">
-                <label for="nom_c">Nombre:</label>
-                <input type="text" id="nom_c" name="nom_c" th:value="*{nom_c}" required><br>
-                
-                <label for="provincia">Provincia:</label>
-                <input type="text" id="provincia" name="provincia" th:value="*{provincia}" required><br>
-                
-                <button type="submit">Guardar</button>
-            </form>
-        </body>
-        </html>
-
-2) **Read**
-
-* **Controlador**: Ya implementado en el ejercicio anterior.
-
-    @GetMapping
-    fun listarComarcas(model: Model): String {
-        val comarcas = comarcaRepository.findAll()
-        model.addAttribute("comarcas", comarcas)
-        return "comarcas"
-    }
-
-* **Vista (comarcas.html)**: Ya creada en el ejercicio anterior.
-
-3) **Update**
-
-* **Controlador**
-  
-        @GetMapping("/editar/{id}")
-        fun mostrarFormularioEditarComarca(@PathVariable id: String, model: Model): String {
-            val comarca = comarcaRepository.findById(id).orElseThrow { IllegalArgumentException("Comarca no encontrada: $id") }
-            model.addAttribute("comarca", comarca)
-            return "editar-comarca"
-        }
-
-        @PostMapping("/editar/{id}")
-        fun actualizarComarca(@PathVariable id: String, @ModelAttribute comarca: comarca): String {
-            if (!comarcaRepository.existsById(id)) {
-                throw IllegalArgumentException("Comarca no encontrada: $id")
-            }
-            comarcaRepository.save(comarca)
-            return "redirect:/comarcas"
-        }
-
-* **Vista (editar-comarca.html)**
-
-        <!DOCTYPE html>
-        <html xmlns:th="http://www.thymeleaf.org">
-
-        <head>
-            <title>Editar Comarca</title>
-        </head>
-        <body>
-            <h1>Editar Comarca</h1>
-            <form th:action="@{/comarcas/editar/{id}(id=${comarca.nom_c})}" th:object="${comarca}" method="post">
-                <label for="nom_c">Nombre:</label>
-                <input type="text" id="nom_c" name="nom_c" th:value="*{nom_c}" readonly><br>
-                
-                <label for="provincia">Provincia:</label>
-                <input type="text" id="provincia" name="provincia" th:value="*{provincia}" required><br>
-                
-                <button type="submit">Actualizar</button>
-            </form>
-        </body>
-        </html>
-
-4) **Delete**
-
-* **Controlador**
-
-        @GetMapping("/eliminar/{id}")
-        fun eliminarComarca(@PathVariable id: String): String {
-            if (!comarcaRepository.existsById(id)) {
-                throw IllegalArgumentException("Comarca no encontrada: $id")
-            }
-            comarcaRepository.deleteById(id)
-            return "redirect:/comarcas"
-        }
-
-* **Vista**  (Modificar comarcas.html para agregar la opción de eliminar)
-
-        <tr th:each="comarca : ${comarcas}">
-            <td th:text="${comarca.nom_c}">ID</td>
-            <td th:text="${comarca.provincia}">Provincia</td>
-            <td>
-                <a th:href="@{/comarcas/editar/{id}(id=${comarca.nom_c})}">Editar</a>
-                <a th:href="@{/comarcas/eliminar/{id}(id=${comarca.nom_c})}" onclick="return confirm('¿Estás seguro?')">Eliminar</a>
-            </td>
-        </tr>
-
-
-    ---
 

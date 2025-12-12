@@ -107,8 +107,8 @@ sudo usermod -aG docker $USER
 ### Probar Docker
 Ejecuta el siguiente comando para probar si Docker está funcionando correctamente:
 
-```bash
-docker run hello-world
+```
+    docker run hello-world
 ```
 
 ---

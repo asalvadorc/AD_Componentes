@@ -1,18 +1,53 @@
 # Spring
 
-Spring es un framework de código abierto para el desarrollo de aplicaciones Java. Su objetivo principal es facilitar la creación de aplicaciones robustas, flexibles y mantenibles mediante el uso de principios como la Inversión de Control (IoC) y la Programación Orientada a Aspectos (AOP).
+Spring es un framework de código abierto que te ayuda a crear aplicaciones en Java o Kotlin de forma más fácil, rápida y ordenada.  
+En vez de que tú tengas que hacer todo a mano (crear objetos, conectar clases, preparar la base de datos, configurar servidores…), Spring lo hace por ti automáticamente.  
 
-**Filosofía de Spring**
+💭 Imagina que construir una aplicación es como montar un mueble enorme.  
 
-* Inversión de Control (IoC): El framework se encarga de gestionar las dependencias entre los componentes de la aplicación.
+- Sin Spring: tú haces todos los agujeros, ajustes y conexiones.  
+- Con Spring: el mueble viene ya pre-montado y solo colocas las piezas que necesitas.  
 
-* Programación Orientada a Aspectos (AOP): Permite separar preocupaciones transversales, como la seguridad o el manejo de logs, del núcleo de la lógica de la aplicación.
+🪄 Spring te da la estructura y se encarga de la parte difícil.
 
-Un framework es un conjunto de componentes que proporciona abstracciones e 
-implementaciones, ya hechas, de las tareas básicas que todo el sistema de 
-información realiza.
 
-**Componentes principales:**
+**Filosofía de Spring**{.azul}
+
+Spring se basa principalmente en dos **ideas fundamentales**:
+
+* 1️⃣**Inversión de Control (IoC) 🔄**: Spring se encarga de crear y gestionar los objetos de tu aplicación.
+
+* 2️⃣**Inyección de Dependencias (DI)🔌**: Spring coloca los objetos donde hacen falta automáticamente.
+
+Es como si Spring fuera quien enchufa los cables para que todas las piezas funcionen juntas sin que tú los conectes.
+
+Además de IoC y DI, Spring se basa en tres **pilares prácticos**:
+
+* 3️⃣**Anotaciones**: indican qué hace cada clase.
+
+    - @Controller → muestra páginas
+    - @RestController → devuelve JSON
+    - @Service → lógica de negocio
+    - @Repository → acceso a datos
+    - @Entity → tabla de la base de datos
+
+* 4️⃣**Autoconfiguración (Spring Boot)**: prepara el proyecto por ti.
+
+    - servidor web
+    - conexión a BD
+    - estructura de proyecto
+    - dependencias necesarias
+
+* 5️⃣**Starters**: paquetes listos para usar según lo que quieras hacer..
+
+    - spring-boot-starter-web → para rutas y controladores
+    - spring-boot-starter-data-jpa → para BD y CRUD
+    - spring-boot-starter-thymeleaf → para páginas HTML
+
+
+**Componentes principales:**{.azul}
+
+Los componentes principales de Spring son:
 
 * **Spring Core**: El núcleo del framework, encargado de la inyección de dependencias.
 * **Spring MVC**: Permite el desarrollo de aplicaciones web utilizando el patrón Modelo-Vista-Controlador.
@@ -21,11 +56,13 @@ información realiza.
 * **Spring Security**: Proporciona herramientas para implementar seguridad en aplicaciones.
 * **Spring Cloud**: Ayuda en la construcción de aplicaciones distribuidas y microservicios.
 
-**Requisitos previos** 
+**Requisitos previos para crear una aplicación con Spring**{.azul}
 
 * JDK: Asegúrate de tener Java Development Kit instalado.
 * Maven o Gradle: Para gestionar dependencias.
 * IDE: IntelliJ IDEA, Eclipse u otro entorno de desarrollo.
+
+<!--
 
 **Spring Core**
 
@@ -165,3 +202,4 @@ Alternativamente, los Beans pueden configurarse mediante un **archivo XML** (men
     }
 ---
 
+-->

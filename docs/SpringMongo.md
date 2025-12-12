@@ -33,6 +33,7 @@ En este ejemplo partiremos de un archivo json con 10 menús y sus correspondient
 
 **Archivo json con los menus:**
 
+```json
     [
     {
         "_id": "1",
@@ -245,7 +246,7 @@ En este ejemplo partiremos de un archivo json con 10 menús y sus correspondient
         "precioTotal": 16.0
     }
     ]
-
+```
 **Modelo MVC**{.azul}
 
 **Modelo**{.verde}
