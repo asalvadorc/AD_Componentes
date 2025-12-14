@@ -1,61 +1,69 @@
-# Spring Data
+# 🔹Spring Data
 
-Spring Data es un proyecto dentro del ecosistema Spring que proporciona herramientas y abstracciones para facilitar el acceso a bases de datos y otras fuentes de datos de manera eficiente y consistente. Su objetivo principal es simplificar la interacción con diferentes tipos de bases de datos, desde bases de datos relacionales (como PostgreSQL, MySQL) hasta bases de datos NoSQL (como MongoDB, Cassandra).
 
-![](springdata2.png)
+Spring Data es un proyecto dentro del ecosistema **Spring** que proporciona  herramientas y abstracciones para facilitar el acceso a bases de datos y otras  
+fuentes de datos de manera **eficiente y consistente**.  
+
+Su objetivo principal es **simplificar la interacción con diferentes tipos de  bases de datos**, tanto **relacionales** (como PostgreSQL o MySQL) como  
+**NoSQL** (por ejemplo MongoDB o Cassandra), reduciendo la cantidad  de código necesario y **unificando la forma de trabajar con los datos**.
+
+
+
+![](springdata2.png)|
+
 
 **¿Para qué se utiliza?**{.azul}
 
-1) **Acceso Simplificado a Datos:** 
+1️⃣ **Acceso Simplificado a Datos:** 
  
 * Reduce la necesidad de escribir consultas SQL complejas o código JDBC al exponer métodos predefinidos para operaciones comunes.
 * Permite realizar operaciones CRUD (Crear, Leer, Actualizar, Eliminar) con facilidad.
   
-2) **Abstracción de Repositorios:**
+2️⃣ **Abstracción de Repositorios:**
 
 Ofrece la interfaz **Repository** y subinterfaces como **CrudRepository** y **JpaRepository** que proporcionan métodos estándar para la gestión de entidades en bases de datos relacionales.
 
-3) **Consultas Personalizadas:**
+3️⃣ **Consultas Personalizadas:**
 
 Permite escribir consultas personalizadas mediante anotaciones como **@Query**.
 También admite la creación de métodos de consulta basados en el nombre del método, como **findByNombre(String nombre)**.
 
-4) **Compatibilidad con Múltiples Tecnologías de Bases de Datos:**
+4️⃣ **Compatibilidad con Múltiples Tecnologías de Bases de Datos:**
 
  * Relacionales: Mediante JPA (Java Persistence API).
  * NoSQL: MongoDB, Redis, Neo4j, Cassandra, etc.
  * Buscadores: Elasticsearch, Solr.
 
-5) **Configuración Declarativa:**
+5️⃣ **Configuración Declarativa:**
 
 Al integrar Spring Data con Spring Boot, se pueden configurar muchas opciones mediante propiedades en **application.properties**, evitando configuraciones manuales detalladas.
 
-6) **Integración con Spring Boot:**
+6️⃣ **Integración con Spring Boot:**
 
 Con dependencias específicas como **spring-boot-starter-data-jpa** o **spring-boot-starter-data-mongodb**, Spring Data se integra perfectamente con el resto del ecosistema de Spring.
 
 **Principales Módulos de Spring Data**{.azul} 
 
-**Spring Data JPA:**{.verde}: Proporciona una integración con JPA para bases de datos relacionales.
+- **Spring Data JPA:**: Proporciona una integración con JPA para bases de datos relacionales.
 Es ideal para trabajar con entidades Java mapeadas a tablas de bases de datos.
 JPA es la especificación para persistir, leer y gestionar data desde los objetos Java a la base de datos.
+- **Spring Data MongoDB:**: Facilita el acceso a bases de datos MongoDB, una base de datos NoSQL orientada a documentos.
+- **Spring Data Redis:**: Para aplicaciones que necesitan interactuar con Redis, una base de datos en memoria.
+- **Spring Data Cassandra:**: Proporciona soporte para bases de datos distribuidas como Cassandra.
+- **Spring Data Elasticsearch:**: Simplifica las interacciones con Elasticsearch, un motor de búsqueda y análisis.
 
 
-**Spring Data MongoDB:**{.verde}: Facilita el acceso a bases de datos MongoDB, una base de datos NoSQL orientada a documentos.
+## 🔹Spring Data JPA
 
-**Spring Data Redis:**{.verde}: Para aplicaciones que necesitan interactuar con Redis, una base de datos en memoria.
+<!--![](jpa.png)-->
 
-**Spring Data Cassandra:**{.verde}: Proporciona soporte para bases de datos distribuidas como Cassandra.
+Spring Data JPA es parte de Spring Framework. Es un módulo de Spring Data que sirve para simplificar el acceso a bases de datos relacionales usando **JPA** (Java Persistence API). Permite trabajar con bases de datos usando objetos (clases) sin tener que escribir SQL ni código repetitivo.
 
-**Spring Data Elasticsearch:**{.verde}: Simplifica las interacciones con Elasticsearch, un motor de búsqueda y análisis.
+Con Spring Data JPA:
 
-
-## Spring Data JPA
-
-![](jpa.png)
-
-Spring Data JPA es parte de Spring Framework. No es una implementación de JPA como Hibernate, sino una abstracción para reducir la complejidad de la integración con bases de datos relacionales desde aplicaciones Java.
-Spring Data JPA puede utilizar Hibernate, Eclipse Link u otra implementación.
+- Solo defines entidades (@Entity)
+- Creas interfaces Repository
+- Spring genera automáticamente el código
 
 ### Anotaciones Comunes
 
@@ -215,59 +223,8 @@ Las consultas a la Base de datos las podemos hacer de dos maneras, utilizando la
 * Si prefieres optimizar manualmente las consultas.
 * Cuando la convención de nombres generaría un nombre de método excesivamente largo.
 
-#### @Query
 
-<u>Estructura básica:</u>
-
-    @Query("SELECT e FROM EntityName e WHERE e.property = :value")
-    fun findByProperty(@Param("value") value: String): List<EntityName>
- 
-* Se utilizan nombres de entidades y propiedades de las clases en lugar de nombres de tablas y columnas.
-* Se puede navegar por relaciones entre entidades.
-* :nombreParametro para parámetros dinámicos.
-
-<u>Ejemplo simple:</u>
-
-    @Query("SELECT c FROM Comarca c WHERE c.provincia = :provincia")
-    fun findByProvincia(@Param("provincia") provincia: String): List<Comarca>
-
-<u>Ejemplo con relaciones:</u> 
-
-Siguiendo con nuestro ejemplo de geo_ad, la consulta para buscar Institutos en una Provincia por Población Mínima quedaría así:
-
-
-    @Query("""
-        SELECT i FROM Institut i
-        JOIN i.poblacio p
-        JOIN p.comarca c
-        WHERE c.provincia = :provincia AND p.poblacion >= :minPoblacion
-    """)
-    fun findByProvinciaAndPoblacion(
-        @Param("provincia") provincia: String,
-        @Param("minPoblacion") minPoblacion: Int
-    ): List<Institut>
-
-
-**Este mismo ejemplo utilizando convención de nombres quedaría así:**{.verde}
-
-    @Repository
-    interface InstitutRepository : JpaRepository<Institut, String> {
-        fun findByPoblacioComarcaProvinciaAndPoblacioPoblacionGreaterThanEqual(
-            provincia: String,
-            minPoblacion: Int
-        ): List<Institut>
-    }
-
-
-
-* **findBy**: Indica que es un método de consulta.
-* **PoblacioComarcaProvincia**: Navega por las relaciones de las entidades Institut  Poblacio -> Comarca para filtrar por la provincia.
-* **AndPoblacioPoblacionGreaterThanEqual**: Navega por Institut -> Poblacio y aplica el filtro de población mínima.    
-
-!!!note ""
-    A medida que las relaciones aumentan en complejidad, los nombres de los métodos pueden volverse difíciles de leer y mantener.
-
-#### Convención de Nombres en Spring JPA
+#### **Convención de Nombres**{.azul}
 
 Spring Data JPA permite definir métodos en repositorios siguiendo una convención de nombres específica. Esto simplifica la escritura de consultas comunes sin necesidad de usar JPQL o SQL. Para ello analiza el nombre de los métodos en el repositorio e interpreta su significado para generar consultas automáticamente. 
 
@@ -336,7 +293,61 @@ Alternativas:
     * **Parámetros**: Los métodos generados reciben parámetros en el mismo orden en que se declaran en el nombre del método.  
 
 
-### Ejemplo con acceso a Bases de Datos Postgres.
+#### **@Query**{.azul}
+
+<u>Estructura básica:</u>
+
+    @Query("SELECT e FROM EntityName e WHERE e.property = :value")
+    fun findByProperty(@Param("value") value: String): List<EntityName>
+ 
+* Se utilizan nombres de entidades y propiedades de las clases en lugar de nombres de tablas y columnas.
+* Se puede navegar por relaciones entre entidades.
+* _:nombreParametro_ para parámetros dinámicos.
+
+<u>Ejemplo sencillo:</u>
+
+    @Query("SELECT c FROM Comarca c WHERE c.provincia = :provincia")
+    fun findByProvincia(@Param("provincia") provincia: String): List<Comarca>
+
+<u>Ejemplo con relaciones:</u> 
+
+Siguiendo con nuestro ejemplo de geo_ad, la consulta para buscar Institutos en una Provincia por Población Mínima quedaría así:
+
+
+    @Query("""
+        SELECT i FROM Institut i
+        JOIN i.poblacio p
+        JOIN p.comarca c
+        WHERE c.provincia = :provincia AND p.poblacion >= :minPoblacion
+    """)
+    fun findByProvinciaAndPoblacion(
+        @Param("provincia") provincia: String,
+        @Param("minPoblacion") minPoblacion: Int
+    ): List<Institut>
+
+
+**Este mismo ejemplo utilizando convención de nombres quedaría así:**{.verde}
+
+    @Repository
+    interface InstitutRepository : JpaRepository<Institut, String> {
+        fun findByPoblacioComarcaProvinciaAndPoblacioPoblacionGreaterThanEqual(
+            provincia: String,
+            minPoblacion: Int
+        ): List<Institut>
+    }
+
+
+
+* **findBy**: Indica que es un método de consulta.
+* **PoblacioComarcaProvincia**: Navega por las relaciones de las entidades Institut  Poblacio -> Comarca para filtrar por la provincia.
+* **AndPoblacioPoblacionGreaterThanEqual**: Navega por Institut -> Poblacio y aplica el filtro de población mínima.    
+
+!!!note ""
+    A medida que las relaciones aumentan en complejidad, los nombres de los métodos pueden volverse difíciles de leer y mantener.
+
+
+
+### Base de Datos Postgres.
 
 En este ejemplo vamos a crear una aplicación sencilla que acceda a una base de datos Postgres. Para ello utilizaremos la base de datos **geo_ad**, que ya conocemos de temas anteriores, y que se encuentra en el servidor externo **89.36.214.106**.
 La aplicación simplemente mostrará la información de la tabla **comarcas**.
@@ -653,7 +664,7 @@ Y el resultado se vería así:
 
 ----------
 
-#### **Base de datos en contenedor Docker**{.verde}
+#### 🔹**Postgres en Docker**{.verde}
 
 Para no tener que instalarnos un servidor Postgres en nuestro equipo, podemos tener nuestra base de datos en un contenedor Docker.
 
@@ -749,7 +760,7 @@ En el archivo **application.properties**, configura la conexión a PostgreSQL en
 !!!tip ""
     Una vez tenemos la base de datos restaurada con los datos de **geo_ad** ya podemos ejecutar la aplicación y comprobar que los resultados son los mismos que si accedemos a la base de datos del servidor.
 
-#### **Operaciones CRUD sobre base de datos en contenedor Docker**{.verde}
+#### 🔹**Operaciones CRUD**{.verde}
 
 Siguiendo con el ejemplo visto en Spring MVC, de acceder a una base de datos relacional Postgres en un contenedor Docker, en este apartado iremos más allá y veremos como realizar operaciones CRUD, ya que ahora la base de datos está en local y podemos hacer todas las modificaciones que necesitemos.
 Como ejemplo, haremos modificaciones sobre la tabla **comarcas**.
@@ -883,7 +894,7 @@ El único fichero a modificar será el **controlador (ComarcaController.kt)** y 
 
 
 
-### **Ejemplo ampliado de Spring MVC**{.azul} 
+### 🔹**Ejemplo ampliado de Spring MVC**{.azul} 
 
 Para practicar la funcionalidad de Spring Data JPA vamos a seguir con el ejemplo visto en el apartado de Spring MVC **PrimerSpringMVC**. 
 Recordemos que la aplicación accede a la base de datos local en Docker.
@@ -1285,7 +1296,7 @@ En este ejemplo vamos a mapear las 3 tablas de la base de datos: comarca, poblac
 
 ![](listar_instituts.png)
 
-## Spring Data MongoDB
+## 🔹Spring Data MongoDB
 
 ![](mongodb.png)
 
@@ -1319,7 +1330,7 @@ Si estás usando MongoDB con autenticación, añade:
     spring.data.mongodb.password=contraseña
 ``` 
 
-### Anotaciones comunes
+### 🔹Anotaciones comunes
 
 Estas anotaciones permiten mapear documentos, gestionar colecciones y realizar operaciones de manera sencilla. Las principales anotaciones utilizadas en Spring Data MongoDB son:
 
@@ -1369,7 +1380,7 @@ Define índices compuestos en la colección para optimizar consultas.
     * def: Define los campos que forman el índice.
     * unique: Indica si el índice debe ser único.
 
-### Aplicación Spring Data MongoDB
+### 🔹Aplicación Spring Data MongoDB
 
 En este apartado del tema ya tenemos que saber como crear una aplicaicón Spring Boot desde IntelliJ, solo necesitas saber las dependencias necesarias y las anotaciones para incorporar **Spring Data MongoDB** y poco más. El resto ya depende de lo que quieras construir con la base de datos.
 

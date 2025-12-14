@@ -1,10 +1,12 @@
-# Spring MVC
+# 🔹Spring MVC
 
-## Modelo-Vista-Controlador (MVC)
+Spring MVC es el módulo de Spring orientado al desarrollo de aplicaciones web siguiendo el patrón **Modelo‑Vista‑Controlador**.
 
 El ejemplo visto en Spring Boot es tan sencillo que no necesita un patrón de diseño especial. Para aplicaciones más complejas necesitamos de un patrón que nos permita crear aplicaciones con un código bien estructurado y más fácil de modificar, así como reutilizar sus componentes en diferentes puntos de la aplicación y que puedan evolucionar de manera independiente.
 
-Spring MVC nos proporciona un marco estructurado, flexible y eficiente para construir aplicaciones basadas en el patrón Modelo-Vista-Controlador (MVC) que cumplan todas estas funcionalidades.
+Spring MVC forma parte del ecosistema Spring y proporciona toda la infraestructura necesaria para manejar peticiones HTTP, invocar controladores y devolver vistas (HTML, JSON, etc.).
+
+**El Modelo-Vista-Controlador (MVC)**{.azul}
 
 El Modelo-Vista-Controlador (MVC) es un patrón de diseño que organiza una aplicación en tres **componentes principales**:
 
@@ -41,70 +43,61 @@ El Modelo-Vista-Controlador (MVC) es un patrón de diseño que organiza una apli
 
     4) La Vista presenta la respuesta al usuario.
 
+**Arquitectura en capas en Spring**{.azul}
 
-## MVC en Spring
+Spring se organiza siguiendo una arquitectura en capas, cuyo objetivo principal es separar responsabilidades.
+Cada capa tiene una función concreta y se comunica únicamente con las capas adyacentes, lo que permite aplicaciones más mantenibles, escalables y fáciles de entender.
 
-Spring MVC está implementado como un servlet (el front controller)
-que implementa la gestión de las peticiones del cliente web, y se
-encarga de transmitirlas a un controlador adecuado. El controlador
-procesa la petición y crea un modelo que contiene los datos a
-devolver al usuario. Una vista se encarga de traducir el modelo a una
-representación adecuada para el cliente (por ejemplo una página
-HTML)
+Las capas más habituales en una aplicación Spring son:
 
-
-### Anotaciones comunes de Spring MVC:
-
-A continuación se describen las anotaciones más utilizadas en cada uno de los componentes del modelo MVC en el entorno de Spring:
-
-1) **Controlador**{.verde}
-   
-* **@Controller**: Define una clase como un controlador de Spring MVC. Es la principal anotación utilizada para que Spring la gestione como parte del patrón MVC.
-* **@RestController**: Si el controlador está destinado a manejar solicitudes RESTful y no necesita devolver vistas, se utiliza esta anotación, que es una combinación de @Controller y @ResponseBody. Devuelve datos directamente como JSON o XML.
-* **@RequestMapping**: Se usa para mapear solicitudes HTTP a métodos de un controlador. Puede configurarse para manejar diferentes tipos de solicitudes HTTP (GET, POST, etc.).
-* **@GetMapping, @PostMapping, @PutMapping, @DeleteMapping**: Variantes de @RequestMapping para manejar solicitudes de tipos específicos (GET, POST, PUT, DELETE).
-* **@RequestParam**: Usada para obtener parámetros de la URL (query parameters) de la solicitud HTTP.
-* **@ModelAttribute**: Usada para pre-poblar un modelo con atributos antes de que se ejecute un método del controlador. Esto es útil, por ejemplo, cuando se usa en formularios.
-  
-
-2) **Modelo**{.verde}
-
-* **@Entity**: Si estás utilizando JPA para la persistencia de datos, esta anotación define una clase como una entidad que será mapeada a una tabla de la base de datos.
-* **@Table**: Usada junto con @Entity para especificar la tabla en la base de datos que corresponde a la entidad.
-  
-        @Entity
-        @Table(name = "comarcas")
-        data class Comarca(
-            @Id
-            @GeneratedValue(strategy = GenerationType.IDENTITY)
-            val id: Int,
-            val nombre: String,
-            val poblacion: Int
-        )
-
-* **@Value**: Si estás utilizando Spring Expression Language (SpEL) en el modelo o en los controladores para asignar valores, puedes usar esta anotación.
-  
-        @Value("\${comarca.nombre}")
-        var nombre: String = ""
+- Capa Controller (Web)
+- Capa Service (Negocio)
+- Capa Repository (Persistencia)
+- Capa Model (Dominio / Entidades)
+- Capa View (Representación)
 
 
-3) **Vista**{.verde}
+📌 Esta arquitectura encaja perfectamente con el patrón MVC (Model–View–Controller).
 
-La vista no tiene anotaciones propias en el código fuente, sin embargo, si estás utilizando **Thymeleaf** o **JSP**,  la vista incluye elementos y sintaxis específicos que actúan como directrices para renderizar contenido dinámico.
-La vista será un archivo HTML ubicado en **src/main/resources/templates**.
 
-Las anotaciones **@RequestMapping** o **@GetMapping** en el controlador, especifican que el controlador debe devolver una vista. 
+**Correspondencia Spring ↔ MVC**{.azul}
 
-<!--
-En el siguiente ejemplo, en la carpeta **src/main/resources/templates/comarca/**, puedes tener un archivo **listar.html**, que corresponde a la vista que se renderizará en el navegador. 
 
-    @GetMapping("/comarcas")
-    fun listarComarcas(model: Model): String {
-        model.addAttribute("comarcas", comarcaService.obtenerComarcas())
-        return "comarca/listar"  // Devuelve el nombre de la plantilla Thymeleaf
-    }
+| Capa Spring | MVC | Responsabilidad principal | Detalles |
+|-----------|-----|---------------------------|----------|
+| **Controller** | <span style="color:#1f77b4"><b>Controller</b></span> | Gestiona las peticiones HTTP | • Recibe peticiones HTTP<br>• Extrae parámetros<br>• Llama a la capa Service<br>• Devuelve una vista o una respuesta (JSON)<br>📌 No contiene lógica de negocio ni acceso a datos |
+| **Model (Entity)** | <span style="color:#2ca02c"><b>Model</b></span> | Representa los datos del dominio | • Clases que modelan la información del negocio |
+| **Service** | <span style="color:#2ca02c"><b>Model</b></span> | Lógica de negocio | • Aplica reglas y validaciones<br>• Realiza operaciones del negocio<br>• Coordina repositorios |
+| **Repository** | <span style="color:#2ca02c"><b>Model</b></span> | Persistencia de datos | • Acceso a la base de datos<br>• Operaciones CRUD<br>• Aísla la BD del resto de la aplicación |
+| **View** | <span style="color:#ff7f0e"><b>View</b></span> | Representación de los datos | • HTML (Thymeleaf, JSP) en apps web tradicionales<br>• JSON / XML en apps REST<br>📌 En REST, el JSON actúa como la vista |
 
--->
+
+![alt text](image-6.png)
+
+**Anotaciones habituales por capa en Spring**{.azul}
+
+
+| Capa MVC | Capas Spring incluidas | Anotaciones habituales | Función |
+|---------|------------------------|------------------------|--------|
+| <span style="color:#1f77b4"><b>Controller</b></span> | <span style="color:#1f77b4">Controller</span> | `@Controller`<br>`@RestController`<br>`@RequestMapping`<br>`@GetMapping`<br> `@RequestParam` <br> `@PostMapping`<br>`@PutMapping`<br>`@DeleteMapping` | Recibe peticiones HTTP, gestiona rutas y parámetros, llama a Service y devuelve la respuesta |
+| <span style="color:#2ca02c"><b>Model</b></span> | <span style="color:#2ca02c">Entity<br>Service<br>Repository</span> | `@Entity`, `@Table`, `@Id`<br>`@Service`, `@Transactional`<br>`@Repository` | Contiene los datos del dominio, la lógica de negocio y el acceso a la base de datos |
+| <span style="color:#ff7f0e"><b>View</b></span> | <span style="color:#ff7f0e">HTML / JSON</span> | *(sin anotaciones)* | Representa los datos al usuario (HTML o JSON) |
+
+**La capa Vista**{.azul}
+
+En Spring MVC, la vista puede ser un HTML generado con Thymeleaf o una respuesta JSON en una API REST; en ambos casos, cumple la función de View dentro del patrón MVC.
+
+
+| Aspecto | Descripción |
+|------|-------------|
+| Función | Representación de los datos |
+| Qué se devuelve | Depende del tipo de aplicación |
+| Con Thymeleaf / JSP | Archivo HTML con sintaxis específica para contenido dinámico |
+| Sin motor de plantillas (REST) | Datos en formato JSON / XML |
+| Anotaciones | No tiene anotaciones propias |
+| Ubicación (Thymeleaf) | `src/main/resources/templates` |
+
+
 
 **Vista con Thymeleaf**{.azul}
 
@@ -180,7 +173,7 @@ El contenido es generado dinámicamente a través de bibliotecas como Jackson (p
 
 -->
 
-### Primera Aplicación Spring MVC
+## 🔹Ejemplo con Spring MVC
 
 Al igual que se describe en el apartado de Spring Boot, podemos crear los proyectos Spring MVC de dos maneras:
 

@@ -1,4 +1,6 @@
-# Spring
+# Spring Framework
+
+![alt text](image-4.png)
 
 Spring es un framework de código abierto que te ayuda a crear aplicaciones en Java o Kotlin de forma más fácil, rápida y ordenada.  
 En vez de que tú tengas que hacer todo a mano (crear objetos, conectar clases, preparar la base de datos, configurar servidores…), Spring lo hace por ti automáticamente.  
@@ -47,7 +49,7 @@ Además de IoC y DI, Spring se basa en tres **pilares prácticos**:
 
 **Componentes principales:**{.azul}
 
-Los componentes principales de Spring son:
+Los componentes principales de Spring Framework son:
 
 * **Spring Core**: El núcleo del framework, encargado de la inyección de dependencias.
 * **Spring MVC**: Permite el desarrollo de aplicaciones web utilizando el patrón Modelo-Vista-Controlador.

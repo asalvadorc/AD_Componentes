@@ -1,4 +1,4 @@
-# Spring Boot
+# 🔹Spring Boot
 
 **Spring** es el framework completo; **Spring Boot** es la forma fácil y moderna de usar Spring. Tradicionalmente Spring era complicado de configurar, había que preparar servidores, XML, dependencias, etc. Spring Boot se enfoca en simplificar y acelerar el desarrollo de aplicaciones web y microservicios, ofreciendo una configuración automática y la capacidad de crear aplicaciones que se ejecutan de forma independiente sin necesidad de un servidor web externo.
 
@@ -31,7 +31,7 @@ configuraremos aspectos relativos con nuestra aplicación, tales como las conexi
 
 
 
-## Primera aplicación SpringBoot
+## 🔹Ejemplo con SpringBoot
 
 Para entender la filosfía de Spring lo mejor es hacer una primera aplicación sencilla. Esta aplicación consistirá en devolver un saludo al usuario a través de un navegador web. Acontinuación se detallan los pasos a seguir.
 

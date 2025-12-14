@@ -25,10 +25,10 @@ markdown_extensions:
 nav:
 
 - Componentes:
-  - 1 - Spring: Spring.md
-  - 2 - Anotaciones: Anotaciones.md
-  - 3 - SpringBoot: SpringBoot.md
-  - 4 - Spring MVC: SpringMVC.md
-  - 5 - Spring Data: SpringData.md
-  - 6 - Docker: Docker.md
+  - 🔹 Spring Framework: Spring.md
+  - 🔹 Anotaciones: Anotaciones.md
+  - 🔹 SpringBoot: SpringBoot.md
+  - 🔹 Spring MVC: SpringMVC.md
+  - 🔹 Spring Data: SpringData.md
+  - 🔹 Docker: Docker.md
   
