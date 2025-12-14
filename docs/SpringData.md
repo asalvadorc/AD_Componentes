@@ -1136,22 +1136,21 @@ En este ejemplo vamos a mapear las 3 tablas de la base de datos: **comarca, pobl
         import org.springframework.ui.Model
         import org.springframework.web.bind.annotation.*
 
+        // Muestra todas las poblaciones
+        @GetMapping
+        fun listarTodasPoblacions(model: Model): String {
+            val poblacions = poblacioRepository.findAll()
+            model.addAttribute("poblacions", poblacions)
+            return "poblacions" // Vista Thymeleaf para mostrar todas las poblaciones
+        }
 
-       // Muestra todas las poblaciones
-            @GetMapping
-            fun listarTodasPoblacions(model: Model): String {
-                val poblacions = poblacioRepository.findAll()
-                model.addAttribute("poblacions", poblacions)
-                return "poblacions" // Vista Thymeleaf para mostrar todas las poblaciones
-            }
-
-            // Muestra las poblaciones por comarca
-            @GetMapping("/por-comarca")
-            fun listarPoblacionsPorComarca(@RequestParam comarca: String, model: Model): String {
-                val poblacions = poblacioRepository.findByComarcaNomC(comarca)
-                model.addAttribute("poblacions", poblacions)
-                return "poblacions" // Vista Thymeleaf para mostrar las poblaciones por comarca
-            }
+        // Muestra las poblaciones por comarca
+        @GetMapping("/por-comarca")
+        fun listarPoblacionsPorComarca(@RequestParam comarca: String, model: Model): String {
+            val poblacions = poblacioRepository.findByComarcaNomC(comarca)
+            model.addAttribute("poblacions", poblacions)
+            return "poblacions" // Vista Thymeleaf para mostrar las poblaciones por comarca
+        }
 
 
 * InstitutController
