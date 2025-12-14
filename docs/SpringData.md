@@ -65,7 +65,7 @@ Con Spring Data JPA:
 - Creas interfaces Repository
 - Spring genera automáticamente el código
 
-### Anotaciones Comunes
+### 🔹Anotaciones Comunes
 
 #### 1. Mapeo de Entidades (JPA Estándar)
 Estas anotaciones son parte de JPA y permiten mapear clases y relaciones a tablas en la base de datos.
@@ -208,7 +208,7 @@ El data class representa la entidad (tabla), mientras que el @Repository se enca
         @Rollback
         fun testSaveUser() { ... }
 
-### Consultas a la Base de Datos
+### 🔹Consultas a la Base de Datos
 
 Las consultas a la Base de datos las podemos hacer de dos maneras, utilizando la **convención de nombres** en funciones de Spring Data JPA o con la anotación **@Query**.
  
@@ -224,7 +224,7 @@ Las consultas a la Base de datos las podemos hacer de dos maneras, utilizando la
 * Cuando la convención de nombres generaría un nombre de método excesivamente largo.
 
 
-#### **Convención de Nombres**{.azul}
+#### 🔹**Convención de Nombres**{.azul}
 
 Spring Data JPA permite definir métodos en repositorios siguiendo una convención de nombres específica. Esto simplifica la escritura de consultas comunes sin necesidad de usar JPQL o SQL. Para ello analiza el nombre de los métodos en el repositorio e interpreta su significado para generar consultas automáticamente. 
 
@@ -293,7 +293,7 @@ Alternativas:
     * **Parámetros**: Los métodos generados reciben parámetros en el mismo orden en que se declaran en el nombre del método.  
 
 
-#### **@Query**{.azul}
+#### 🔹**@Query**{.azul}
 
 <u>Estructura básica:</u>
 
@@ -346,8 +346,7 @@ Siguiendo con nuestro ejemplo de geo_ad, la consulta para buscar Institutos en u
     A medida que las relaciones aumentan en complejidad, los nombres de los métodos pueden volverse difíciles de leer y mantener.
 
 
-
-### Base de Datos Postgres.
+### 🔹Ejemplo con Postgres
 
 En este ejemplo vamos a crear una aplicación sencilla que acceda a una base de datos Postgres. Para ello utilizaremos la base de datos **geo_ad**, que ya conocemos de temas anteriores, y que se encuentra en el servidor externo **89.36.214.106**.
 La aplicación simplemente mostrará la información de la tabla **comarcas**.
@@ -499,7 +498,86 @@ La aplicación estará disponible en http://localhost:8080, o el puerto que haya
 
 !!!warning "" 
     Sería deseable que el resultado se mostrara de manera más amigable para el usuario, por lo que en el siguiente ejemplo haremos los cambios necesarios para utilizar **Thymeleaf** y que el resultado se muestre en cajas de texto.
-   
+
+
+#### 🔹**Uso de DTO**{.azul}
+
+Hasta ahora, los ejemplos mostraban cómo devolver directamente las entidades desde el controlador. Aunque esto funciona, no es una buena práctica en aplicaciones reales, ya que expone el modelo de la base de datos y puede provocar problemas de seguridad y mantenimiento.
+
+En este ejemplo se introduce el uso de DTO (Data Transfer Object) para separar las entidades JPA de los datos que se envían al cliente.
+El objetivo es que el Repository siga trabajando con entidades, mientras que el Controller devuelva únicamente DTO, realizando la conversión en la capa Service.
+
+Los cambios que se introducen en cada capa son los siguientes:
+
+👉**Paquetes que no cambian al usar DTO**
+
+- **model** → Las entidades JPA (@Entity) siguen siendo las mismas.
+
+- **repository** → Continúa trabajando con entidades y Spring Data JPA.
+
+👉**Paquetes que SÍ cambian al usar DTO**
+
+
+- **dto** (nuevo paquete) → No depende de JPA y No tiene anotaciones
+
+        package org.example.primerspringmvc.dto
+
+        data class ComarcaDTO(
+            val nombre: String,         //Cambiamos nom_c → nombre (más claro para la API)
+            val provincia: String
+        )
+
+!!!Tip ""
+    En los ejemplos básicos, el Controller puede llamar directamente al Repository. Al introducir DTO, **se añade la capa Service** porque ahora tenemos una nueva responsabilidad.
+
+    El repositorio sigue trabajando con entidades, el servicio transforma esas entidades en DTO y el controlador devuelve los DTO al cliente.
+
+- **service** (nuevo paquete) → Aquí es donde introducimos DTO correctamente.
+
+        package org.example.primerspringmvc.service
+
+        import org.example.primerspringmvc.dto.ComarcaDTO
+        import org.example.primerspringmvc.repository.ComarcaRepository
+        import org.springframework.stereotype.Service
+
+        @Service
+        class ComarcaService(
+            private val comarcaRepository: ComarcaRepository
+        ) {
+
+            fun obtenerComarcas(): List<ComarcaDTO> {
+                return comarcaRepository.findAll()
+                    .map { comarca ->     //Se usa map para transformar cada entidad en un DTO
+                        ComarcaDTO(       //Se seleccionan solo los campos necesarios  
+                            nombre = comarca.nom_c, //Se pueden renombrar campos
+                            provincia = comarca.provincia
+                        )
+                    }
+            }
+        }
+
+- **controller** → Ahora devuelve DTO
+
+        package org.example.primerspringmvc.controller
+
+        import org.example.primerspringmvc.dto.ComarcaDTO
+        import org.example.primerspringmvc.service.ComarcaService
+        import org.springframework.web.bind.annotation.*
+
+        @RestController
+        @RequestMapping("/comarcas")
+        class ComarcaController(
+            private val comarcaService: ComarcaService
+        ) {
+
+            @GetMapping
+            fun obtenerComarcas(): List<ComarcaDTO> =
+                comarcaService.obtenerComarcas()
+        }
+
+
+!!!Tip ""
+    El DTO no afecta a cómo se accede a la aplicación, sino a qué información se devuelve y cómo se presenta.
 
 **Thymeleaf para mostrar los resultados:**{.verde}
 
@@ -577,6 +655,9 @@ En el navegador, se mostrará una tabla HTML con las comrcas almacenadas en la b
  
 
 ![](comarcas_mejor.png)
+
+
+
 
 
 **Ejemplo de consulta a la Base de datos**{.verde}
@@ -894,11 +975,11 @@ El único fichero a modificar será el **controlador (ComarcaController.kt)** y 
 
 
 
-### 🔹**Ejemplo ampliado de Spring MVC**{.azul} 
+#### 🔹**Ejemplo ampliado**{.azul} 
 
-Para practicar la funcionalidad de Spring Data JPA vamos a seguir con el ejemplo visto en el apartado de Spring MVC **PrimerSpringMVC**. 
-Recordemos que la aplicación accede a la base de datos local en Docker.
-En este ejemplo vamos a mapear las 3 tablas de la base de datos: comarca, poblacio e institut y a realizar los cambios necesarios para crear algunas consultas y operaciones CRUD.
+Para practicar la funcionalidad de Spring Data JPA vamos a seguir con el ejemplo **PrimerSpringMVC**. 
+Recordemos que la aplicación accede a la base de datos local en **Docker**.
+En este ejemplo vamos a mapear las 3 tablas de la base de datos: **comarca, poblacio e institut** y a realizar los cambios necesarios para crear algunas consultas y operaciones CRUD.
 
 
 
@@ -1295,6 +1376,8 @@ En este ejemplo vamos a mapear las 3 tablas de la base de datos: comarca, poblac
 * Listar institutos con población superior a un valor: http://localhost:8888/instituts/poblacion-superior?poblacio=20000
 
 ![](listar_instituts.png)
+
+
 
 ## 🔹Spring Data MongoDB
 
@@ -2026,6 +2109,7 @@ http://localhost:8888/platos/1/ingredientes/Ensalada Griega: Lista los ingredien
 
 !!!note "Nota"
     Estos son alugunos ejemplos pero podéis modificar el controlador y crear nuevas vistas para añadir funcionalidad al programa y que muestre más resultados.
+
 
 
 
