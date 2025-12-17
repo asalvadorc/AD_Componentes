@@ -1644,7 +1644,7 @@ En este ejemplo mostraremos los resultados en JSON y por tanto utilizaremos los 
 
 
 * Listar las poblaciones de la Comarca del Ports: [http://localhost:8080/api/poblacions/comarca?nomC=Ports](http://localhost:8080/api/poblacions/comarca?nomC=Ports)
-* Listar las poblaciones de la provincia de València: [http://localhost:8080/api/poblacions/provincia?provincia=Val%C3%A8ncia](Listar las poblaciones)
+* Listar las poblaciones de la provincia de València: [http://localhost:8080/api/poblacions/provincia?provincia=Val%C3%A8ncia](http://localhost:8080/api/poblacions/provincia?provincia=Val%C3%A8ncia)
 
 
 ## 🔹Spring Data MongoDB
