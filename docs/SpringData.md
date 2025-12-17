@@ -1,15 +1,9 @@
 # 🔹Spring Data
 
 
-Spring Data es un proyecto dentro del ecosistema **Spring** que proporciona  herramientas y abstracciones para facilitar el acceso a bases de datos y otras  
-fuentes de datos de manera **eficiente y consistente**.  
+Spring Data es un proyecto dentro del ecosistema **Spring** que proporciona  herramientas y abstracciones para facilitar el acceso a bases de datos y otras fuentes de datos de manera **eficiente y consistente**.  
 
-Su objetivo principal es **simplificar la interacción con diferentes tipos de  bases de datos**, tanto **relacionales** (como PostgreSQL o MySQL) como  
-**NoSQL** (por ejemplo MongoDB o Cassandra), reduciendo la cantidad  de código necesario y **unificando la forma de trabajar con los datos**.
-
-
-
-![](springdata2.png)|
+Su objetivo principal es **simplificar la interacción con diferentes tipos de  bases de datos**, tanto **relacionales** (como PostgreSQL o MySQL) como **NoSQL** (por ejemplo MongoDB o Cassandra), reduciendo la cantidad  de código necesario y **unificando la forma de trabajar con los datos**.
 
 
 **¿Para qué se utiliza?**{.azul}
@@ -44,6 +38,8 @@ Con dependencias específicas como **spring-boot-starter-data-jpa** o **spring-b
 
 **Principales Módulos de Spring Data**{.azul} 
 
+En lugar de proporcionar una única solución, Spring Data está compuesto por varios módulos, cada uno diseñado para un tipo concreto de tecnología de persistencia, como bases de datos relacionales, NoSQL o sistemas de búsqueda. Gracias a esta estructura modular, el desarrollador puede cambiar la tecnología de persistencia sin modificar la arquitectura general de la aplicación.
+
 - **Spring Data JPA:**: Proporciona una integración con JPA para bases de datos relacionales.
 Es ideal para trabajar con entidades Java mapeadas a tablas de bases de datos.
 JPA es la especificación para persistir, leer y gestionar data desde los objetos Java a la base de datos.
@@ -57,7 +53,7 @@ JPA es la especificación para persistir, leer y gestionar data desde los objeto
 
 <!--![](jpa.png)-->
 
-Spring Data JPA es parte de Spring Framework. Es un módulo de Spring Data que sirve para simplificar el acceso a bases de datos relacionales usando **JPA** (Java Persistence API). Permite trabajar con bases de datos usando objetos (clases) sin tener que escribir SQL ni código repetitivo.
+Spring Data JPA es parte de Spring Framework. Es un módulo de Spring Data que sirve para simplificar el acceso a bases de datos relacionales usando **JPA** (Java Persistence API). Permite trabajar con bases de datos utlizando objetos (clases) sin tener que escribir SQL ni código repetitivo.
 
 Con Spring Data JPA:
 
@@ -65,10 +61,35 @@ Con Spring Data JPA:
 - Creas interfaces Repository
 - Spring genera automáticamente el código
 
-### 🔹Anotaciones Comunes
+### 🔹Anotaciones JPA
 
-#### 1. Mapeo de Entidades (JPA Estándar)
-Estas anotaciones son parte de JPA y permiten mapear clases y relaciones a tablas en la base de datos.
+
+| Categoría | Anotación | Descripción |
+|---------|----------|-------------|
+| **Mapeo JPA** | `@Entity` | Marca una clase como entidad JPA |
+|  | `@Table` | Especifica el nombre de la tabla |
+|  | `@Id` | Indica la clave primaria |
+|  | `@GeneratedValue` | Define cómo se genera la clave primaria |
+|  | `@Column` | Configura una columna |
+|  | `@JoinColumn` | Define la clave foránea |
+|  | `@Lob` | Campo de gran tamaño |
+|  | `@Transient` | Excluye un campo del mapeo |
+| **Relaciones JPA** | `@ManyToOne` | Relación muchos a uno |
+|  | `@OneToMany` | Relación uno a muchos |
+|  | `@OneToOne` | Relación uno a uno |
+|  | `@ManyToMany` | Relación muchos a muchos |
+| **Spring Data JPA** | `@Repository` | Marca una interfaz como repositorio Spring |
+|  | `@Query` | Define una consulta personalizada (JPQL o SQL) |
+|  | `@Param` | Parámetros nombrados en consultas |
+|  | `@Modifying` | Consultas de actualización o borrado |
+|  | `@EnableJpaRepositories` | Habilita repositorios JPA |
+|  | `@EntityGraph` | Controla la carga de relaciones |
+| **Transacciones** | `@Transactional` | Ejecuta métodos dentro de una transacción |
+|  | `@Rollback` | Fuerza la reversión de la transacción (tests) |
+
+
+
+**Ejemplos**{.azul}
 
 - **@Entity** - Marca una clase como una entidad JPA, mapeada a una tabla en la base de datos.
   
@@ -143,13 +164,9 @@ Estas anotaciones son parte de JPA y permiten mapear clases y relaciones a tabla
 
 ---
 
-#### **2. Específicas de Spring Data JPA**
-
-Estas anotaciones son propias de Spring Data JPA y extienden la funcionalidad de JPA.
-
 - **@Repository** - Marca una interfaz o clase como repositorio Spring.
 
-El data class representa la entidad (tabla), mientras que el @Repository se encarga de las operaciones de acceso a datos sobre esa entidad.
+El _data class_ representa la entidad (tabla), mientras que el @Repository se encarga de las operaciones de acceso a datos sobre esa entidad.
   
         @Repository
         interface UserRepository : JpaRepository<User, Long>
@@ -194,8 +211,6 @@ El data class representa la entidad (tabla), mientras que el @Repository se enca
 
 ---
 
-#### **3. Transacciones**
-
 - **@Transactional** - Marca un método o clase para ejecutar dentro de una transacción.
 
         @Transactional
@@ -208,7 +223,7 @@ El data class representa la entidad (tabla), mientras que el @Repository se enca
         @Rollback
         fun testSaveUser() { ... }
 
-### 🔹Consultas a la Base de Datos
+### 🔹Consultas
 
 Las consultas a la Base de datos las podemos hacer de dos maneras, utilizando la **convención de nombres** en funciones de Spring Data JPA o con la anotación **@Query**.
  
@@ -224,7 +239,7 @@ Las consultas a la Base de datos las podemos hacer de dos maneras, utilizando la
 * Cuando la convención de nombres generaría un nombre de método excesivamente largo.
 
 
-#### 🔹**Convención de Nombres**{.azul}
+**Convención de Nombres**{.azul}
 
 Spring Data JPA permite definir métodos en repositorios siguiendo una convención de nombres específica. Esto simplifica la escritura de consultas comunes sin necesidad de usar JPQL o SQL. Para ello analiza el nombre de los métodos en el repositorio e interpreta su significado para generar consultas automáticamente. 
 
@@ -286,14 +301,14 @@ Alternativas:
 
 ![](convenciones.png)
 
-!!!warning "Consideraciones"
+!!!warning "A tener en cuenta"
     * **Coincidencia exacta del nombre del campo**: Los nombres deben coincidir con los atributos definidos en la entidad.
-    * **Relaciones**: Usa la notación EntidadRelacionada.Atributo para navegar entre tablas relacionadas.
-    * **Orden**: Los métodos pueden incluir palabras clave de ordenación, como OrderBy.
+    * **Relaciones**: Usa la notación _EntidadRelacionada.Atributo_ para navegar entre tablas relacionadas.
+    * **Orden**: Los métodos pueden incluir palabras clave de ordenación, como _OrderBy_.
     * **Parámetros**: Los métodos generados reciben parámetros en el mismo orden en que se declaran en el nombre del método.  
 
 
-#### 🔹**@Query**{.azul}
+🔹**@Query**{.azul}
 
 <u>Estructura básica:</u>
 
@@ -342,11 +357,11 @@ Siguiendo con nuestro ejemplo de geo_ad, la consulta para buscar Institutos en u
 * **PoblacioComarcaProvincia**: Navega por las relaciones de las entidades Institut  Poblacio -> Comarca para filtrar por la provincia.
 * **AndPoblacioPoblacionGreaterThanEqual**: Navega por Institut -> Poblacio y aplica el filtro de población mínima.    
 
-!!!note ""
+!!!note "Conclusión"
     A medida que las relaciones aumentan en complejidad, los nombres de los métodos pueden volverse difíciles de leer y mantener.
 
 
-### 🔹Ejemplo con Postgres
+## 🔹![ ](image-32.png) Ejemplo con  Postgres (una Entidad)
 
 En este ejemplo vamos a crear una aplicación sencilla que acceda a una base de datos Postgres. Para ello utilizaremos la base de datos **geo_ad**, que ya conocemos de temas anteriores, y que se encuentra en el servidor externo **89.36.214.106**.
 La aplicación simplemente mostrará la información de la tabla **comarcas**.
@@ -381,13 +396,14 @@ Para esta aplicación crearemos un nuevo proyecto, con la misma configuración q
 
 Después de aceptar, y si todo ha ido correctamente, ya tendremos nuestro proyecto creado y preparado para añadir los elementos de programación.
 
-|   ![ref](mvc1.png)  |   ![ref](mvc2_1.png)    |
+
+|![alt text](image-15.png)|![alt text](image-16.png)|
 |---|---|
 
 Al iniciar nuestra aplicación, lo primero que observamos es que se crea
-una clase **PrimerSpringMVCApplication**  que sirve como contenedor para la configuración de la aplicación. No necesita implementar métodos adicionales, ya que Spring Boot se encarga de todo gracias a la anotación **@SpringBootApplication**.
+una clase **SpringJpaApplication**  que sirve como contenedor para la configuración de la aplicación. No necesita implementar métodos adicionales, ya que Spring Boot se encarga de todo gracias a la anotación **@SpringBootApplication**.
 
-![ref](mvc3.png)
+![alt text](image-18.png)
 
 **Crear la estructura del Proyecto**{.azul}
 
@@ -402,7 +418,7 @@ La estructura básica del proyecto debe reflejar el patrón MVC. Organiza las ca
 Para ello crea los paquetes: **controller**, **model** y **repository** dentro de la carpeta **src/main/kotlin/org/tuapp**.
 
 
-![ref](estructura.png)
+![alt text](image-19.png)
 
 **Implementación de la aplicación**{.azul}
 
@@ -415,14 +431,19 @@ En nuestro caso definimos la entidad comarca y sus campos.
 
 En el paquete **model** crea un archivo llamado **comarca.kt**
 
+    package org.example.springjpa.model
+
     import jakarta.persistence.*
 
-    @Entity /*Define una clase como una entidad JPA, lo que significa que estará mapeada a una tabla en la base de datos.*/
+    @Entity
     @Table(name = "comarca")
-    data class comarca(
-        @Id /*dentifica el campo como la clave primaria de la entidad.*/
-        val nom_c: String = "",
-        val provincia: String = ""
+    class Comarca(
+        @Id
+        @Column(name = "nom_c")
+        var nomC: String = "",
+
+        @Column(name = "provincia")
+        var provincia: String? = null
     )
 
     
@@ -432,45 +453,53 @@ Crea un repositorio que permita ejecutar consultas sobre la tabla correspondient
 
 Dentro del paquete **repository**, crea un archivo llamado **ComarcaRepository.kt**
 
-    import org.example.primerspringmvc.model.comarca
+    package org.example.springjpa.repository
+
+    import org.example.springjpa.model.Comarca
     import org.springframework.data.jpa.repository.JpaRepository
     import org.springframework.stereotype.Repository
 
-    @Repository
-    interface ComarcaRepository : JpaRepository<comarca, String> {
-    fun findByProvincia(provincia: String): List<comarca>
-    } 
+    interface ComarcaRepository : JpaRepository<Comarca, String> {
+        fun findByProvincia(provincia: String): List<Comarca>
+    }
 
 * **Controlador**
 
 El controlador manejará las solicitudes GET para obtener información de la base de datos.
 
-Dentro del paquete **controller**, crea un archivo llamado **ComarcaController.kt**
+Dentro del paquete **controller**, crea un archivo llamado **ComarcaRestController.kt**
 
-    import org.example.primerspringmvc.model.comarca
-    import org.example.primerspringmvc.repository.ComarcaRepository
+    package org.example.springjpa.controller
+
+    
+    import org.example.springjpa.model.Comarca
+    import org.example.springjpa.repository.ComarcaRepository
     import org.springframework.web.bind.annotation.*
 
     @RestController
-    @RequestMapping("/comarcas")
+    @RequestMapping("/api/comarcas")
+
     class ComarcaController(private val comarcaRepository: ComarcaRepository) {
 
         // Endpoint para obtener todas las comarcas
         @GetMapping
-        fun obtenerComarcas(): List<comarca> = comarcaRepository.findAll()
-    }    
+        fun obtenerComarcas(): List<Comarca> = comarcaRepository.findAll()
+    }
+
 !!!note ""
     * **@RestController:** Combina **@Controller** y **@ResponseBody**.
-    Devuelve directamente datos en formato JSON en lugar de buscar vistas como Thymeleaf.
+    Devuelve directamente datos en formato JSON.
 
     * **ObtenerComarcas()**: Devuelve una lista de objetos comarca.
     Spring automáticamente convierte esta lista a JSON usando Jackson (que viene incluido con Spring Boot).
 
-![ref](estructura_archivos.png)
+![alt text](image-23.png)
 
 * **Vistas**
 
 Las vistas pueden ser representadas por tecnologías como JSP, Thymeleaf, o JSON (en caso de APIs).
+
+En Spring, tanto las vistas HTML como las respuestas JSON se generan automáticamente: las vistas se renderizan con Thymeleaf y los objetos se serializan a JSON sin configuración adicional.
 
 En este ejemplo vamos a visualizar los datos en un navegador con formato **JSON** y más adelante lo haremos mediante **Thymeleaf** para ver ambos casos. 
 
@@ -483,105 +512,51 @@ En este ejemplo vamos a visualizar los datos en un navegador con formato **JSON*
     spring.datasource.password=<CONTRASEÑA>
     spring.jpa.hibernate.ddl-auto=update
 
-Cambiaremos los datos de conexión al servidor externo:
+**Cambiaremos los datos de conexión al servidor externo: 89.36.214.106**{.verde}
 
-![ref](Postgres.png)
+    spring.application.name=SpringJPA
 
-!!!warning ""
-    Recuerda que puedes cambiar el puerto si lo tienes ocupado. Puedes probar con el puerto 8888.
+    spring.datasource.url=jdbc:postgresql://89.36.214.106:5432/geo_ad
+    spring.datasource.username=geo_ad
+    spring.datasource.password=geo_ad
+
+
+!!!Tip "Configuración básica de JPA"
+    En una aplicación Spring Boot con Spring Data JPA, es fundamental definir explícitamente ciertos parámetros de configuración en el archivo **application.properties**.
+    Estas propiedades permiten controlar el comportamiento de Hibernate, evitar efectos no deseados sobre la base de datos y facilitar la comprensión del funcionamiento interno del framework.
+
+    En el contexto de este proyecto, donde se trabaja con una base de datos PostgreSQL creada previamente, se establecen las siguientes propiedades con los siguientes objetivos:
+
+    - Garantizar que Spring no modifique el esquema de la base de datos, manteniendo el control sobre tablas, claves y relaciones.  
+
+            spring.jpa.hibernate.ddl-auto=none
+    - Visualizar las consultas SQL reales que Hibernate genera y ejecuta, con fines didácticos y de depuración.
+
+            spring.jpa.show-sql=true
+    - Indicar explícitamente el tipo de base de datos utilizada, asegurando que Hibernate emplea el dialecto y la sintaxis SQL correctos.
+
+            spring.jpa.database-platform=org.hibernate.dialect.PostgreSQLDialect
+
+
+Por estos motivos, el archivo **application.properties** quedará finalmente así:
+
+    
+![alt text](image-22.png)
+    
 
 **Ejecutar la aplicación**{.azul}
 
-La aplicación estará disponible en http://localhost:8080, o el puerto que hayas especificado, para listar las comarcas.
+La aplicación estará disponible en [http://localhost:8080/api/comarcas](http://localhost:8080/api/comarcas), o el puerto que hayas especificado, para listar las comarcas.
   
 ![](resultadojson.png)
 
-!!!warning "" 
+!!!Tip "" 
     Sería deseable que el resultado se mostrara de manera más amigable para el usuario, por lo que en el siguiente ejemplo haremos los cambios necesarios para utilizar **Thymeleaf** y que el resultado se muestre en cajas de texto.
 
 
-#### 🔹**Uso de DTO**{.azul}
+**Thymeleaf para mostrar los resultados:**{.azul}
 
-Hasta ahora, los ejemplos mostraban cómo devolver directamente las entidades desde el controlador. Aunque esto funciona, no es una buena práctica en aplicaciones reales, ya que expone el modelo de la base de datos y puede provocar problemas de seguridad y mantenimiento.
-
-En este ejemplo se introduce el uso de DTO (Data Transfer Object) para separar las entidades JPA de los datos que se envían al cliente.
-El objetivo es que el Repository siga trabajando con entidades, mientras que el Controller devuelva únicamente DTO, realizando la conversión en la capa Service.
-
-Los cambios que se introducen en cada capa son los siguientes:
-
-👉**Paquetes que no cambian al usar DTO**
-
-- **model** → Las entidades JPA (@Entity) siguen siendo las mismas.
-
-- **repository** → Continúa trabajando con entidades y Spring Data JPA.
-
-👉**Paquetes que SÍ cambian al usar DTO**
-
-
-- **dto** (nuevo paquete) → No depende de JPA y No tiene anotaciones
-
-        package org.example.primerspringmvc.dto
-
-        data class ComarcaDTO(
-            val nombre: String,         //Cambiamos nom_c → nombre (más claro para la API)
-            val provincia: String
-        )
-
-!!!Tip ""
-    En los ejemplos básicos, el Controller puede llamar directamente al Repository. Al introducir DTO, **se añade la capa Service** porque ahora tenemos una nueva responsabilidad.
-
-    El repositorio sigue trabajando con entidades, el servicio transforma esas entidades en DTO y el controlador devuelve los DTO al cliente.
-
-- **service** (nuevo paquete) → Aquí es donde introducimos DTO correctamente.
-
-        package org.example.primerspringmvc.service
-
-        import org.example.primerspringmvc.dto.ComarcaDTO
-        import org.example.primerspringmvc.repository.ComarcaRepository
-        import org.springframework.stereotype.Service
-
-        @Service
-        class ComarcaService(
-            private val comarcaRepository: ComarcaRepository
-        ) {
-
-            fun obtenerComarcas(): List<ComarcaDTO> {
-                return comarcaRepository.findAll()
-                    .map { comarca ->     //Se usa map para transformar cada entidad en un DTO
-                        ComarcaDTO(       //Se seleccionan solo los campos necesarios  
-                            nombre = comarca.nom_c, //Se pueden renombrar campos
-                            provincia = comarca.provincia
-                        )
-                    }
-            }
-        }
-
-- **controller** → Ahora devuelve DTO
-
-        package org.example.primerspringmvc.controller
-
-        import org.example.primerspringmvc.dto.ComarcaDTO
-        import org.example.primerspringmvc.service.ComarcaService
-        import org.springframework.web.bind.annotation.*
-
-        @RestController
-        @RequestMapping("/comarcas")
-        class ComarcaController(
-            private val comarcaService: ComarcaService
-        ) {
-
-            @GetMapping
-            fun obtenerComarcas(): List<ComarcaDTO> =
-                comarcaService.obtenerComarcas()
-        }
-
-
-!!!Tip ""
-    El DTO no afecta a cómo se accede a la aplicación, sino a qué información se devuelve y cómo se presenta.
-
-**Thymeleaf para mostrar los resultados:**{.verde}
-
-1) **Configuración de dependencias**. Asegúrate de tener la dependencia de Thymeleaf en tu archivo pom.xml. Esta dependencia la hemos seleccionado al configurar la aplicación y seguramente ya la tengamos incluida.
+1) **Configuración de dependencias**. Asegúrate de tener la dependencia de Thymeleaf en tu archivo **pom.xml**. Esta dependencia la hemos seleccionado al configurar la aplicación y seguramente ya la tengamos incluida.
 
     <dependency>
         <groupId>org.springframework.boot</groupId>
@@ -597,50 +572,55 @@ Añade las siguientes propiedades:
     spring.thymeleaf.suffix=.html
     spring.thymeleaf.cache=false  
 
-3) **Modificar el Controlador con datos del repositorio**. El controlador debe recuperar los datos desde el repositorio y pasarlos a la vista usando un modelo. Cambia la implementación del controlador:
+3) **Crear un nuevo Controlador**. Cada controller debe tener rutas distintas, ya que devuelve HTML en lugar de JSON.
+
+**ComarcaMvcController.kt**
+
+    package org.example.springjpa.controller
 
     import org.springframework.stereotype.Controller
-    import org.example.primerspringmvc.repository.ComarcaRepository
     import org.springframework.ui.Model
+    import org.example.springjpa.repository.ComarcaRepository
     import org.springframework.web.bind.annotation.*
 
-    @Controller
-    @RequestMapping("/comarcas")
-    class ComarcaController(private val ComarcaRepository: ComarcaRepository) {
-        @GetMapping
-        fun listarComarcas(model:Model): String {
-            val comarcas = ComarcaRepository.findAll()
-            model.addAttribute("comarcas", comarcas)
-            return "comarcas" // Nombre de la plantilla HTML
-        }
-    }
+        @Controller     //en lugar de @RestController
+        @RequestMapping("/comarcas")
+        class ComarcaControllerEntity(private val ComarcaRepository: ComarcaRepository) {
+            @GetMapping
+            fun listarComarcas(model:Model): String {
+                val comarcas = ComarcaRepository.findAll()
+                model.addAttribute("comarcas", comarcas)
+                return "comarcas" // Nombre de la plantilla HTML
+            }
+        }    
       
 
 4) **Vistas**
    
 Para agregar un entorno de usuario amigable con cajas de texto y que los datos de la base de datos se muestren en una aplicación web, crea un archivo **comarcas.html** en el directorio **src/main/resources/templates**. 
 
-<!DOCTYPE html>
+    <!DOCTYPE html>
     <html xmlns:th="http://www.thymeleaf.org">
     <head>
-        <title>Lista de Comarcas</title>
+    <title>Lista de Comarcas</title>
     </head>
     <body>
     <h1>Lista de Comarcas</h1>
     <table border="1">
-        <tr>
-            <th>ID</th>
-            <th>Provincia</th>
-            
-        </tr>
-        <tr th:each="comarca : ${comarcas}">
-            <td th:text="${comarca.nom_c}">ID</td>
-            <td th:text="${comarca.provincia}">Provincia</td>
-        </tr>
+    <tr>
+        <th>ID</th>
+        <th>Provincia</th>
+
+    </tr>
+    <tr th:each="comarca : ${comarcas}">
+        <td th:text="${comarca.nomC}">Nombre</td>
+        <td th:text="${comarca.provincia}">Provincia</td>
+    </tr>
+
     </table>
     </body>
     </html>
-   
+
 !!!note ""
       * **th:each**: Itera sobre la lista de comarcas.
       * **th:text**: Inserta dinámicamente el valor de un campo en el HTML.     
@@ -648,19 +628,17 @@ Para agregar un entorno de usuario amigable con cajas de texto y que los datos d
 
 **Ejecuatar la aplicación**{.azul}
 
-* Accede a http://localhost:8888/comarcas  para listar las comarcas.
+* Accede a [http://localhost:8080/comarcas](http://localhost:8080/comarcas)  para listar las comarcas.
  
 
-En el navegador, se mostrará una tabla HTML con las comrcas almacenadas en la base de datos. Los datos dinámicos se renderizan usando **Thymeleaf**. Este enfoque permite crear interfaces web amigables y bien estructuradas.
+En el navegador, se mostrará una tabla HTML con las comarcas almacenadas en la base de datos. Los datos dinámicos se renderizan usando **Thymeleaf**. Este enfoque permite crear interfaces web amigables y bien estructuradas.
  
 
 ![](comarcas_mejor.png)
 
 
 
-
-
-**Ejemplo de consulta a la Base de datos**{.verde}
+**Consultas a la Base de datos**{.azul}
 
 Con la anotación **@Query** en el repositorio, podemos realizar consultas personalizadas a la base de datos. 
         
@@ -669,31 +647,34 @@ A continuación veremos los cambios que deberíamos hacer en los ficheros para p
 !!!tip "Cambios en los ficheros .kt:"
     **ComarcaRepository**
 
+        package org.example.springjpa.repository
+
         import org.springframework.data.jpa.repository.Query
         import org.springframework.data.repository.query.Param
-        import org.example.primerspringmvc.model.comarca
+        import org.example.springjpa.model.Comarca
         import org.springframework.data.jpa.repository.JpaRepository
         import org.springframework.stereotype.Repository
 
+
         @Repository
-        interface ComarcaRepository : JpaRepository<comarca, Long> {
-            @Query("SELECT c FROM comarca c WHERE c.provincia = :provincia")
-            fun findComarcasporProvincia(@Param("provincia") provincia: String): List<comarca>
+        interface ComarcaRepository : JpaRepository<Comarca, String> {
+            @Query("SELECT c FROM Comarca c WHERE c.provincia = :provincia")
+            fun findComarcasporProvincia(@Param("provincia") provincia: String): List<Comarca>
         }
 
-    **ComarcaController**
+    **ComarcaRestController**
 
-        import org.example.primerspringmvc.model.comarca
-        import org.springframework.stereotype.Controller
-        import org.example.primerspringmvc.repository.ComarcaRepository
-        import org.springframework.ui.Model
+        package org.example.springjpa.controller
+
+        import org.example.springjpa.model.Comarca
+        import org.example.springjpa.repository.ComarcaRepository
         import org.springframework.web.bind.annotation.*
 
         @RestController //en lugar de @Controller
-        @RequestMapping("/comarcas")
+        @RequestMapping("/api/comarcas")
         class ComarcaController(private val ComarcaRepository: ComarcaRepository) {
             @GetMapping("/buscar")
-            fun buscarComarcasPorProvincia(@RequestParam provincia: String): List<comarca> {
+            fun BuscarComarcasporProvincia(@RequestParam provincia: String): List<Comarca> {
                 return ComarcaRepository.findComarcasporProvincia(provincia)
             }
         }
@@ -710,11 +691,13 @@ En este caso, @Param("provincia") conecta el parámetro provincia de la consulta
 **@GetMapping** y **@RequestParam**: Define un endpoint HTTP GET en el controlador.
 El parámetro provincia se obtiene de la URL. Por ejemplo, si queremos listar las comarcas de la provincia de Alacant, obtenemos:
 
+[http://localhost:8080/comarcas/buscar?provincia=Alacant](http://localhost:8080/comarcas/buscar?provincia=Alacant)
+
 ![](comarcasbuscarjson.png) 
 
 **<u>Visualizar la salida con Thymeleaf</u>**
 
-Si la visualización la queremos hacer con Thymeleaf los cambios a realizar se harían solo en  **ComarcasController**, ya que el formulaio comarcas.html se puede seguir utilizando si queremos mostrar los mismos campos:
+Si la visualización la queremos hacer con Thymeleaf los cambios a realizar se harían solo en  **ComarcaMvcController**, ya que el formulaio comarcas.html se puede seguir utilizando si queremos mostrar los mismos campos:
 
     import org.springframework.stereotype.Controller
     import org.example.primerspringmvc.repository.ComarcaRepository
@@ -745,7 +728,7 @@ Y el resultado se vería así:
 
 ----------
 
-#### 🔹**Postgres en Docker**{.verde}
+### 🔹Postgres en Docker ![alt text](image-34.png)
 
 Para no tener que instalarnos un servidor Postgres en nuestro equipo, podemos tener nuestra base de datos en un contenedor Docker.
 
@@ -806,9 +789,7 @@ Vamos a restaurar la base de datos **geo_ad** en la base de datos **demo**, que 
 
 3) **Cambios en la Configuración de la Aplicación**
 
-En el archivo **application.properties**, configura la conexión a PostgreSQL en el contenedor Docker. Asegúrate de usar la IP del contenedor o localhost si estás ejecutando la aplicación desde la misma máquina.
-
-* Opción 1: Usar localhost (si el contenedor está corriendo en tu máquina)
+En el archivo **application.properties**, configura la conexión a PostgreSQL en el contenedor Docker. 
 
 
         spring.datasource.url=jdbc:postgresql://localhost:5432/demo
@@ -819,177 +800,389 @@ En el archivo **application.properties**, configura la conexión a PostgreSQL en
         spring.jpa.properties.hibernate.format_sql=true
 
 
-* Opción 2: Utilizar la IP del contenedor (si la aplicación está en otro contenedor)
-
->>* Para encontrar la IP del contenedor PostgreSQL:
-    
-        docker inspect postgres-container | grep IPAddress
-    
->>* Utiliza la IP encontrada para configurar la conexión:
-
-
-        spring.datasource.url=jdbc:postgresql://<IP_DEL_CONTENEDOR>:5432/demo
-        spring.datasource.username=admin
-        spring.datasource.password=admin
-        spring.jpa.hibernate.ddl-auto=none
-        spring.jpa.show-sql=true
-        spring.jpa.properties.hibernate.format_sql=true
-
 !!!warning ""
     Todos los cambios que necesitas para ejecutar la aplicación y que acceda a la base de datos que se encuentra en el contenedor son los anteriormente descritos. El resto de ficheros y estructura no se verá afectada.
 
 !!!tip ""
     Una vez tenemos la base de datos restaurada con los datos de **geo_ad** ya podemos ejecutar la aplicación y comprobar que los resultados son los mismos que si accedemos a la base de datos del servidor.
 
-#### 🔹**Operaciones CRUD**{.verde}
+### 🔹CRUD básico
 
-Siguiendo con el ejemplo visto en Spring MVC, de acceder a una base de datos relacional Postgres en un contenedor Docker, en este apartado iremos más allá y veremos como realizar operaciones CRUD, ya que ahora la base de datos está en local y podemos hacer todas las modificaciones que necesitemos.
+Siguiendo con el ejemplo del apartado anterior, que accede a una base de datos relacional **Postgres** en un contenedor **Docker**, en este apartado iremos más allá y veremos como realizar operaciones **CRUD**, ya que ahora la base de datos está en local y podemos hacer todas las modificaciones que necesitemos.
 Como ejemplo, haremos modificaciones sobre la tabla **comarcas**.
 
-El único fichero a modificar será el **controlador (ComarcaController.kt)** y la creación de nuevas **vistas** para visualizar los resultados:
+👉El único fichero a modificar será el **controlador**, ya que Las operaciones CRUD son acciones, y las acciones se gestionan en el Controller. Tambien se crearán nuevas **vistas** para visualizar los resultados con **Thymeleaf**:
 
-1) **Create**
+**ComarcaMvcController.kt**
 
-* **Controlador**
+        package org.example.springjpa.controller
 
-        @Controller
+        import org.example.springjpa.model.Comarca
+        import org.springframework.stereotype.Controller
+        import org.springframework.ui.Model
+        import org.example.springjpa.repository.ComarcaRepository
+        import org.springframework.web.bind.annotation.*
+
+
+        @Controller     //en lugar de @RestController
         @RequestMapping("/comarcas")
-        class ComarcaController(private val comarcaRepository: ComarcaRepository) {
+        class ComarcaControllerEntity(private val ComarcaRepository: ComarcaRepository) {
+            @GetMapping
+            fun listarComarcas(model:Model): String {
+                val comarcas = ComarcaRepository.findAll()
+                model.addAttribute("comarcas", comarcas)
+                return "comarcas" // Nombre de la plantilla HTML
+            }
+
+            @GetMapping("/buscar")
+            fun buscarComarcasPorProvincia(@RequestParam provincia: String, model: Model): String {
+                val comarcas= ComarcaRepository.findComarcasporProvincia(provincia)
+                model.addAttribute("comarcas", comarcas)
+                return "comarcas" // Nombre de la plantilla HTML
+            }
 
             @GetMapping("/nueva")
             fun mostrarFormularioNuevaComarca(model: Model): String {
-                model.addAttribute("comarca", comarca())
-                return "nueva-comarca"
+                model.addAttribute("comarca", Comarca())
+                return "nueva_comarca"
             }
 
             @PostMapping("/nueva")
-            fun guardarComarca(@ModelAttribute comarca: comarca): String {
-                comarcaRepository.save(comarca)
+            fun guardarComarca(@ModelAttribute comarca: Comarca): String {
+                ComarcaRepository.save(comarca)
                 return "redirect:/comarcas"
             }
+
+            @GetMapping("/editar/{id}")
+            fun mostrarFormularioEditarComarca(
+                @PathVariable id: String,
+                model: Model
+            ): String {
+
+                val comarca = ComarcaRepository.findById(id)
+                    .orElseThrow { IllegalArgumentException("Comarca no encontrada: $id") }
+
+                model.addAttribute("comarca", comarca)
+                return "editar_comarca"
+            }
+
+            @PostMapping("/editar/{id}")
+            fun actualizarComarca(
+                @PathVariable id: String,
+                @ModelAttribute comarca: Comarca
+            ): String {
+
+                val comarcaExistente = ComarcaRepository.findById(id)
+                    .orElseThrow { IllegalArgumentException("Comarca no encontrada: $id") }
+
+                // Solo se actualizan los campos editables
+                comarcaExistente.provincia = comarca.provincia
+
+                ComarcaRepository.save(comarcaExistente)
+
+                return "redirect:/comarcas"
+            }
+
+            @GetMapping("/eliminar/{id}")
+            fun eliminarComarca(@PathVariable id: String): String {
+                if (!ComarcaRepository.existsById(id)) {
+                    throw IllegalArgumentException("Comarca no encontrada: $id")
+                }
+                ComarcaRepository.deleteById(id)
+                return "redirect:/comarcas"
+            }
+
         }
 
-* **Vista (nueva-comarca.html)**
+👉Creamos **las vistas** que permiten gestionar las operaciones CRUD
+
+![alt text](image-31.png)
+
+* **nueva_comarca.html**
 
         <!DOCTYPE html>
         <html xmlns:th="http://www.thymeleaf.org">
-
         <head>
-            <title>Nueva Comarca</title>
+        <meta charset="UTF-8">
+        <title>Nueva Comarca</title>
         </head>
         <body>
-            <h1>Nueva Comarca</h1>
-            <form th:action="@{/comarcas/nueva}" th:object="${comarca}" method="post">
-                <label for="nom_c">Nombre:</label>
-                <input type="text" id="nom_c" name="nom_c" th:value="*{nom_c}" required><br>
-                
-                <label for="provincia">Provincia:</label>
-                <input type="text" id="provincia" name="provincia" th:value="*{provincia}" required><br>
-                
-                <button type="submit">Guardar</button>
-            </form>
+
+        <h1>Nueva Comarca</h1>
+
+        <form th:action="@{/comarcas/nueva}" th:object="${comarca}" method="post">
+
+            <label for="nomC">Nombre:</label>
+            <input type="text" th:field="*{nomC}" required>
+            <br>
+
+            <label for="provincia">Provincia:</label>
+            <input type="text" th:field="*{provincia}" required>
+            <br>
+
+            <button type="submit">Guardar</button>
+
+        </form>
+
         </body>
         </html>
 
-2) **Read**
 
-* **Controlador**: Ya implementado en el ejercicio anterior.
-
-    @GetMapping
-    fun listarComarcas(model: Model): String {
-        val comarcas = comarcaRepository.findAll()
-        model.addAttribute("comarcas", comarcas)
-        return "comarcas"
-    }
-
-* **Vista (comarcas.html)**: Ya creada en el ejercicio anterior.
-
-3) **Update**
-
-* **Controlador**
-  
-        @GetMapping("/editar/{id}")
-        fun mostrarFormularioEditarComarca(@PathVariable id: String, model: Model): String {
-            val comarca = comarcaRepository.findById(id).orElseThrow { IllegalArgumentException("Comarca no encontrada: $id") }
-            model.addAttribute("comarca", comarca)
-            return "editar-comarca"
-        }
-
-        @PostMapping("/editar/{id}")
-        fun actualizarComarca(@PathVariable id: String, @ModelAttribute comarca: comarca): String {
-            if (!comarcaRepository.existsById(id)) {
-                throw IllegalArgumentException("Comarca no encontrada: $id")
-            }
-            comarcaRepository.save(comarca)
-            return "redirect:/comarcas"
-        }
-
-* **Vista (editar-comarca.html)**
+* **editar_comarca.html**
 
         <!DOCTYPE html>
         <html xmlns:th="http://www.thymeleaf.org">
-
         <head>
+            <meta charset="UTF-8">
             <title>Editar Comarca</title>
         </head>
         <body>
-            <h1>Editar Comarca</h1>
-            <form th:action="@{/comarcas/editar/{id}(id=${comarca.nom_c})}" th:object="${comarca}" method="post">
-                <label for="nom_c">Nombre:</label>
-                <input type="text" id="nom_c" name="nom_c" th:value="*{nom_c}" readonly><br>
-                
-                <label for="provincia">Provincia:</label>
-                <input type="text" id="provincia" name="provincia" th:value="*{provincia}" required><br>
-                
-                <button type="submit">Actualizar</button>
-            </form>
+
+        <h1>Editar Comarca</h1>
+
+        <form th:action="@{/comarcas/editar/{id}(id=${comarca.nomC})}"
+            th:object="${comarca}"
+            method="post">
+
+            <label for="nomC">Nombre:</label>
+            <input type="text" th:field="*{nomC}" readonly>
+            <br>
+
+            <label for="provincia">Provincia:</label>
+            <input type="text" th:field="*{provincia}" required>
+            <br>
+
+            <button type="submit">Actualizar</button>
+
+        </form>
+
         </body>
         </html>
 
-4) **Delete**
+* **eliminar_comarca.html**     
 
-* **Controlador**
+        <!DOCTYPE html>
+        <html xmlns:th="http://www.thymeleaf.org">
+        <head>
+            <meta charset="UTF-8">
+            <title>Eliminar Comarca</title>
+        </head>
+        <body>
 
-        @GetMapping("/eliminar/{id}")
-        fun eliminarComarca(@PathVariable id: String): String {
-            if (!comarcaRepository.existsById(id)) {
-                throw IllegalArgumentException("Comarca no encontrada: $id")
-            }
-            comarcaRepository.deleteById(id)
-            return "redirect:/comarcas"
-        }
+        <h1>Eliminar Comarca</h1>
 
-* **Vista**  (Modificar comarcas.html para agregar la opción de eliminar)
+        <p>¿Estás seguro de que deseas eliminar la siguiente comarca?</p>
 
+        <ul>
+            <li><strong>Nombre:</strong> <span th:text="${comarca.nomC}">Nombre</span></li>
+            <li><strong>Provincia:</strong> <span th:text="${comarca.provincia}">Provincia</span></li>
+        </ul>
+
+        <form th:action="@{/comarcas/eliminar/{id}(id=${comarca.nomC})}" method="post">
+            <button type="submit">Sí, eliminar</button>
+            <a th:href="@{/comarcas}">Cancelar</a>
+        </form>
+
+        </body>
+        </html>
+
+👉Modificamos la vista **comarcas.html** que muestra todas las comarcas y permite acceder al resto de operaciones del CRUD.
+
+
+        <!DOCTYPE html>
+        <html xmlns:th="http://www.thymeleaf.org">
+        <head>
+        <title>Lista de Comarcas</title>
+        </head>
+        <body>
+        <h1>Lista de Comarcas</h1>
+        <table border="1">
+        <tr>
+            <th>Nombre</th>
+            <th>Provincia</th>
+            <th>Acciones</th>
+
+        </tr>
         <tr th:each="comarca : ${comarcas}">
-            <td th:text="${comarca.nom_c}">ID</td>
+            <td th:text="${comarca.nomC}">Nombre</td>
             <td th:text="${comarca.provincia}">Provincia</td>
             <td>
-                <a th:href="@{/comarcas/editar/{id}(id=${comarca.nom_c})}">Editar</a>
-                <a th:href="@{/comarcas/eliminar/{id}(id=${comarca.nom_c})}" onclick="return confirm('¿Estás seguro?')">Eliminar</a>
+            <a th:href="@{/comarcas/editar/{id}(id=${comarca.nomC})}">Editar</a>
+            <a th:href="@{/comarcas/eliminar/{id}(id=${comarca.nomC})}">Eliminar</a>
             </td>
         </tr>
 
+        </table>
+        </body>
+        </html>
 
-    ---
+👉El resultado sería el siguiente:
+
+| URL | Captura |
+|-----|---------|
+|  [http://localhost:8080/comarcas](http://localhost:8080/comarcas) | ![Listado](image-26.png) |
+|  [http://localhost:8080/comarcas/nueva](http://localhost:8080/comarcas/nueva) | ![Nueva](image-27.png) |
+|  [http://localhost:8080/comarcas/editar/ComarcaNueva](http://localhost:8080/comarcas/editar/ComarcaNueva) | ![Editar](image-28.png) |
+|  [http://localhost:8080/comarcas/eliminar/ComarcaNueva](http://localhost:8080/comarcas/eliminar/ComarcaNueva) | ![Eliminar](image-30.png) |
+
+
+### 🔹DTO (Data Transfer Object)
+
+Hasta ahora, los ejemplos mostraban cómo devolver directamente las entidades desde el controlador. Aunque esto funciona, no es una buena práctica en aplicaciones reales, ya que expone el modelo de la base de datos y puede provocar problemas de seguridad y mantenimiento.
+
+En este ejemplo se introduce el uso de DTO (Data Transfer Object) para separar las entidades JPA de los datos que se envían al cliente.
+
+Hasta ahora hemos visto que  el **Controller** llama directamente al **Repository**. Al introducir DTO, **se añade la capa Service** porque ahora tenemos una nueva responsabilidad.
+En resumen, el repositorio sigue trabajando con entidades, el servicio transforma esas entidades en DTO y el controlador devuelve los DTO al cliente.
+
+**Hasta ahora el Controller**|**Con Service + DTO**, el objetivo es
+-----------------------------|------------------------------------
+- Accede directamente al Repository|- El controller solo gestiona peticiones y vistas
+- Trabaja con entidades JPA|- La lógica de negocio y transformación va al Service
+- Decide qué datos se muestran en la vista|
+ BD → Entity → Repository → Controller → Vista| BD → Entity → Repository → Service → DTO → Controller → Vista
+
+**Cuándo utilizar DTO en las operaciones CRUD**{.azul}
+
+Los DTO se utilizan para leer y comunicar datos, no para persistirlos:
+
+➕ CREATE
+
+- En crear, normalmente se puede usar directamente la entidad; el DTO **solo hace falta** si el formulario es distinto.
+
+
+🔍 READ
+
+- Al listar o mostrar datos, **es mejor usar DTO**, porque los datos salen de la aplicación.
+
+✏️ UPDATE
+
+- Al editar, el DTO se usa cuando **no** queremos que se puedan **cambiar todos los campos**.
+
+🗑️ DELETE
+
+- Al borrar **no** se usa DTO, porque solo se pasa el identificador.
+
+
+**Cambios que se introducen en cada capa**{.azul}
+
+👉**Paquetes que <span style="color:blue">NO</span> cambian al usar DTO**
+
+- **model** → Las entidades JPA (@Entity) siguen siendo las mismas.
+
+- **repository** → Continúa trabajando con entidades y Spring Data JPA.
+
+👉**Paquetes que <span style="color:blue">SÍ</span> cambian al usar DTO**
+
+
+- **dto** (nuevo paquete) → No depende de JPA y No tiene anotaciones
+
+**ComarcaDTO.kt**
+
+        package org.example.springjpa.dto
+
+        data class ComarcaDTO(
+            val nomC: String,         //Cambiamos nom_c → nomC (más claro para la API)
+            val provincia: String?
+        )
 
 
 
-#### 🔹**Ejemplo ampliado**{.azul} 
+- **service** (nuevo paquete) → Aquí es donde introducimos DTO correctamente.
 
-Para practicar la funcionalidad de Spring Data JPA vamos a seguir con el ejemplo **PrimerSpringMVC**. 
+**ComarcaService.kt**
+
+        package org.example.springjpa.service
+
+        import org.example.springjpa.dto.ComarcaDTO
+        import org.example.springjpa.repository.ComarcaRepository
+        import org.springframework.stereotype.Service
+
+        @Service
+        class ComarcaService(
+            private val comarcaRepository: ComarcaRepository //inyecta el Repository
+        ) {
+
+            /**
+            * Devuelve el listado completo de comarcas.
+            * Se define en la capa Service para separar la lógica de negocio
+            * del controller y devolver los datos ya transformados en DTO,
+            * evitando que la vista trabaje directamente con entidades.
+            */
+            fun obtenerComarcas(): List<ComarcaDTO> {   //los datos van a salir hacia la vista
+                return comarcaRepository.findAll()
+                    .map { comarca ->     //Se usa map para transformar cada entidad en un DTO
+                        ComarcaDTO(       //Se seleccionan solo los campos necesarios
+                            nomC = comarca.nomC, //Se pueden renombrar campos
+                            provincia = comarca.provincia
+                        )
+                    }
+            }
+
+            
+            // Método específico para buscar comarcas por provincia.
+            //Se define para que el controller no acceda al repository
+            // y para centralizar la conversión Entity → DTO.
+
+            fun obtenerComarcasPorProvincia(provincia: String): List<ComarcaDTO> {
+                return comarcaRepository.findByProvincia(provincia)
+                    .map {
+                        ComarcaDTO(
+                            nomC = it.nomC,
+                            provincia = it.provincia ?: ""
+                        )
+                    }
+             }
+        }
+
+     
+
+- **controller** → Cambiamo sel conrolador. Ahora devuelve DTO
+
+**ComarcaRestController.kt**
+
+        package org.example.springjpa.controller
+
+        import org.example.springjpa.dto.ComarcaDTO
+        import org.example.springjpa.service.ComarcaService
+        import org.springframework.web.bind.annotation.*
+
+        @RestController
+        @RequestMapping("/api/comarcas")
+        class ComarcaController(
+            private val comarcaService: ComarcaService
+        ) {
+
+            // Listado general
+            @GetMapping
+            fun obtenerComarcas(): List<ComarcaDTO> =
+                comarcaService.obtenerComarcas()
+
+            // Búsqueda por provincia
+            @GetMapping("/buscar")
+            fun obtenerComarcasPorProvincia(
+                @RequestParam provincia: String
+            ): List<ComarcaDTO> =
+                comarcaService.obtenerComarcasPorProvincia(provincia)
+        }
+
+![alt text](image-35.png)
+
+!!!Tip ""
+    El DTO no afecta a cómo se accede a la aplicación, sino a qué información se devuelve y cómo se presenta.
+
+-----------
+
+### 🔹Ampliación (todas las Entidades)
+
+Para practicar la funcionalidad de Spring Data JPA vamos a seguir con el ejemplo **SpringJPA**. 
 Recordemos que la aplicación accede a la base de datos local en **Docker**.
-En este ejemplo vamos a mapear las 3 tablas de la base de datos: **comarca, poblacio e institut** y a realizar los cambios necesarios para crear algunas consultas y operaciones CRUD.
+En este ejemplo vamos a mapear las 3 tablas de la base de datos: **comarca, poblacio e institut** y a realizar los cambios necesarios para crear algunas consultas y operaciones CRUD. Utilizaremos Thymeleaf para mostrar los resultados.
 
 
-
-**Modelo (Entidad JPA)**{.verde}
-
-
-* Entidad **Comarca**. 
+* Entidad **Comarca**. Ya la teníamos creada en el ejemplo anterior.
   
-  >La única diferencia con el ejemplo que tenemos es que mapea el nombre de la columna nom_c por **nomC** para evitar problemas de convenció de nombres.
-
+  
         import jakarta.persistence.*
 
             @Entity
@@ -1010,7 +1203,7 @@ En este ejemplo vamos a mapear las 3 tablas de la base de datos: **comarca, pobl
 
         @Entity
         @Table(name = "poblacio")
-        data class poblacio(
+        class poblacio(
             @Id
             @Column(name = "cod_m")
             val codM: Int = 0,
@@ -1038,7 +1231,7 @@ En este ejemplo vamos a mapear las 3 tablas de la base de datos: **comarca, pobl
 
             @ManyToOne //clave ajena a comarca
             @JoinColumn(name = "nom_c", referencedColumnName = "nom_c")
-            val comarca: comarca? = null
+            val comarca: Comarca? = null
         )
 
 * Entidad **Institut**
@@ -1069,22 +1262,23 @@ En este ejemplo vamos a mapear las 3 tablas de la base de datos: **comarca, pobl
             val poblacio: poblacio? = null
         )
 
-**Repositorio**{.verde}
 
 * Repositorio para Comarca: **ComarcaRepository**. 
 
-        import org.example.primerspringmvc.model.comarca
+        package org.example.springjpa.repository
+
+        import org.springframework.data.jpa.repository.Query
+        import org.springframework.data.repository.query.Param
+        import org.example.springjpa.model.Comarca
         import org.springframework.data.jpa.repository.JpaRepository
         import org.springframework.stereotype.Repository
 
 
         @Repository
-            
-            interface ComarcaRepository : JpaRepository<comarca, String> {
-            
-            // Obtener comarcas de una provincia
-            fun findByProvincia(provincia: String): List<comarca>
-
+        interface ComarcaRepository : JpaRepository<Comarca, String> {
+            @Query("SELECT c FROM Comarca c WHERE c.provincia = :provincia")
+            fun findComarcasporProvincia(@Param("provincia") provincia: String): List<Comarca>
+            fun findByProvincia(provincia: String): List<Comarca>
         }
 
 * Repositorio para Institut: **InstitutRepository**
@@ -1126,37 +1320,13 @@ En este ejemplo vamos a mapear las 3 tablas de la base de datos: **comarca, pobl
         }     
 
 
-**Controlador**{.verde}
 
-* ComarcaController
-       
-        import org.example.primerspringmvc.model.comarca
-        import org.springframework.stereotype.Controller
-        import org.example.primerspringmvc.repository.*
-        import org.springframework.ui.Model
-        import org.springframework.web.bind.annotation.*
+* Controlador para Institut: **InstitutMvcController**
 
-        // Muestra todas las poblaciones
-        @GetMapping
-        fun listarTodasPoblacions(model: Model): String {
-            val poblacions = poblacioRepository.findAll()
-            model.addAttribute("poblacions", poblacions)
-            return "poblacions" // Vista Thymeleaf para mostrar todas las poblaciones
-        }
-
-        // Muestra las poblaciones por comarca
-        @GetMapping("/por-comarca")
-        fun listarPoblacionsPorComarca(@RequestParam comarca: String, model: Model): String {
-            val poblacions = poblacioRepository.findByComarcaNomC(comarca)
-            model.addAttribute("poblacions", poblacions)
-            return "poblacions" // Vista Thymeleaf para mostrar las poblaciones por comarca
-        }
+        package org.example.springjpa.controller
 
 
-* InstitutController
-
-        import org.example.primerspringmvc.model.institut
-        import org.example.primerspringmvc.repository.InstitutRepository
+        import org.example.springjpa.repository.InstitutRepository
         import org.springframework.stereotype.Controller
         import org.springframework.ui.Model
         import org.springframework.web.bind.annotation.*
@@ -1207,92 +1377,47 @@ En este ejemplo vamos a mapear las 3 tablas de la base de datos: **comarca, pobl
                 model.addAttribute("instituts", institutsConPoblacionSuperiorA)
                 return "instituts" // Plantilla para mostrar la lista de institutos
             }
-        }   
+        }
 
-* PoblacioController
+* Controlador para Poblacio: **PoblacioMvcController**
 
-            import org.example.primerspringmvc.repository.PoblacioRepository
-            import org.springframework.stereotype.Controller
-            import org.springframework.ui.Model
-            import org.springframework.web.bind.annotation.*
+        package org.example.springjpa.controller
 
-
-            @Controller
-            @RequestMapping("/poblacions")
-            class PoblacioController(private val poblacioRepository: PoblacioRepository) {
-
-                // Muestra todas las poblaciones
-                @GetMapping
-                fun listarTodasPoblacions(model: Model): String {
-                    val poblacions = poblacioRepository.findAll()
-                    model.addAttribute("poblacions", poblacions)
-                    return "poblacions" // Vista Thymeleaf para mostrar todas las poblaciones
-                }
-
-                // Muestra las poblaciones por comarca
-                @GetMapping("/por-comarca")
-                fun listarPoblacionsPorComarca(@RequestParam comarca: String, model: Model): String {
-                    val poblacions = poblacioRepository.findByComarcaNomC(comarca)
-                    model.addAttribute("poblacions", poblacions)
-                    return "poblacions" // Vista Thymeleaf para mostrar las poblaciones por comarca
-                }
-
-                @GetMapping("/por-provincia")
-                fun listarPoblacionsPorProvincia(@RequestParam provincia: String, model: Model): String {
-                    val poblacions = poblacioRepository.findByComarcaProvincia(provincia)
-                    model.addAttribute("poblacions", poblacions)
-                    return "poblacions" // Vista Thymeleaf para mostrar las poblaciones por comarca
-                }
-            }    
+        import org.example.springjpa.repository.PoblacioRepository
+        import org.springframework.stereotype.Controller
+        import org.springframework.ui.Model
+        import org.springframework.web.bind.annotation.*
 
 
-**Vistas Thymeleaf**{.verde}
+        @Controller
+        @RequestMapping("/poblacions")
+        class PoblacioController(private val poblacioRepository: PoblacioRepository) {
 
-* Vista **comarcas.html**
+            // Muestra todas las poblaciones
+            @GetMapping
+            fun listarTodasPoblacions(model: Model): String {
+                val poblacions = poblacioRepository.findAll()
+                model.addAttribute("poblacions", poblacions)
+                return "poblacions" // Vista Thymeleaf para mostrar todas las poblaciones
+            }
 
-        <!DOCTYPE html>
-        <html xmlns:th="http://www.thymeleaf.org">
-        <head>
-            <title>Lista de Comarcas</title>
-        </head>
-        <body>
-        <h1>Lista de Comarcas</h1>
-        <table border="1">
-            <tr>
-                <th>Comarca</th>
-                <th>Provincia</th>
+            // Muestra las poblaciones por comarca
+            @GetMapping("/por-comarca")
+            fun listarPoblacionsPorComarca(@RequestParam comarca: String, model: Model): String {
+                val poblacions = poblacioRepository.findByComarcaNomC(comarca)
+                model.addAttribute("poblacions", poblacions)
+                return "poblacions" // Vista Thymeleaf para mostrar las poblaciones por comarca
+            }
 
-            </tr>
-            <tr th:each="comarca : ${comarcas}">
-                <td th:text="${comarca.nomC}">Comarca</td>
-                <td th:text="${comarca.provincia}">Provincia</td>
+            @GetMapping("/por-provincia")
+            fun listarPoblacionsPorProvincia(@RequestParam provincia: String, model: Model): String {
+                val poblacions = poblacioRepository.findByComarcaProvincia(provincia)
+                model.addAttribute("poblacions", poblacions)
+                return "poblacions" // Vista Thymeleaf para mostrar las poblaciones por comarca
+            }
+        }
 
-            </tr>
-        </table>
-        </body>
-        </html>
 
-* Vista **nueva-comarca.html**
-
-        <!DOCTYPE html>
-        <html xmlns:th="http://www.thymeleaf.org">
-
-        <head>
-        <title>Nueva Comarca</title>
-        </head>
-        <body>
-        <h1>Nueva Comarca</h1>
-        <form th:action="@{/comarcas/nueva}" th:object="${comarca}" method="post">
-        <label for="nomC">Comarca:</label>
-        <input type="text" id="nomC" name="nomC" th:value="*{nomC}" required><br>
-
-        <label for="provincia">Provincia:</label>
-        <input type="text" id="provincia" name="provincia" th:value="*{provincia}" required><br>
-
-        <button type="submit">Guardar</button>
-        </form>
-        </body>
-        </html>        
 
 * Vista **instituts.html**
 
@@ -1361,21 +1486,165 @@ En este ejemplo vamos a mapear las 3 tablas de la base de datos: **comarca, pobl
         </body>
         </html>
 
-**Con esta configuración podemos listar los siguientes ejemplos**{.verde}:
+**Con esta configuración podemos listar los siguientes ejemplos**{.azul}:
 
-* Todos los institutos: http://localhost:8888/instituts
-* Todas las poblaciones: http://localhost:8888/poblacions
-* Todas las comarcas: http://localhost:8888/comarcas
-* Listar institutos de una población: http://localhost:8888/instituts/por-poblacio?poblacio=Gandia
-* Listar institutos de una comarca: http://localhost:8888/instituts/por-comarca?comarca=Safor
-* Listar institutos de una provincia: http://localhost:8888/instituts/por-provincia?provincia=Alacant
-* Listar comarcas de una provincia: http://localhost:8888/comarcas/por-provincia?provincia=Alacant
-* Listar poblaciones de una comarca http://localhost:8888/poblacions/por-comarca?comarca=Safor
-* Listar poblaciones de una provincia: http://localhost:8888/poblacions/por-provincia?provincia=Alacant
-* Listar institutos con población superior a un valor: http://localhost:8888/instituts/poblacion-superior?poblacio=20000
+* Todos los institutos: [http://localhost:8080/instituts](http://localhost:8080/instituts)
+* Todas las poblaciones: [http://localhost:8080/poblacions](http://localhost:8080/poblacions)
+* Todas las comarcas: [http://localhost:8080/comarcas](http://localhost:8080/comarcas)
+* Listar institutos de una población: [http://localhost:8080/instituts/por-poblacio?poblacio=Gandia](http://localhost:8080/instituts/por-poblacio?poblacio=Gandia)
+* Listar institutos de una comarca: [http://localhost:8080/instituts/por-comarca?comarca=Safor](http://localhost:8080/instituts/por-comarca?comarca=Safor)
+* Listar institutos de una provincia: [http://localhost:8080/instituts/por-provincia?provincia=Alacant](http://localhost:8080/instituts/por-provincia?provincia=Alacant)
+* Listar comarcas de una provincia: [http://localhost:8080/comarcas/por-provincia?provincia=Alacant](http://localhost:8080/comarcas/por-provincia?provincia=Alacant)
+* Listar poblaciones de una comarca [http://localhost:8080/poblacions/por-comarca?comarca=Safor](http://localhost:8080/poblacions/por-comarca?comarca=Safor)
+* Listar poblaciones de una provincia: [http://localhost:8080/poblacions/por-provincia?provincia=Alacant](http://localhost:8080/poblacions/por-provincia?provincia=Alacant)
+* Listar institutos con población superior a un valor: [http://localhost:8080/instituts/poblacion-superior?poblacio=20000](http://localhost:8080/instituts/poblacion-superior?poblacio=20000)
 
 ![](listar_instituts.png)
 
+
+**Transformación del ejemplo utilizando DTO**{.azul}
+
+- Las entidades NO cambian
+- Los repositorios NO cambian
+- Se añaden DTO + Service
+- Los Controller pasan DTO a la vista
+
+En este ejemplo mostraremos los resultados en JSON y por tanto utilizaremos los controladores REST.
+
+👉**Nuevo paquete dto**
+
+
+    package org.example.springjpa.dto
+
+    data class ComarcaDTO(
+        val nomC: String,         
+        val provincia: String?
+    )
+
+    package org.example.springjpa.dto
+
+
+    data class PoblacioDTO(
+        val codM: Int,
+        val nom: String,
+        val poblacio: Int?,
+        val comarcaNom: String
+    )
+
+
+    package org.example.springjpa.dto
+
+    data class InstitutDTO(
+        val codi: String,
+        val nom: String?,
+        val adreca: String?,
+        val poblacioNom: String,
+        val comarcaNom: String,
+        val provincia: String
+    )
+
+
+👉**Nuevo paquete PoblacioService**
+
+    package org.example.springjpa.service
+
+    import org.example.springjpa.dto.PoblacioDTO
+    import org.example.springjpa.repository.PoblacioRepository
+    import org.springframework.stereotype.Service
+
+
+    @Service
+    class PoblacioService(
+        private val poblacioRepository: PoblacioRepository
+    ) {
+
+        fun obtenerPoblacionesPorComarca(nomC: String): List<PoblacioDTO> =
+            poblacioRepository.findByComarcaNomC(nomC).map {
+                PoblacioDTO(
+                    codM = it.codM,
+                    nom = it.nom,
+                    poblacio = it.poblacio,
+                    comarcaNom = it.comarca?.nomC ?: ""
+                )
+            }
+    }
+
+👉**Nuevo paquete InstitutService**
+
+        package org.example.springjpa.service
+
+        import org.example.springjpa.dto.InstitutDTO
+        import org.example.springjpa.repository.InstitutRepository
+        import org.springframework.stereotype.Service
+
+        @Service
+        class InstitutService(
+            private val institutRepository: InstitutRepository
+        ) {
+
+            fun obtenerInstitutosPorProvincia(provincia: String): List<InstitutDTO> =
+                institutRepository.findByPoblacioComarcaProvincia(provincia)
+                    .map {
+                        InstitutDTO(
+                            codi = it.codi,
+                            nom = it.nom,
+                            adreca = it.adreca,
+                            poblacioNom = it.poblacio?.nom ?: "",
+                            comarcaNom = it.poblacio?.comarca?.nomC ?: "",
+                            provincia = it.poblacio?.comarca?.provincia ?: ""
+                        )
+                    }
+        }
+
+
+👉**Nuevo Paquete InstitutRestcontroller**
+
+    package org.example.springjpa.controller
+
+    import org.example.springjpa.service.InstitutService
+    import org.example.springjpa.dto.InstitutDTO
+    import org.springframework.web.bind.annotation.*
+
+    @RestController
+    @RequestMapping("/api/instituts")
+    class InstitutRestController(
+        private val institutService: InstitutService
+    ) {
+
+        @GetMapping("/provincia")
+        fun obtenirPerProvincia(
+            @RequestParam provincia: String
+        ): List<InstitutDTO> =
+            institutService.obtenerInstitutosPorProvincia(provincia)
+    }
+
+👉**Nuevo Paquete PoblacioRestcontroller**  
+
+        package org.example.springjpa.controller
+
+        import org.example.springjpa.dto.PoblacioDTO
+        import org.example.springjpa.service.PoblacioService
+        import org.springframework.web.bind.annotation.*
+
+        @RestController
+        @RequestMapping("/api/poblacions")
+        class PoblacioRestController(
+            private val poblacioService: PoblacioService
+        ) {
+
+            // Obtener poblaciones de una comarca
+            @GetMapping("/comarca")
+            fun obtenirPerComarca(
+                @RequestParam nomC: String
+            ): List<PoblacioDTO> =
+                poblacioService.obtenerPoblacionesPorComarca(nomC)
+
+            
+        }
+
+
+* Listar las poblaciones de la Comarca del Ports: [http://localhost:8080/api/poblacions/comarca?nomC=Ports](http://localhost:8080/api/poblacions/comarca?nomC=Ports)
+* Listar las poblaciones de la provincia de València: [http://localhost:8080/api/poblacions/provincia?provincia=Val%C3%A8ncia](Listar las poblaciones)
 
 
 ## 🔹Spring Data MongoDB
