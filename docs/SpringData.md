@@ -361,7 +361,7 @@ Siguiendo con nuestro ejemplo de geo_ad, la consulta para buscar Institutos en u
     A medida que las relaciones aumentan en complejidad, los nombres de los métodos pueden volverse difíciles de leer y mantener.
 
 
-## 🔹![ ](image-32.png) Ejemplo con  Postgres (una Entidad)
+## 🔹![ ](image-32.png) Ejemplo con  Postgres (Entidad)
 
 En este ejemplo vamos a crear una aplicación sencilla que acceda a una base de datos Postgres. Para ello utilizaremos la base de datos **geo_ad**, que ya conocemos de temas anteriores, y que se encuentra en el servidor externo **89.36.214.106**.
 La aplicación simplemente mostrará la información de la tabla **comarcas**.
@@ -765,7 +765,7 @@ docker exec -it postgres-container psql -U admin -d demo
 
 1) **Restaurar la base de datos en el contenedor con DBeaver**:
 
-Vamos a restaurar la base de datos **geo_ad** en la base de datos **demo**, que hemos creado con docker. Para ello os he dejado un archivo **dump**, en el apartado **recursos de Aules**, que contiene el backup de geo_ad. Lo siguiente será restaurar este backup en **demo**, siguiendo esto pasos:
+Vamos a restaurar la base de datos **geo_ad** en la base de datos **demo**, que hemos creado con docker. Para ello os he dejado un archivo **dump**, en **Aules**, que contiene el backup de geo_ad. Lo siguiente será restaurar este backup en **demo**, siguiendo esto pasos:
 
 !!!note ""
       * Crear una **nueva conexión** en DBeaver al contenedor local:
@@ -779,7 +779,7 @@ Vamos a restaurar la base de datos **geo_ad** en la base de datos **demo**, que 
 
         ![](restore_1.png) 
 
-       * **Archivo de respaldo**: Selecciona el archivo de respaldo exportado, disponible en el aula virtual en la carpeta de recursos del tema.
+       * **Archivo de respaldo**: Selecciona el archivo de respaldo exportado, disponible en Aules.
 
         Pulsa Start y espera a que termine la restauración. Una vez terminado selecciona cancelar para que no vuelva a realizar la restauración.
 
@@ -1173,7 +1173,7 @@ Los DTO se utilizan para leer y comunicar datos, no para persistirlos:
 
 -----------
 
-### 🔹Ampliación (todas las Entidades)
+### 🔹Ampliación (BD completa)
 
 Para practicar la funcionalidad de Spring Data JPA vamos a seguir con el ejemplo **SpringJPA**. 
 Recordemos que la aplicación accede a la base de datos local en **Docker**.
