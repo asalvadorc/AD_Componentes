@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://asalvadorc.github.io/AD_Componentes/SpringMVC/" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>🔹 Spring MVC - AD - Accés a Dades</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="../css/extra.css" rel="stylesheet" />
+        <link href="../css/copy-button.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "\ud83d\udd39 Spring MVC";
+        var mkdocs_page_input_path = "SpringMVC.md";
+        var mkdocs_page_url = "/AD_Componentes/SpringMVC/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="..">
+          <img src="../assets/logocaminas.png" class="logo" alt="Logo"/>
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption"><span class="caption-text">Componentes</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../Spring/">🔹 Spring Framework</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../Anotaciones/">🔹 Anotaciones</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../SpringBoot/">🔹 SpringBoot</a>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">🔹 Spring MVC</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#ejemplo-con-spring-mvc">🔹Ejemplo con Spring MVC</a>
+    </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../SpringData/">🔹 Spring Data</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../Docker/">🔹 Docker</a>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">AD - Accés a Dades</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">Componentes</li>
+      <li class="breadcrumb-item active">🔹 Spring MVC</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="spring-mvc">🔹Spring MVC<a class="headerlink" href="#spring-mvc" title="Permanent link">&para;</a></h1>
+<p>Spring MVC es el módulo de Spring orientado al desarrollo de aplicaciones web siguiendo el patrón <strong>Modelo‑Vista‑Controlador</strong>.</p>
+<p>El ejemplo visto en Spring Boot es tan sencillo que no necesita un patrón de diseño especial. Para aplicaciones más complejas necesitamos de un patrón que nos permita crear aplicaciones con un código bien estructurado y más fácil de modificar, así como reutilizar sus componentes en diferentes puntos de la aplicación y que puedan evolucionar de manera independiente.</p>
+<p>Spring MVC forma parte del ecosistema Spring y proporciona toda la infraestructura necesaria para manejar peticiones HTTP, invocar controladores y devolver vistas (HTML, JSON, etc.).</p>
+<p><strong class="azul">El Modelo-Vista-Controlador (MVC)</strong></p>
+<p>El Modelo-Vista-Controlador (MVC) es un patrón de diseño que organiza una aplicación en tres <strong>componentes principales</strong>:</p>
+<ul>
+<li>
+<p><strong>Modelo</strong>: Son los datos. Es responsable de:</p>
+<ul>
+<li>
+<p>Gestionar el estado de la aplicación.</p>
+</li>
+<li>
+<p>Interactuar con la base de datos u otros servicios para obtener y procesar datos.</p>
+</li>
+<li>
+<p>Proveer datos a la vista.</p>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>Vista</strong>: Es lo que ve el usuario. Es responsable de:</p>
+<ul>
+<li>
+<p>Renderizar información en un formato adecuado, como HTML.</p>
+</li>
+<li>
+<p>Mostrar al usuario los resultados de las acciones ejecutadas.</p>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>Controlador</strong>: Actúa como intermediario entre el modelo y la vista. Es responsable de:</p>
+<ul>
+<li>
+<p>Procesar las solicitudes del usuario (peticiones HTTP).</p>
+</li>
+<li>
+<p>Interactuar con el modelo para obtener o modificar datos.</p>
+</li>
+<li>
+<p>Seleccionar y devolver la vista adecuada para responder al usuario.</p>
+<p><img alt="" src="../MVC2.png" /></p>
+</li>
+</ul>
+</li>
+</ul>
+<div class="admonition tip">
+<p class="admonition-title">Flujo de trabajo en MVC</p>
+<p>1) El usuario interactúa con la interfaz (Vista), como enviar un formulario o hacer clic en un enlace.</p>
+<p>2) La petición es enviada al Controlador.</p>
+<p>3) El Controlador procesa la petición, interactúa con el Modelo si es necesario, y selecciona la Vista que debe renderizar la respuesta.</p>
+<p>4) La Vista presenta la respuesta al usuario.</p>
+</div>
+<p><strong class="azul">Arquitectura en capas en Spring</strong></p>
+<p>Spring se organiza siguiendo una arquitectura en capas, cuyo objetivo principal es separar responsabilidades.
+Cada capa tiene una función concreta y se comunica únicamente con las capas adyacentes, lo que permite aplicaciones más mantenibles, escalables y fáciles de entender.</p>
+<p>Las capas más habituales en una aplicación Spring son:</p>
+<ul>
+<li>Capa Controller (Web)</li>
+<li>Capa Service (Negocio)</li>
+<li>Capa Repository (Persistencia)</li>
+<li>Capa Model (Dominio / Entidades)</li>
+<li>Capa View (Representación)</li>
+</ul>
+<p>📌 Esta arquitectura encaja perfectamente con el patrón MVC (Model–View–Controller).</p>
+<p><strong class="azul">Correspondencia Spring ↔ MVC</strong></p>
+<table>
+<thead>
+<tr>
+<th>Capa Spring</th>
+<th>MVC</th>
+<th>Responsabilidad principal</th>
+<th>Detalles</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Controller</strong></td>
+<td><span style="color:#1f77b4"><b>Controller</b></span></td>
+<td>Gestiona las peticiones HTTP</td>
+<td>• Recibe peticiones HTTP<br>• Extrae parámetros<br>• Llama a la capa Service<br>• Devuelve una vista o una respuesta (JSON)<br>📌 No contiene lógica de negocio ni acceso a datos</td>
+</tr>
+<tr>
+<td><strong>Model (Entity)</strong></td>
+<td><span style="color:#2ca02c"><b>Model</b></span></td>
+<td>Representa los datos del dominio</td>
+<td>• Clases que modelan la información del negocio</td>
+</tr>
+<tr>
+<td><strong>Service</strong></td>
+<td><span style="color:#2ca02c"><b>Model</b></span></td>
+<td>Lógica de negocio</td>
+<td>• Aplica reglas y validaciones<br>• Realiza operaciones del negocio<br>• Coordina repositorios</td>
+</tr>
+<tr>
+<td><strong>Repository</strong></td>
+<td><span style="color:#2ca02c"><b>Model</b></span></td>
+<td>Persistencia de datos</td>
+<td>• Acceso a la base de datos<br>• Operaciones CRUD<br>• Aísla la BD del resto de la aplicación</td>
+</tr>
+<tr>
+<td><strong>View</strong></td>
+<td><span style="color:#ff7f0e"><b>View</b></span></td>
+<td>Representación de los datos</td>
+<td>• HTML (Thymeleaf, JSP) en apps web tradicionales<br>• JSON / XML en apps REST<br>📌 En REST, el JSON actúa como la vista</td>
+</tr>
+</tbody>
+</table>
+<p><img alt="alt text" src="../image-6.png" /></p>
+<p><strong class="azul">Anotaciones habituales por capa en Spring</strong></p>
+<table>
+<thead>
+<tr>
+<th>Capa MVC</th>
+<th>Capas Spring incluidas</th>
+<th>Anotaciones habituales</th>
+<th>Función</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span style="color:#1f77b4"><b>Controller</b></span></td>
+<td><span style="color:#1f77b4">Controller</span></td>
+<td><code>@Controller</code><br><code>@RestController</code><br><code>@RequestMapping</code><br><code>@GetMapping</code><br> <code>@RequestParam</code> <br> <code>@PostMapping</code><br><code>@PutMapping</code><br><code>@DeleteMapping</code></td>
+<td>Recibe peticiones HTTP, gestiona rutas y parámetros, llama a Service y devuelve la respuesta</td>
+</tr>
+<tr>
+<td><span style="color:#2ca02c"><b>Model</b></span></td>
+<td><span style="color:#2ca02c">Entity<br>Service<br>Repository</span></td>
+<td><code>@Entity</code>, <code>@Table</code>, <code>@Id</code><br><code>@Service</code>, <code>@Transactional</code><br><code>@Repository</code></td>
+<td>Contiene los datos del dominio, la lógica de negocio y el acceso a la base de datos</td>
+</tr>
+<tr>
+<td><span style="color:#ff7f0e"><b>View</b></span></td>
+<td><span style="color:#ff7f0e">HTML / JSON</span></td>
+<td><em>(sin anotaciones)</em></td>
+<td>Representa los datos al usuario (HTML o JSON)</td>
+</tr>
+</tbody>
+</table>
+<p><strong class="azul">La capa Vista</strong></p>
+<p>En Spring MVC, la vista puede ser un HTML generado con Thymeleaf o una respuesta JSON en una API REST; en ambos casos, cumple la función de View dentro del patrón MVC.</p>
+<table>
+<thead>
+<tr>
+<th>Aspecto</th>
+<th>Descripción</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Función</td>
+<td>Representación de los datos</td>
+</tr>
+<tr>
+<td>Qué se devuelve</td>
+<td>Depende del tipo de aplicación</td>
+</tr>
+<tr>
+<td>Con Thymeleaf / JSP</td>
+<td>Archivo HTML con sintaxis específica para contenido dinámico</td>
+</tr>
+<tr>
+<td>Sin motor de plantillas (REST)</td>
+<td>Datos en formato JSON / XML</td>
+</tr>
+<tr>
+<td>Anotaciones</td>
+<td>No tiene anotaciones propias</td>
+</tr>
+<tr>
+<td>Ubicación (Thymeleaf)</td>
+<td><code>src/main/resources/templates</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong class="azul">Vista con Thymeleaf</strong></p>
+<p>Si usas <strong>Thymeleaf</strong> para la vista, las anotaciones en los archivos de plantilla son prefijos para atributos de HTML. Estos prefijos permiten el manejo dinámico de datos en la vista.</p>
+<p><u>Ejemplo</u></p>
+<pre><code>&lt;h1&gt;Lista de Comarcas&lt;/h1&gt;
+&lt;table&gt;
+    &lt;tr th:each="comarca : ${comarcas}"&gt;
+        &lt;td th:text="${comarca.nombre}"&gt;&lt;/td&gt;
+        &lt;td th:text="${comarca.poblacion}"&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+&lt;/table&gt;
+</code></pre>
+<p>A continuación, se detallan los elementos comunes de las vistas con <strong>Thymeleaf</strong>:</p>
+<ul>
+<li>
+<p><strong>th:text</strong>: Rellena el contenido de un elemento HTML con el valor dinámico.</p>
+<pre><code>&lt;p th:text="${mensaje}"&gt;Mensaje por defecto&lt;/p&gt;
+</code></pre>
+</li>
+<li>
+<p><strong>th:each</strong>: Itera sobre una colección.</p>
+<pre><code>&lt;ul&gt;
+    &lt;li th:each="item : ${items}" th:text="${item}"&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</code></pre>
+</li>
+</ul>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>Esto genera una lista basada en los elementos de la colección items.</p>
+</blockquote>
+</blockquote>
+</blockquote>
+<ul>
+<li>
+<p><strong>th:if</strong> y <strong>th:unless</strong>: Renderiza un contenido condicionalmente.</p>
+<pre><code>&lt;p th:if="${condicion}"&gt;Esto se muestra si la condición es verdadera&lt;/p&gt;
+&lt;p th:unless="${condicion}"&gt;Esto se muestra si la condición es falsa&lt;/p&gt;
+</code></pre>
+</li>
+<li>
+<p><strong>th:href</strong> y <strong>th:src</strong>: Construye enlaces dinámicos para atributos como href o src.</p>
+<pre><code>&lt;a th:href="@{/ruta/{id}(id=${itemId})}"&gt;Ver detalle&lt;/a&gt;
+&lt;img th:src="@{/imagenes/logo.png}" alt="Logo"&gt;
+</code></pre>
+</li>
+<li>
+<p><strong>th:action</strong>: Define la URL para un formulario.</p>
+<pre><code>&lt;form th:action="@{/procesar}" method="post"&gt;
+    &lt;input type="text" name="nombre"&gt;
+    &lt;button type="submit"&gt;Enviar&lt;/button&gt;
+&lt;/form&gt;
+</code></pre>
+</li>
+<li>
+<p><strong>th:value</strong> y <strong>th:field</strong>: Usado para rellenar valores dinámicos en campos de formulario.</p>
+<pre><code>&lt;input type="text" th:field="*{nombre}" /&gt;
+</code></pre>
+</li>
+</ul>
+<!--        
+
+**Vista sin motores de plantilla**{.azul}
+
+Si tu aplicación no utiliza motores de plantillas y solo devuelve datos en formatos como JSON o XML, entonces las vistas suelen ser gestionadas directamente por el controlador. En este caso:
+
+**@RestController** en el controlador garantiza que el contenido se devuelva en el formato adecuado, sin necesidad de vistas explícitas.
+El contenido es generado dinámicamente a través de bibliotecas como Jackson (para JSON).
+
+<u>Ejemplo</u> de un controlador que devuelve JSON:
+
+    @RestController
+    class PersonaRestController {
+        @GetMapping("/api/personas")
+        fun listarPersonas(): List<Persona> {
+            return listOf(
+                Persona(1, "Juan"),
+                Persona(2, "Ana")
+            )
+        }
+    }
+
+-->
+
+<h2 id="ejemplo-con-spring-mvc">🔹Ejemplo con Spring MVC<a class="headerlink" href="#ejemplo-con-spring-mvc" title="Permanent link">&para;</a></h2>
+<p>Al igual que se describe en el apartado de Spring Boot, podemos crear los proyectos Spring MVC de dos maneras:</p>
+<ul>
+<li>
+<p>Mediante una herramienta web online (<a href="https://start.spring.io/">https://start.spring.io/</a>) denominada <strong>Spring Initializr</strong>, donde por medio de unos parámetros de configuración, genera automáticamente un proyecto Maven o Gradle, según elijamos, en un archivo comprimido Zip, con la estructura de la aplicación para ser importada directamente desde un IDE. </p>
+</li>
+<li>
+<p>Mediante un IDE, como Eclipse, IntelliJ...etc, teniendo instalados los plugins necesarios. </p>
+</li>
+</ul>
+<p>En nuestro caso crearemos un proyecto <strong>Maven</strong> de Spring Boot en <strong>IntelliJ</strong>. La estructura general de un proyecto Spring MVC en IntelliJ sería esta:</p>
+<p><img alt="" src="../mvc_estructura.png" /> </p>
+<p>Los pasos a seguir serían:</p>
+<ul>
+<li>Configurar el proyecto</li>
+<li>Añadir las dependencias necesarias.</li>
+<li>Estructurar el proyecto en los componentes MVC.</li>
+<li>Configurar el fichero de propiedades.</li>
+</ul>
+<div class="admonition tip">
+<p class="admonition-title">Enunciado de la aplicación</p>
+<p>En este ejemplo vamos a crear una aplicación sencilla que muestre una lista de nombres de personas, y también permita añadir un nombre de persona nuevo. Todo mediantes <strong>Spring MVC</strong> y <strong>Thymeleaf</strong>.</p>
+</div>
+<p><strong class="azul">Configurar el proyecto</strong></p>
+<p>1) En <strong>IntelliJ</strong> creamos el proyecto y lo configuramos desde <strong>File--&gt;New--&gt;Project</strong>:</p>
+<ul>
+<li>Elige <strong>Spring Boot</strong>.</li>
+<li>
+<p>Configura las siguientes opciones:</p>
+<ul>
+<li>Language: <strong>Kotlin</strong></li>
+<li>Build System: <strong>Maven</strong></li>
+</ul>
+</li>
+<li>
+<p>Especifica un nombre para el proyecto: <strong>PrimerSpringMVCsencillo</strong></p>
+</li>
+<li>Última versión de <strong>JDK</strong></li>
+<li>Última versión de <strong>Java</strong></li>
+</ul>
+<p>2) Posteriormente seleccionamos las <strong>dependencias</strong> necesarias:</p>
+<ul>
+<li><strong>Spring Web</strong> (para el desarrollo de aplicaciones web)</li>
+<li><strong>Thymeleaf</strong> (motor de plantillas para la vista)</li>
+<li><strong>Spring Boot DevTools</strong> (opcional, para facilitar el desarrollo)</li>
+</ul>
+<p>Después de aceptar, y si todo ha ido correctamente, ya tendremos nuestro proyecto creado y preparado para añadir los elementos de programación.</p>
+<table>
+<thead>
+<tr>
+<th><img alt="ref" src="../mvc_sencillo1.png" /></th>
+<th><img alt="ref" src="../mvc_sencillo2.png" /></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>Al iniciar nuestra aplicación, lo primero que observamos es que se crea
+una clase <strong>PrimerSpringMVCsencilloApplication</strong>  que sirve como contenedor para la configuración de la aplicación. No necesita implementar métodos adicionales, ya que Spring Boot se encarga de todo gracias a la anotación <strong>@SpringBootApplication</strong>.</p>
+<p><img alt="ref" src="../mvc_sencillo0.png" /></p>
+<p><strong class="azul">Estructura del proyecto</strong></p>
+<p>La estructura del proyecto podría ser esta:</p>
+<p><img alt="" src="../mvc_estructurasimple.png" /> </p>
+<ul>
+<li>
+<p>En la carperta <strong>src/main/kotlin/org/example/primerspringmvcsencillo</strong> crearemos los paquetes:</p>
+<ul>
+<li>controller</li>
+<li>model</li>
+<li>service</li>
+</ul>
+</li>
+<li>
+<p>En la carperta <strong>src/main/resources/template</strong> crearemos la carpeta <strong>persona</strong> donde añadiremos las vistas que muestren el resultado de la aplicación.</p>
+</li>
+</ul>
+<p><img alt="" src="../mvc_sencillo_estructura.png" /> </p>
+<p><strong class="azul">Implementación de la aplicación</strong></p>
+<p>Ahora ya podemos añadir la programación necesaria para nuestra aplicación siguiendo la estructura MVC creada. Dentro de cada paquete crearemos los siguientes archivos:</p>
+<ul>
+<li><strong>Model/Persona.kt</strong>:</li>
+</ul>
+<p>El modelo Persona es muy simple, solo tendrá un nombre.</p>
+<pre><code>package com.ejemplo.model
+
+data class Persona(
+    val id: Int,
+    val nombre: String
+)
+</code></pre>
+<ul>
+<li><strong>Service/PersonaService.kt</strong>: </li>
+</ul>
+<p>El servicio se encargará de la lógica de negocio. En este caso, solo vamos a mantener una lista de personas en memoria.</p>
+<pre><code>package com.ejemplo.service
+
+import org.example.primerspringmvcsencllo.model.Persona
+import org.springframework.stereotype.Service
+
+@Service
+class PersonaService {
+
+    private val personas = mutableListOf(
+        Persona(1, "Juan"),
+        Persona(2, "Ana"),
+        Persona(3, "Luis")
+    )
+
+    fun obtenerPersonas(): List&lt;Persona&gt; = personas
+
+    fun agregarPersona(persona: Persona) {
+        personas.add(persona)
+    }
+}
+</code></pre>
+<ul>
+<li><strong>Controller/PersonaController.kt</strong></li>
+</ul>
+<p>El controlador maneja las solicitudes de las vistas y realiza la interacción con el servicio.</p>
+<pre><code>package com.ejemplo.controller
+
+import org.example.primerspringmvcsencllo.model.Persona
+import org.example.primerspringmvcsencllo.service.PersonaService
+import org.springframework.stereotype.Controller
+import org.springframework.ui.Model
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestParam
+
+    @Controller
+    class PersonaController(private val personaService: PersonaService) {
+
+        @GetMapping("/personas")
+        fun listarPersonas(model: Model): String {
+            model.addAttribute("personas", personaService.obtenerPersonas())
+            return "persona/listar"
+        }
+
+        @GetMapping("/personas/agregar")
+        fun mostrarFormularioAgregar(): String {
+            return "persona/agregar"
+        }
+
+        @PostMapping("/personas/agregar")
+        fun agregarPersona(@RequestParam nombre: String): String {
+            val persona = Persona(0, nombre)  // ID auto-generado
+            personaService.agregarPersona(persona)
+            return "redirect:/personas"
+        }
+    }
+</code></pre>
+<table>
+<thead>
+<tr>
+<th><img alt="ref" src="../mvc_sencillo4.png" /></th>
+<th><img alt="ref" src="../mvc_sencillo3.png" /></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><strong>Plantillas Thymeleaf</strong></li>
+</ul>
+<p>Para la vista utilizaremos dos plantillas Thymeleaf, una para listar los nombres de la personas y otra para agregar una persona nueva. En la carpeta <strong>src/resources/templates/persona</strong>, crearemos los siguienes archivos html:</p>
+<p>a) Plantilla <strong>listar.html</strong></p>
+<pre><code>&lt;!DOCTYPE html&gt;
+&lt;html xmlns:th="http://www.thymeleaf.org"&gt;
+&lt;head&gt;
+    &lt;title&gt;Lista de Personas&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;h1&gt;Lista de Personas&lt;/h1&gt;
+&lt;ul&gt;
+    &lt;li th:each="persona : ${personas}" th:text="${persona.nombre}"&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;a href="/personas/agregar"&gt;Agregar Persona&lt;/a&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+<p>b) Plantilla <strong>agregar.html</strong></p>
+<p>Esta plantilla proporciona un formulario para agregar una nueva persona.</p>
+<pre><code>&lt;!DOCTYPE html&gt;
+&lt;html xmlns:th="http://www.thymeleaf.org"&gt;
+&lt;head&gt;
+    &lt;title&gt;Agregar Persona&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;h1&gt;Agregar Persona&lt;/h1&gt;
+    &lt;form action="/personas/agregar" method="post"&gt;
+        &lt;label for="nombre"&gt;Nombre:&lt;/label&gt;
+        &lt;input type="text" id="nombre" name="nombre" required/&gt;
+        &lt;button type="submit"&gt;Agregar&lt;/button&gt;
+    &lt;/form&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+<p><img alt="ref" src="../mvc_sencillo5.png" />     </p>
+<p><strong class="azul">Configurar el Archivo application.properties</strong></p>
+<p>En el directorio src/main/resources, configura el archivo <strong>application.properties</strong> con las propiedades básicas:</p>
+<pre><code>spring.thymeleaf.prefix=classpath:/templates/
+spring.thymeleaf.suffix=.html
+server.port=8080
+</code></pre>
+<div class="admonition warning">
+<p>Recuerda que puedes cambiar el puerto si lo tienes ocupado. Puedes probar con el puerto 8888.</p>
+</div>
+<p><strong class="azul">Ejecutar la aplicación</strong></p>
+<p>La aplicación estará disponible en http://localhost:8080. </p>
+<p>Aquí podrás:</p>
+<ul>
+<li>Ver la lista de personas al acceder a <strong>/personas</strong>.</li>
+<li>Agregar una nueva persona a través del formulario en <strong>/personas/agregar</strong>.</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><img alt="" src="../mvc_sencillo6.png" /></th>
+<th><img alt="" src="../mvc_sencillo7.png" /></th>
+<th><img alt="" src="../mvc_sencillo8.png" /></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="admonition-title">Nota</p>
+<p>Gracias a <strong>Spring DevTools</strong>, cualquier cambio que realices en el código (por ejemplo, en las plantillas o en los controladores) se reflejará automáticamente en la aplicación sin tener que reiniciarla manualmente.</p>
+</div>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../SpringBoot/" class="btn btn-neutral float-left" title="🔹 SpringBoot"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../SpringData/" class="btn btn-neutral float-right" title="🔹 Spring Data">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../SpringBoot/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../SpringData/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+      <script src="../js/copy-button.js"></script>
+      <script src="../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>
