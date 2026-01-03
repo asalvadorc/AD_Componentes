@@ -57,6 +57,8 @@ Las capas más habituales en una aplicación Spring son:
 - Capa View (Representación)
 
 
+
+
 📌 Esta arquitectura encaja perfectamente con el patrón MVC (Model–View–Controller).
 
 
@@ -74,7 +76,7 @@ Las capas más habituales en una aplicación Spring son:
 
 ![alt text](image-6.png)
 
-**Anotaciones habituales por capa en Spring**{.azul}
+**Anotaciones habituales por capa**{.azul}
 
 
 | Capa MVC | Capas Spring incluidas | Anotaciones habituales | Función |
@@ -85,36 +87,68 @@ Las capas más habituales en una aplicación Spring son:
 
 **La capa Vista**{.azul}
 
-En Spring MVC, la vista puede ser un HTML generado con Thymeleaf o una respuesta JSON en una API REST; en ambos casos, cumple la función de View dentro del patrón MVC.
+En Spring MVC, la vista puede ser una respuesta **JSON** en una API REST o un HTML generado con **Thymeleaf**; en ambos casos, cumple la función de View dentro del patrón MVC.
+
+* 🧾 **Vista sin Thymeleaf**
+
+Si tu aplicación no utiliza motores de plantillas y solo devuelve datos en formatos como **JSON o XML**, entonces las vistas suelen ser gestionadas directamente por el controlador. En este caso **@RestController**, en el controlador, garantiza que el contenido se devuelva en el formato adecuado, sin necesidad de vistas explícitas.
+El contenido es generado dinámicamente a través de bibliotecas como Jackson (para JSON).
+
+!!!Note "Ejemplo"
+    **Controlador REST**
+
+        @RestController
+        @RequestMapping("/api")
+        class HolaRestController {
+
+            @GetMapping("/hola")
+            fun hola(): Map<String, String> {
+                return mapOf(
+                    "mensaje" to "Hola Alicia"
+                )
+            }
+        }
+
+    **URL**
+
+            http://localhost:8080/api/hola
+
+* 🌿 **Vista con Thymeleaf**
+
+**Thymeleaf** es un motor de plantillas para Java que permite mezclar HTML con datos que vienen del backend (Java/Kotlin) sin perder la estructura HTML.
 
 
-| Aspecto | Descripción |
-|------|-------------|
-| Función | Representación de los datos |
-| Qué se devuelve | Depende del tipo de aplicación |
-| Con Thymeleaf / JSP | Archivo HTML con sintaxis específica para contenido dinámico |
-| Sin motor de plantillas (REST) | Datos en formato JSON / XML |
-| Anotaciones | No tiene anotaciones propias |
-| Ubicación (Thymeleaf) | `src/main/resources/templates` |
+!!!Note "Ejemplo"
+    **Controlador**
+
+        @Controller
+        class HolaController {
+
+            @GetMapping("/hola")
+            fun hola(model: Model): String {
+                model.addAttribute("nombre", "Alicia")
+                return "hola"
+            }
+        }
 
 
+    **Vista**
 
-**Vista con Thymeleaf**{.azul}
+        <!DOCTYPE html>
+        <html xmlns:th="http://www.thymeleaf.org">
+        <body>
+            <h1 th:text="'Hola ' + ${nombre}"></h1>
+        </body>
+        </html>
 
-Si usas **Thymeleaf** para la vista, las anotaciones en los archivos de plantilla son prefijos para atributos de HTML. Estos prefijos permiten el manejo dinámico de datos en la vista.
+    **Resultado en el navegador:**
 
-<u>Ejemplo</u>
-
-    <h1>Lista de Comarcas</h1>
-    <table>
-        <tr th:each="comarca : ${comarcas}">
-            <td th:text="${comarca.nombre}"></td>
-            <td th:text="${comarca.poblacion}"></td>
-        </tr>
-    </table>
+                Hola Alicia
 
 
-A continuación, se detallan los elementos comunes de las vistas con **Thymeleaf**:
+Si utilizas **Thymeleaf** para la vista, las anotaciones en los archivos de plantilla son prefijos para atributos de HTML. Estos prefijos permiten el manejo dinámico de datos en la vista.
+
+**Atributos Thymeleaf más utilizados**:
 
 * **th:text**: Rellena el contenido de un elemento HTML con el valor dinámico.
   
@@ -148,30 +182,10 @@ A continuación, se detallan los elementos comunes de las vistas con **Thymeleaf
 * **th:value** y **th:field**: Usado para rellenar valores dinámicos en campos de formulario.
 
         <input type="text" th:field="*{nombre}" />
+       
 
-<!--        
+        
 
-**Vista sin motores de plantilla**{.azul}
-
-Si tu aplicación no utiliza motores de plantillas y solo devuelve datos en formatos como JSON o XML, entonces las vistas suelen ser gestionadas directamente por el controlador. En este caso:
-
-**@RestController** en el controlador garantiza que el contenido se devuelva en el formato adecuado, sin necesidad de vistas explícitas.
-El contenido es generado dinámicamente a través de bibliotecas como Jackson (para JSON).
-
-<u>Ejemplo</u> de un controlador que devuelve JSON:
-
-    @RestController
-    class PersonaRestController {
-        @GetMapping("/api/personas")
-        fun listarPersonas(): List<Persona> {
-            return listOf(
-                Persona(1, "Juan"),
-                Persona(2, "Ana")
-            )
-        }
-    }
-
--->
 
 ## 🔹Ejemplo con Spring MVC
 
