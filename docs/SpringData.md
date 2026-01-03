@@ -738,7 +738,7 @@ Antes de acceder al contenedor tenemos que crearlo. En nuestro caso crearemos un
 
 Partimos del hecho que tenemos instalado Docker en nuesto equipo, en caso contario te dejo un pequeño tutorial de como instalarlo en el apartado **Docker** de esta unidad. Los pasos a seguir para crear dicho contendor son:
 
-1) **Ejecutar PostgreSQL en Docker**
+**1. Ejecutar PostgreSQL en Docker**  
 
 * Crea y ejecuta el contenedor de PostgreSQL:
 
@@ -763,7 +763,7 @@ docker ps
 docker exec -it postgres-container psql -U admin -d demo
 ```
 
-1) **Restaurar la base de datos en el contenedor con DBeaver**:
+**2. Restaurar la base de datos en el contenedor con DBeaver**:
 
 Vamos a restaurar la base de datos **geo_ad** en la base de datos **demo**, que hemos creado con docker. Para ello os he dejado un archivo **dump**, en **Aules**, que contiene el backup de geo_ad. Lo siguiente será restaurar este backup en **demo**, siguiendo esto pasos:
 
@@ -787,7 +787,7 @@ Vamos a restaurar la base de datos **geo_ad** en la base de datos **demo**, que 
         |---|---|
             
 
-3) **Cambios en la Configuración de la Aplicación**
+**3. Cambios en la Configuración de la Aplicación**
 
 En el archivo **application.properties**, configura la conexión a PostgreSQL en el contenedor Docker. 
 
