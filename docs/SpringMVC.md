@@ -201,10 +201,11 @@ En nuestro caso crearemos un proyecto **Maven** de Spring Boot en **IntelliJ**. 
 
 Los pasos a seguir serían:
 
-  * Configurar el proyecto
-  * Añadir las dependencias necesarias.
-  * Estructurar el proyecto en los componentes MVC.
-  * Configurar el fichero de propiedades.
+  1. Configurar el proyecto  
+  2. Añadir las dependencias necesarias.  
+  3. Estructurar el proyecto en los componentes MVC.  
+  4. Configurar el fichero de propiedades. 
+  5. Ejecutar la aplicación 
 
 
       
@@ -212,9 +213,9 @@ Los pasos a seguir serían:
     En este ejemplo vamos a crear una aplicación sencilla que muestre una lista de nombres de personas, y también permita añadir un nombre de persona nuevo. Todo mediantes **Spring MVC** y **Thymeleaf**.
 
 
-**Configurar el proyecto**{.azul}
+**1. Configurar el proyecto**{.azul}
    
-1) En **IntelliJ** creamos el proyecto y lo configuramos desde **File-->New-->Project**:
+🔹 En **IntelliJ** creamos el proyecto y lo configuramos desde **File-->New-->Project**:
    
 * Elige **Spring Boot**.
 * Configura las siguientes opciones:
@@ -227,7 +228,7 @@ Los pasos a seguir serían:
 * Última versión de **Java**
 
 
-2) Posteriormente seleccionamos las **dependencias** necesarias:
+🔹 Posteriormente seleccionamos las **dependencias** necesarias:
   
  * **Spring Web** (para el desarrollo de aplicaciones web)
  * **Thymeleaf** (motor de plantillas para la vista)
@@ -244,7 +245,7 @@ una clase **PrimerSpringMVCsencilloApplication**  que sirve como contenedor para
 ![ref](mvc_sencillo0.png)
 
 
-**Estructura del proyecto**{.azul}
+**2. Estructura del proyecto**{.azul}
 
 La estructura del proyecto podría ser esta:
 
@@ -259,7 +260,7 @@ La estructura del proyecto podría ser esta:
 
 ![](mvc_sencillo_estructura.png) 
 
-**Implementación de la aplicación**{.azul}
+**3. Implementación de la aplicación**{.azul}
 
 Ahora ya podemos añadir la programación necesaria para nuestra aplicación siguiendo la estructura MVC creada. Dentro de cada paquete crearemos los siguientes archivos:
 
@@ -383,7 +384,7 @@ Esta plantilla proporciona un formulario para agregar una nueva persona.
 
 ![ref](mvc_sencillo5.png)     
 
-**Configurar el Archivo application.properties**{.azul}
+**4. Configurar el Archivo application.properties**{.azul}
    
 En el directorio src/main/resources, configura el archivo **application.properties** con las propiedades básicas:
 
@@ -394,7 +395,7 @@ En el directorio src/main/resources, configura el archivo **application.properti
 !!!warning ""
     Recuerda que puedes cambiar el puerto si lo tienes ocupado. Puedes probar con el puerto 8888.
 
-**Ejecutar la aplicación**{.azul}
+**5. Ejecutar la aplicación**{.azul}
 
 La aplicación estará disponible en http://localhost:8080. 
 
