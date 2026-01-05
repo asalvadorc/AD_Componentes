@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://asalvadorc.github.io/AD_Componentes/Docker/" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>🔹 Docker - AD - Accés a Dades</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="../css/extra.css" rel="stylesheet" />
+        <link href="../css/copy-button.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "\ud83d\udd39 Docker";
+        var mkdocs_page_input_path = "Docker.md";
+        var mkdocs_page_url = "/AD_Componentes/Docker/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="..">
+          <img src="../assets/logocaminas.png" class="logo" alt="Logo"/>
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption"><span class="caption-text">Componentes</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../Spring/">🔹 Spring Framework</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../Anotaciones/">🔹 Anotaciones</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../SpringBoot/">🔹 SpringBoot</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../SpringMVC/">🔹 Spring MVC</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../SpringData/">🔹 Spring Data</a>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">🔹 Docker</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#instalacion-de-docker-en-ubuntu">Instalación de Docker en Ubuntu</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#requisitos-previos">Requisitos previos</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#pasos-para-instalar-docker">Pasos para instalar Docker</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#probar-docker">Probar Docker</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#instalacion-de-docker-en-windows">Instalación de Docker en Windows</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#requisitos-previos_1">Requisitos previos</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#pasos-para-instalar-docker_1">Pasos para instalar Docker</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#opcional-configuracion-adicional">Opcional: Configuración adicional</a>
+    </li>
+        </ul>
+    </li>
+    </ul>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">AD - Accés a Dades</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">Componentes</li>
+      <li class="breadcrumb-item active">🔹 Docker</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="docker">Docker<a class="headerlink" href="#docker" title="Permanent link">&para;</a></h1>
+<p>Docker es una herramienta que utiliza la tecnología de contenedores para empaquetar aplicaciones y sus dependencias en unidades portátiles y ligeras. Esto garantiza que una aplicación se ejecute de la misma manera en cualquier entorno, ya sea en una computadora local, un servidor de desarrollo, o en la nube.</p>
+<p><strong class="azul">Conceptos clave de Docker</strong></p>
+<ul>
+<li><strong>Contenedores</strong>:</li>
+</ul>
+<p>Son entornos aislados que contienen todo lo necesario para ejecutar una aplicación: código, bibliotecas, dependencias, y configuraciones.
+A diferencia de las máquinas virtuales, los contenedores comparten el mismo núcleo del sistema operativo, lo que los hace más ligeros y eficientes.</p>
+<ul>
+<li><strong>Imágenes</strong>:</li>
+</ul>
+<p>Son plantillas inmutables utilizadas para crear contenedores.
+Las imágenes son versiones preconfiguradas de un software o aplicación que incluyen todo lo necesario para ejecutarse.</p>
+<ul>
+<li><strong>Docker Engine</strong>:</li>
+</ul>
+<p>Es el motor que ejecuta y gestiona los contenedores.
+Permite construir imágenes, iniciar contenedores y comunicarse con el hardware del sistema.</p>
+<ul>
+<li><strong>Docker Hub</strong>:</li>
+</ul>
+<p>Es un repositorio en línea donde se pueden almacenar y compartir imágenes de Docker.
+Ofrece una amplia variedad de imágenes predefinidas listas para usar.</p>
+<p><strong class="azul">¿Cómo funciona Docker?</strong></p>
+<ul>
+<li><strong>Construcción de una imagen</strong>:</li>
+</ul>
+<p>Los desarrolladores crean un archivo llamado Dockerfile, donde se especifican los pasos para construir la imagen de una aplicación.
+A partir del Dockerfile, Docker genera una imagen.</p>
+<ul>
+<li><strong>Ejecución de un contenedor</strong>:</li>
+</ul>
+<p>Usando una imagen, Docker inicia un contenedor que ejecuta la aplicación empaquetada.</p>
+<ul>
+<li><strong>Distribución de imágenes</strong>:</li>
+</ul>
+<p>Las imágenes pueden ser subidas a Docker Hub u otros registros privados para compartirlas y utilizarlas en diferentes sistemas.</p>
+<p>Para saber más podéis consultar su página Web: <a href="https://www.docker.com/">https://www.docker.com/</a></p>
+<h2 id="instalacion-de-docker-en-ubuntu">Instalación de Docker en Ubuntu<a class="headerlink" href="#instalacion-de-docker-en-ubuntu" title="Permanent link">&para;</a></h2>
+<p><a href="https://docs.docker.com/desktop/setup/install/linux/ubuntu/">https://docs.docker.com/desktop/setup/install/linux/ubuntu/</a></p>
+<h3 id="requisitos-previos">Requisitos previos<a class="headerlink" href="#requisitos-previos" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Asegúrate de que tu sistema está actualizado:</li>
+</ul>
+<pre><code class="language-bash">sudo apt update &amp;&amp; sudo apt upgrade -y
+</code></pre>
+<ul>
+<li>Desinstala versiones antiguas de Docker si están instaladas:</li>
+</ul>
+<pre><code class="language-bash">sudo apt remove docker docker-engine docker.io containerd runc
+</code></pre>
+<h3 id="pasos-para-instalar-docker">Pasos para instalar Docker<a class="headerlink" href="#pasos-para-instalar-docker" title="Permanent link">&para;</a></h3>
+<p>1) <strong>Instalar paquetes necesarios:</strong></p>
+<pre><code class="language-bash">sudo apt install apt-transport-https ca-certificates curl software-properties-common
+</code></pre>
+<p>2) <strong>Agregar la clave GPG de Docker:</strong></p>
+<pre><code class="language-bash">curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+</code></pre>
+<p>3) <strong>Agregar el repositorio de Docker:</strong></p>
+<pre><code class="language-bash">echo &quot;deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable&quot; | sudo tee /etc/apt/sources.list.d/docker.list &gt; /dev/null
+</code></pre>
+<p>4) <strong>Actualizar el índice de paquetes e instalar Docker:</strong></p>
+<pre><code class="language-bash">sudo apt update
+sudo apt install docker-ce docker-ce-cli containerd.io
+</code></pre>
+<p>5) <strong>Verificar la instalación:</strong></p>
+<pre><code class="language-bash">docker --version
+</code></pre>
+<p>6) <strong>Habilitar Docker para que inicie con el sistema:</strong></p>
+<pre><code class="language-bash">sudo systemctl enable docker
+</code></pre>
+<p>7) <strong>Opcional: Permitir ejecutar Docker sin <code>sudo</code>:</strong></p>
+<pre><code class="language-bash">sudo usermod -aG docker $USER
+# Sal y vuelve a iniciar sesión para aplicar los cambios
+</code></pre>
+<h3 id="probar-docker">Probar Docker<a class="headerlink" href="#probar-docker" title="Permanent link">&para;</a></h3>
+<p>Ejecuta el siguiente comando para probar si Docker está funcionando correctamente:</p>
+<pre><code>    docker run hello-world
+</code></pre>
+<hr />
+<h2 id="instalacion-de-docker-en-windows">Instalación de Docker en Windows<a class="headerlink" href="#instalacion-de-docker-en-windows" title="Permanent link">&para;</a></h2>
+<p><a href="https://docs.docker.com/desktop/setup/install/windows-install/">https://docs.docker.com/desktop/setup/install/windows-install/</a></p>
+<h3 id="requisitos-previos_1">Requisitos previos<a class="headerlink" href="#requisitos-previos_1" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Windows 10 o superior con soporte para WSL 2.</li>
+<li>Habilitar virtualización en el BIOS.</li>
+</ul>
+<h3 id="pasos-para-instalar-docker_1">Pasos para instalar Docker<a class="headerlink" href="#pasos-para-instalar-docker_1" title="Permanent link">&para;</a></h3>
+<p>1) <strong>Descargar Docker Desktop:</strong></p>
+<ul>
+<li>Ve al sitio oficial de Docker y descarga Docker Desktop: <a href="https://www.docker.com/products/docker-desktop">https://www.docker.com/products/docker-desktop</a></li>
+</ul>
+<p>2) <strong>Ejecutar el instalador:</strong></p>
+<ul>
+<li>Sigue las instrucciones del asistente de instalación.</li>
+</ul>
+<p>3) <strong>Habilitar WSL 2:</strong></p>
+<ul>
+<li>Asegúrate de que WSL 2 está habilitado en tu sistema:</li>
+</ul>
+<pre><code class="language-powershell">dism.exe /online /enable-feature /featurename:Microsoft-Windows-Subsystem-Linux /all /norestart
+dism.exe /online /enable-feature /featurename:VirtualMachinePlatform /all /norestart
+wsl --set-default-version 2
+</code></pre>
+<p>4) <strong>Configurar Docker Desktop:</strong></p>
+<ul>
+<li>Abre Docker Desktop y sigue las instrucciones para configurar WSL 2.</li>
+</ul>
+<p>5) <strong>Verificar la instalación:</strong></p>
+<ul>
+<li>Abre una terminal y ejecuta:</li>
+</ul>
+<pre><code class="language-powershell">docker --version
+</code></pre>
+<p>6) <strong>Probar Docker:</strong></p>
+<ul>
+<li>Ejecuta el comando:</li>
+</ul>
+<pre><code class="language-powershell">docker run hello-world
+</code></pre>
+<h3 id="opcional-configuracion-adicional">Opcional: Configuración adicional<a class="headerlink" href="#opcional-configuracion-adicional" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Habilitar compartir recursos (discos, memoria, CPU) en la configuración de Docker Desktop.</li>
+<li>Instalar herramientas complementarias como Docker Compose.</li>
+</ul>
+<hr />
+<p>Con estos pasos, Docker debería estar instalado y funcionando correctamente tanto en Ubuntu como en Windows.</p>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../SpringData/" class="btn btn-neutral float-left" title="🔹 Spring Data"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../SpringData/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+      <script src="../js/copy-button.js"></script>
+      <script src="../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>
