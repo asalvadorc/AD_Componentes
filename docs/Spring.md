@@ -1,6 +1,5 @@
-# Spring Framework
+# ![alt text](image-2.png)Spring Framework
 
-![alt text](image-4.png)
 
 Spring es un framework de código abierto que te ayuda a crear aplicaciones en Java o Kotlin de forma más fácil, rápida y ordenada.  
 En vez de que tú tengas que hacer todo a mano (crear objetos, conectar clases, preparar la base de datos, configurar servidores…), Spring lo hace por ti automáticamente.  
