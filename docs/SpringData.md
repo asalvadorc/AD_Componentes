@@ -1046,22 +1046,13 @@ En resumen, el repositorio sigue trabajando con entidades, el servicio transform
 
 Los DTO se utilizan para leer y comunicar datos, no para persistirlos:
 
-➕ CREATE
+| Operación | Uso de DTO | Explicación |
+|----------|-----------|-------------|
+| ➕ CREATE | ⚠️ A veces | Normalmente se puede usar directamente la **entidad**. El **DTO solo es necesario** si el formulario no coincide con la entidad. |
+| 🔍 READ | ✅ Sí | Al listar o mostrar datos es **recomendable usar DTO**, ya que los datos salen de la aplicación hacia el exterior. |
+| ✏️ UPDATE | ⚠️ A veces | Se utiliza DTO cuando **no queremos permitir modificar todos los campos** de la entidad. |
+| 🗑️ DELETE | ❌ No | No se usa DTO, ya que únicamente se envía el **identificador** del objeto a eliminar. |
 
-- En crear, normalmente se puede usar directamente la entidad; el DTO **solo hace falta** si el formulario es distinto.
-
-
-🔍 READ
-
-- Al listar o mostrar datos, **es mejor usar DTO**, porque los datos salen de la aplicación.
-
-✏️ UPDATE
-
-- Al editar, el DTO se usa cuando **no** queremos que se puedan **cambiar todos los campos**.
-
-🗑️ DELETE
-
-- Al borrar **no** se usa DTO, porque solo se pasa el identificador.
 
 
 **Cambios que se introducen en cada capa**{.azul}
