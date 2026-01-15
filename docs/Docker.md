@@ -115,57 +115,82 @@ Ejecuta el siguiente comando para probar si Docker está funcionando correctamen
 
 ## Instalación de Docker en Windows
 
-[https://docs.docker.com/desktop/setup/install/windows-install/](https://docs.docker.com/desktop/setup/install/windows-install/)
+Documentación oficial: [https://docs.docker.com/desktop/setup/install/windows-install/](https://docs.docker.com/desktop/setup/install/windows-install/)
+
+
+Docker Desktop utiliza **WSL2** internamente para ejecutar contenedores Linux en Windows.  
+👉 **No es necesario instalar Ubuntu** si solo se quiere trabajar con **Docker y Docker Compose**.
+
 
 ### Requisitos previos
-- Windows 10 o superior con soporte para WSL 2.
-- Habilitar virtualización en el BIOS.
 
-### Pasos para instalar Docker
+- Windows 10 (versión 2004 o superior) o Windows 11  
+- Cuenta con permisos de **administrador**  
+- Virtualización activada en BIOS (normalmente ya lo está)
 
-1) **Descargar Docker Desktop:**
-   
-   - Ve al sitio oficial de Docker y descarga Docker Desktop: [https://www.docker.com/products/docker-desktop](https://www.docker.com/products/docker-desktop)
 
-2) **Ejecutar el instalador:**
-   
-   - Sigue las instrucciones del asistente de instalación.
+### Activar WSL2
 
-3) **Habilitar WSL 2:**
-   
-   - Asegúrate de que WSL 2 está habilitado en tu sistema:
+
+Abrir un Terminal  y ejecutar los siguientes comandos para habilitar WSL2 y la plataforma de máquina virtual:
 
 ```powershell
 dism.exe /online /enable-feature /featurename:Microsoft-Windows-Subsystem-Linux /all /norestart
 dism.exe /online /enable-feature /featurename:VirtualMachinePlatform /all /norestart
-wsl --set-default-version 2
 ```
+⚠️ Reiniciar Windows tras ejecutar los comandos.
 
-4) **Configurar Docker Desktop:**
-   
-   - Abre Docker Desktop y sigue las instrucciones para configurar WSL 2.
+### Instalar Docker Desktop
 
-5) **Verificar la instalación:**
-   
-   - Abre una terminal y ejecuta:
+1) Descargar Docker Desktop desde la web oficial: [https://www.docker.com/products/docker-desktop](https://www.docker.com/products/docker-desktop)    
+2) Ejecutar el instalador: Sigue las instrucciones del asistente de instalación.  
+
+✔ Marcar la opción **'Use WSL 2 based engine'** durante la instalación
+
+### Comprobaciones
+
+Para comprobar que **WSL2** y **Docker** funcionan correctamente, ejecutar en el Terminal:
 
 ```powershell
-docker --version
+   wsl --list --verbose
+   docker --version
+   docker compose version
 ```
+👉 Si aparece la distribución 'docker-desktop' con VERSION 2 y Docker responde correctamente, la instalación es correcta.
 
-6) **Probar Docker:**
-   
-   - Ejecuta el comando:
+### Probar Docker
 
+Ejecuta el siguiente comando para probar si Docker está funcionando correctamente:
+
+    docker run hello-world
+
+### Usar Docker Compose
+
+1) Crea una carpeta de proyecto en Windows, por ejemplo:
+
+      C:\docker\postgres-bds\
+
+
+2) Dentro mete tu archivo:
+
+      docker-compose.yml
+
+3) Desde el Terminal ve a la carpeta donde está el archivo _docker-compose.yml_ y ejecuta:
+
+
+      docker compose up -d
+
+### Comandos que necesitas
+
+- **Ver contenedores:**
 ```powershell
-docker run hello-world
+   docker ps
 ```
-
-### Opcional: Configuración adicional
-
-- Habilitar compartir recursos (discos, memoria, CPU) en la configuración de Docker Desktop.
-- Instalar herramientas complementarias como Docker Compose.
-
----
-
-Con estos pasos, Docker debería estar instalado y funcionando correctamente tanto en Ubuntu como en Windows.
+- **Parar:**
+```powershell
+   docker compose down
+```
+- **Borrar también volúmenes (OJO borra datos):**
+```powershell
+   docker compose down -v
+```
