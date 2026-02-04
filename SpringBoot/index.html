@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://asalvadorc.github.io/AD_Componentes/SpringBoot/" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>🔹 SpringBoot - AD - Accés a Dades</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="../css/extra.css" rel="stylesheet" />
+        <link href="../css/copy-button.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "\ud83d\udd39 SpringBoot";
+        var mkdocs_page_input_path = "SpringBoot.md";
+        var mkdocs_page_url = "/AD_Componentes/SpringBoot/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="..">
+          <img src="../assets/logocaminas.png" class="logo" alt="Logo"/>
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption"><span class="caption-text">Componentes</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../Spring/">🔹 Spring Framework</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../Anotaciones/">🔹 Anotaciones</a>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">🔹 SpringBoot</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#ejemplo-con-springboot">🔹Ejemplo con SpringBoot</a>
+    </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../SpringMVC/">🔹 Spring MVC</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../SpringData/">🔹 Spring Data</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../Docker/">🔹 Docker</a>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">AD - Accés a Dades</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">Componentes</li>
+      <li class="breadcrumb-item active">🔹 SpringBoot</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="spring-boot">🔹Spring Boot<a class="headerlink" href="#spring-boot" title="Permanent link">&para;</a></h1>
+<p><strong>Spring</strong> es el framework completo; <strong>Spring Boot</strong> es la forma fácil y moderna de usar Spring. Tradicionalmente Spring era complicado de configurar, había que preparar servidores, XML, dependencias, etc. Spring Boot se enfoca en simplificar y acelerar el desarrollo de aplicaciones web y microservicios, ofreciendo una configuración automática y la capacidad de crear aplicaciones que se ejecutan de forma independiente sin necesidad de un servidor web externo.</p>
+<p><strong>Spring Boot</strong> es una capa por encima de Spring que lo hace fácil:</p>
+<ul>
+<li>configura todo automáticamente</li>
+<li>trae un servidor web incorporado</li>
+<li>evita escribir XML</li>
+<li>permite arrancar una app con un botón</li>
+<li>usa starters (dependencias ya preparadas)</li>
+<li>permite crear proyectos en segundos</li>
+</ul>
+<p><strong class="azul">Pasos para crear una aplicación con Spring Boot</strong></p>
+<p><strong>Fundamentalmente existen tres pasos a realizar</strong>. El primero es crear un proyecto
+Maven/Gradle y descargar las dependencias necesarias. En segundo lugar desarrollamos
+la aplicación y en tercer lugar la desplegamos en un servidor. Si nos ponemos a pensar
+un poco a detalle en el tema, únicamente el paso dos es una tarea de desarrollo. Los
+otros pasos están más orientados a infraestructura.</p>
+<p>SpringBoot nace con la intención de simplificar los pasos 1 y 3 y que nos podamos
+centrar en el desarrollo de nuestra aplicación. ¿Cómo funciona? El enfoque es sencillo y lo entenderemos realizando un ejemplo.</p>
+<p>También tendrá especial importancia el archivo <strong>applicantion.properties</strong> que será donde
+configuraremos aspectos relativos con nuestra aplicación, tales como las conexiones a base de datos o el puerto por donde acceder a nuestra aplicación por ejemplo. También podemos ver todas las dependencias que se han añadido gracias al archivo <strong>pom.xml</strong></p>
+<p><img alt="" src="../spring_pasos.png" /></p>
+<h2 id="ejemplo-con-springboot">🔹Ejemplo con SpringBoot<a class="headerlink" href="#ejemplo-con-springboot" title="Permanent link">&para;</a></h2>
+<p>Para entender la filosfía de Spring lo mejor es hacer una primera aplicación sencilla. Esta aplicación consistirá en devolver un saludo al usuario a través de un navegador web. Acontinuación se detallan los pasos a seguir.</p>
+<p>Podemos crear los proyectos Spring Boot de dos maneras:</p>
+<ul>
+<li>
+<p>Mediante una herramienta web online (<a href="https://start.spring.io/">https://start.spring.io/</a>) denominada <strong>Spring Initializr</strong>, donde por medio de unos parámetros de configuración, genera automáticamente un proyecto Maven o Gradle, según elijamos, en un archivo comprimido Zip, con la estructura de la aplicación y que puede ser importada directamente desde un IDE. </p>
+</li>
+<li>
+<p>Mediante un IDE, como Eclipse, IntelliJ...etc, teniendo instalados los plugins necesarios. </p>
+</li>
+</ul>
+<p>En nuestro caso crearemos un proyecto <strong>Maven</strong> de Spring Boot en <strong>IntelliJ</strong>:</p>
+<p><strong class="azul">Crear la aplicación y añadir dependencias</strong></p>
+<p>1️⃣ Creamos el proyecto y lo configuramos desde <strong>File--&gt;New--&gt;Project</strong>:</p>
+<ul>
+<li>Elige <strong>Spring Boot</strong>.</li>
+<li>
+<p>Configura las siguientes opciones:</p>
+<ul>
+<li>Language: <strong>Kotlin</strong></li>
+<li>Build System: <strong>Maven</strong></li>
+</ul>
+</li>
+<li>
+<p>Especifica un nombre para el proyecto: <strong>PrimerSpringBoot</strong></p>
+</li>
+<li>Última versión de <strong>JDK</strong></li>
+<li>Última versión de <strong>Java</strong></li>
+</ul>
+<p>2️⃣ Posteriormente seleccionamos las dependencias necesarias:</p>
+<blockquote>
+<blockquote>
+<p><strong>Spring Web</strong> (para el desarrollo de aplicaciones web)</p>
+</blockquote>
+</blockquote>
+<p>3️⃣ Después de aceptar, y si todo ha ido correctamente, ya tendremos nuestro proyecto creado.</p>
+<table>
+<thead>
+<tr>
+<th><img alt="ref" src="../Intellij_0.png" /></th>
+<th><img alt="ref" src="../Intellij_0_2.png" /></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="admonition-title">Nota</p>
+<p>Para este proyecto solo necesitaremos la dependenica <strong>Spring Web</strong>:</p>
+<ul>
+<li>Se utiliza para desarrollar aplicaciones web, ya sea basadas en REST o tradicionales con HTML dinámico.   </li>
+<li>Incluye un servidor web embebido (por defecto, Tomcat) para ejecutar la aplicación sin necesidad de configurarlo manualmente.   </li>
+<li>Facilita el manejo de rutas HTTP (GET, POST, PUT, DELETE, etc.) y parámetros de solicitud a través de métodos en los controladores.  </li>
+<li>Usa la biblioteca Jackson (incluida por defecto) para convertir automáticamente objetos Kotlin/Java a JSON y viceversa.  </li>
+<li>Ofrece herramientas para manejar errores y excepciones de forma global mediante @ControllerAdvice o controladores personalizados.  </li>
+</ul>
+</div>
+<p>Al iniciar nuestra aplicación, lo primero que observamos es que se crea
+una clase <strong>PrimerSpringBootApplication</strong>  que sirve como contenedor para la configuración de la aplicación. No necesitas implementar métodos adicionales, ya que Spring Boot se encarga de todo gracias a la anotación <strong>@SpringBootApplication</strong>.  </p>
+<p><img alt="ref" src="../Intellij_0_2_1.png" /></p>
+<p>La clase está anotada con <strong>@SpringBootApplication</strong> y, <strong>runApplication</strong>, es una función de extensión proporcionada por Spring Boot para lanzar la aplicación.</p>
+<pre><code>@SpringBootApplication
+class PrimerSpringBootApplication
+
+fun main(args: Array&lt;String&gt;) {
+    runApplication&lt;PrimerSpringBootApplication&gt;(*args)
+}
+</code></pre>
+<ul>
+<li>
+<p>El tipo genérico <code>&lt;</code><strong>PrimerSpringBootApplication</strong><code>&gt;</code> indica que ésta es la clase principal de la aplicación que contiene la anotación <strong>@SpringBootApplication</strong>.</p>
+</li>
+<li>
+<p><strong>*args</strong> pasa los argumentos de la línea de comandos a la aplicación. Se utiliza para descomponer un array (como Array<code>&lt;</code>String<code>&gt;</code>) en argumentos individuales, lo que es necesario para pasar los parámetros de la línea de comandos al método runApplication.   </p>
+</li>
+</ul>
+<p><strong class="azul">Agregar un método que envíe un saludo</strong></p>
+<p>Agregaremos el método <strong>sayHello()</strong> directamente a la clase principal, <strong>PrimerSpringBootApplication</strong>, con todas las anotaciones e importaciones necesarias::</p>
+<pre><code>package com.example.primerspringboot
+
+import org.springframework.boot.autoconfigure.SpringBootApplication
+import org.springframework.boot.runApplication
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.RequestParam
+import org.springframework.web.bind.annotation.RestController
+
+@SpringBootApplication
+@RestController
+class PrimerSpringBootApplication{
+
+    @GetMapping("/hello")
+    fun sayHello(
+        @RequestParam(value = "myName", defaultValue = "World") name: String): String 
+        {
+            return "Hello $name!"
+        }
+    }
+
+fun main(args: Array&lt;String&gt;) {
+    runApplication&lt;PrimerSpringBootApplication&gt;(*args)
+}
+</code></pre>
+<ul>
+<li>
+<p><strong>@RestController</strong>: se utiliza para que Spring reconozca la clase como un controlador que maneja solicitudes HTTP. Combina:</p>
+<ul>
+<li>@Controller: Define la clase como un controlador web.</li>
+<li>@ResponseBody: Indica que los métodos devolverán directamente el cuerpo de la respuesta (en este caso, texto plano en lugar de una vista HTML).</li>
+</ul>
+</li>
+<li>
+<p><strong>@GetMapping("/hello")</strong>: Es una anotación de Spring que indica que este método debe manejar las solicitudes HTTP GET que lleguen a la URL /hello.</p>
+<ul>
+<li>
+<p>Enlaza la URL /hello con el método sayHello.</p>
+</li>
+<li>
+<p>Cada vez que se acceda a esa ruta en un navegador con un método GET, Spring ejecutará el método sayHello. Por ejemplo, al visitar <a href="http://localhost:8080/hello">http://localhost:8080/hello</a> (asumiendo el puerto predeterminado 8080), este método será invocado.</p>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>@RequestParam</strong>: se usa para extraer un parámetro de la consulta (query parameter) enviado en la URL.</p>
+<ul>
+<li>
+<p>El método espera un parámetro de consulta llamado myName.</p>
+</li>
+<li>
+<p>Si el cliente no incluye myName en la solicitud, el valor predeterminado será "World", gracias a defaultValue = "World".</p>
+</li>
+</ul>
+</li>
+</ul>
+<hr />
+<p><strong class="azul">Ejecuta la aplicación Spring</strong></p>
+<ul>
+<li>Al ejecutar la aplicación, la pestaña <strong>Consola</strong> muestra la salida de los mensajes de registro de Spring.</li>
+</ul>
+<p><img alt="ref" src="../Intellij_4.png" /></p>
+<p>De manera predeterminada, el servidor Apache <strong>Tomcat</strong> integrado escucha en el puerto <strong>8080</strong>.</p>
+<div class="admonition note">
+<p class="admonition-title">Nota</p>
+<p>Si tienes el puerto 8080 ocupado, te aparecerá el siguiete error:</p>
+<p><img alt="alt text" src="../Intellij_errorpuerto2.png" /></p>
+<p>Puedes cambiar el puerto en el archivo <strong>application.properties</strong> que se encuentra en la carpeta <strong>resources</strong> de tu proyecto.</p>
+<p>Por ejemplo estaleciendo el puerto a 8888:</p>
+<p><img alt="alt text" src="../Intellij_errorpuerto.png" /></p>
+</div>
+<ul>
+<li>Ahora abre el navegador web a la dirección <a href="http://localhost:8080/hello">http://localhost:8080/hello</a>, o con el puerto que hayas seleccionado. Deberías ver que tu aplicación responde con <strong>Hello World!</strong>.</li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Nota</p>
+<p>Esta es la respuesta genérica predeterminada. 
+Puedes proporcionar un parámetro en tu solicitud web para que la aplicación sepa cómo saludarte correctamente. </p>
+<p>Por ejemplo, prueba <a href="http://localhost:8080/hello?myName=Alicia">http://localhost:8080/hello?myName=Alicia</a>.</p>
+</div>
+<p>Para entender el funcionamiento de la aplicación, aquí tienes resumido su flujo de ejecución:    </p>
+<div class="admonition tip">
+<p class="admonition-title">Flujo de ejecución</p>
+<p><strong>Inicio de la aplicación:</strong><br />
+Se ejecuta el método main, lo que inicia un servidor web embebido (por defecto, <strong>Tomcat</strong>) en el puerto <strong>8080</strong>.</p>
+<p><strong>Solicitudes HTTP:</strong><br />
+Cuando un cliente envía una <strong>solicitud GET a /hello</strong> con o sin el parámetro <strong>myName</strong>, <strong>el método sayHello</strong> maneja la solicitud.</p>
+<p><strong>Respuesta:</strong><br />
+La aplicación devuelve un mensaje personalizado en texto plano según el parámetro <strong>myName</strong>.</p>
+</div>
+<p><strong class="azul">Añadir una página de inicio</strong></p>
+<p>La aplicación Spring Boot creada tiene un punto final disponible en <strong>/hello</strong>. Sin embargo, si abres el contexto raíz de tu aplicación en <a href="http://localhost:8080/">http://localhost:8080/</a>, obtendrás un error porque no hay ningún recurso raíz definido. </p>
+<div class="admonition note">
+<p>Spring Boot está configurado para servir automáticamente cualquier archivo colocado en:</p>
+<ul>
+<li>static/</li>
+<li>public/</li>
+<li>resources/</li>
+<li>META-INF/resources/</li>
+</ul>
+<p>Esto significa que si pones un archivo estático ahí:</p>
+<ul>
+<li>el servidor embebido (Tomcat) lo devuelve tal cual</li>
+<li>no pasa por ningún controlador</li>
+<li>no necesita anotaciones </li>
+<li>no tienes que hacer un @GetMapping.    </li>
+</ul>
+</div>
+<p>1️⃣ Añade una página de inicio HTML estática con enlaces a su punto final.</p>
+<ul>
+<li><strong>Crea</strong> el archivo <strong>index.html</strong> en <strong>/src /main /resources /static/</strong> .</li>
+</ul>
+<p><img alt="alt text" src="../image-3.png" /></p>
+<p>2️⃣ Modifica la plantilla predeterminada o reemplázala con el siguiente código HTML:</p>
+<pre><code>&lt;!DOCTYPE HTML&gt;
+&lt;html&gt;
+    &lt;head&gt;
+        &lt;title&gt;Your first Spring application&lt;/title&gt;
+        &lt;meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /&gt;
+    &lt;/head&gt;
+    &lt;body&gt;
+        &lt;p&gt;&lt;a href="/hello"&gt;Greet the world!&lt;/a&gt;&lt;/p&gt;
+
+        &lt;form action="/hello" method="GET" id="nameForm"&gt;
+            &lt;div&gt;
+                &lt;label for="nameField"&gt;How should the app call you?&lt;/label&gt;
+                &lt;input name="myName" id="nameField"&gt;
+                &lt;button&gt;Greet me!&lt;/button&gt;
+            &lt;/div&gt;
+        &lt;/form&gt;
+    &lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+<p>3️⃣ <strong>Ejecuta</strong> la aplicación de nuevo.</p>
+<p>Ahora tu aplicación servirá index.html como recurso raíz en 
+<a href="http://localhost:8080/">http://localhost:8080/</a> . </p>
+<table>
+<thead>
+<tr>
+<th><img alt="" src="../Intellij_ejemweb.png" /></th>
+<th><img alt="" src="../Intellij_ejemweb_2.png" /></th>
+<th><img alt="" src="../Intellij_ejemweb_3.png" /></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../Anotaciones/" class="btn btn-neutral float-left" title="🔹 Anotaciones"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../SpringMVC/" class="btn btn-neutral float-right" title="🔹 Spring MVC">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../Anotaciones/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../SpringMVC/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+      <script src="../js/copy-button.js"></script>
+      <script src="../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

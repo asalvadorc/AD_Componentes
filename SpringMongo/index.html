@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://asalvadorc.github.io/AD_Componentes/SpringMongo/" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>Spring MongoDb - AD - Accés a Dades</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="../css/extra.css" rel="stylesheet" />
+        <link href="../css/copy-button.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Spring MongoDb";
+        var mkdocs_page_input_path = "SpringMongo.md";
+        var mkdocs_page_url = "/AD_Componentes/SpringMongo/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="..">
+          <img src="../assets/logocaminas.png" class="logo" alt="Logo"/>
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption"><span class="caption-text">Componentes</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../Spring/">🔹 Spring Framework</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../Anotaciones/">🔹 Anotaciones</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../SpringBoot/">🔹 SpringBoot</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../SpringMVC/">🔹 Spring MVC</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../SpringData/">🔹 Spring Data</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../Docker/">🔹 Docker</a>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">AD - Accés a Dades</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+      <li class="breadcrumb-item active">Spring MongoDb</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="spring-mongodb">Spring MongoDb<a class="headerlink" href="#spring-mongodb" title="Permanent link">&para;</a></h1>
+<p>Spring MongoDb Es un módulo de Spring Data que facilita la integración de aplicaciones Spring con MongoDB. Además proporciona una abstracción sobre las operaciones básicas de MongoDB como CRUD, consultas personalizadas, y soporte para agregaciones.</p>
+<p><strong class="azul">Requisitos</strong></p>
+<p>Tener MongoDB instalado o utilizar una instancia en la nube o en un contenedor Docker.</p>
+<p>Spring Boot configurado con Maven (en nuestro caso) o Gradle.</p>
+<p><strong class="azul">Dependencias Maven</strong></p>
+<pre><code>&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-boot-starter-data-mongodb&lt;/artifactId&gt;
+&lt;/dependency&gt;
+</code></pre>
+<p><strong class="azul">application.properties</strong></p>
+<pre><code>spring.data.mongodb.host=localhost
+spring.data.mongodb.port=27017
+spring.data.mongodb.database=nombre_base_de_datos
+</code></pre>
+<p>Si estás usando MongoDB con autenticación, añade:</p>
+<pre><code>spring.data.mongodb.username=usuario
+spring.data.mongodb.password=contraseña
+</code></pre>
+<h2 id="ejemplo-menus">Ejemplo: Menús<a class="headerlink" href="#ejemplo-menus" title="Permanent link">&para;</a></h2>
+<p>En este ejemplo partiremos de un archivo json con 10 menús y sus correspondientes platos. Has de añadir este documento como una colección a tu BD Mongo.</p>
+<p><strong>Archivo json con los menus:</strong></p>
+<pre><code class="language-json">    [
+    {
+        &quot;_id&quot;: &quot;1&quot;,
+        &quot;nombre&quot;: &quot;Menú Mediterráneo&quot;,
+        &quot;descripcion&quot;: &quot;Un menú saludable inspirado en la dieta mediterránea.&quot;,
+        &quot;fecha&quot;: &quot;2025-01-08&quot;,
+        &quot;platos&quot;: [
+        {
+            &quot;nombre&quot;: &quot;Ensalada Griega&quot;,
+            &quot;categoria&quot;: &quot;Entrante&quot;,
+            &quot;ingredientes&quot;: [&quot;Lechuga&quot;, &quot;Tomate&quot;, &quot;Pepino&quot;, &quot;Aceitunas&quot;, &quot;Queso Feta&quot;],
+            &quot;precio&quot;: 5.5
+        },
+        {
+            &quot;nombre&quot;: &quot;Moussaka&quot;,
+            &quot;categoria&quot;: &quot;Principal&quot;,
+            &quot;ingredientes&quot;: [&quot;Berenjena&quot;, &quot;Carne de Cordero&quot;, &quot;Tomate&quot;, &quot;Bechamel&quot;, &quot;Queso&quot;],
+            &quot;precio&quot;: 12.0
+        }
+        ],
+        &quot;precioTotal&quot;: 17.5
+    },
+    {
+        &quot;_id&quot;: &quot;2&quot;,
+        &quot;nombre&quot;: &quot;Menú Asiático&quot;,
+        &quot;descripcion&quot;: &quot;Sabores frescos y auténticos de Asia.&quot;,
+        &quot;fecha&quot;: &quot;2025-01-09&quot;,
+        &quot;platos&quot;: [
+        {
+            &quot;nombre&quot;: &quot;Rollitos de Primavera&quot;,
+            &quot;categoria&quot;: &quot;Entrante&quot;,
+            &quot;ingredientes&quot;: [&quot;Zanahoria&quot;, &quot;Col&quot;, &quot;Brotes de Soja&quot;, &quot;Fideos de Arroz&quot;],
+            &quot;precio&quot;: 4.0
+        },
+        {
+            &quot;nombre&quot;: &quot;Pad Thai&quot;,
+            &quot;categoria&quot;: &quot;Principal&quot;,
+            &quot;ingredientes&quot;: [&quot;Fideos de Arroz&quot;, &quot;Camarones&quot;, &quot;Tofu&quot;, &quot;Maní&quot;],
+            &quot;precio&quot;: 10.0
+        }
+        ],
+        &quot;precioTotal&quot;: 14.0
+    },
+    {
+        &quot;_id&quot;: &quot;3&quot;,
+        &quot;nombre&quot;: &quot;Menú Vegetariano&quot;,
+        &quot;descripcion&quot;: &quot;Opciones deliciosas sin carne.&quot;,
+        &quot;fecha&quot;: &quot;2025-01-10&quot;,
+        &quot;platos&quot;: [
+        {
+            &quot;nombre&quot;: &quot;Hummus con Pan de Pita&quot;,
+            &quot;categoria&quot;: &quot;Entrante&quot;,
+            &quot;ingredientes&quot;: [&quot;Garbanzos&quot;, &quot;Tahini&quot;, &quot;Limón&quot;, &quot;Ajo&quot;],
+            &quot;precio&quot;: 4.5
+        },
+        {
+            &quot;nombre&quot;: &quot;Lasaña Vegetariana&quot;,
+            &quot;categoria&quot;: &quot;Principal&quot;,
+            &quot;ingredientes&quot;: [&quot;Pasta&quot;, &quot;Espinacas&quot;, &quot;Ricotta&quot;, &quot;Tomate&quot;],
+            &quot;precio&quot;: 9.0
+        }
+        ],
+        &quot;precioTotal&quot;: 13.5
+    },
+    {
+        &quot;_id&quot;: &quot;4&quot;,
+        &quot;nombre&quot;: &quot;Menú Italiano&quot;,
+        &quot;descripcion&quot;: &quot;Especialidades clásicas de Italia.&quot;,
+        &quot;fecha&quot;: &quot;2025-01-11&quot;,
+        &quot;platos&quot;: [
+        {
+            &quot;nombre&quot;: &quot;Bruschetta&quot;,
+            &quot;categoria&quot;: &quot;Entrante&quot;,
+            &quot;ingredientes&quot;: [&quot;Pan&quot;, &quot;Tomate&quot;, &quot;Albahaca&quot;, &quot;Aceite de Oliva&quot;],
+            &quot;precio&quot;: 5.0
+        },
+        {
+            &quot;nombre&quot;: &quot;Pizza Margarita&quot;,
+            &quot;categoria&quot;: &quot;Principal&quot;,
+            &quot;ingredientes&quot;: [&quot;Masa de Pizza&quot;, &quot;Tomate&quot;, &quot;Mozzarella&quot;, &quot;Albahaca&quot;],
+            &quot;precio&quot;: 10.0
+        }
+        ],
+        &quot;precioTotal&quot;: 15.0
+    },
+    {
+        &quot;_id&quot;: &quot;5&quot;,
+        &quot;nombre&quot;: &quot;Menú Mexicano&quot;,
+        &quot;descripcion&quot;: &quot;Platos picantes y llenos de sabor.&quot;,
+        &quot;fecha&quot;: &quot;2025-01-12&quot;,
+        &quot;platos&quot;: [
+        {
+            &quot;nombre&quot;: &quot;Guacamole con Totopos&quot;,
+            &quot;categoria&quot;: &quot;Entrante&quot;,
+            &quot;ingredientes&quot;: [&quot;Aguacate&quot;, &quot;Limón&quot;, &quot;Cilantro&quot;, &quot;Totopos&quot;],
+            &quot;precio&quot;: 4.5
+        },
+        {
+            &quot;nombre&quot;: &quot;Tacos al Pastor&quot;,
+            &quot;categoria&quot;: &quot;Principal&quot;,
+            &quot;ingredientes&quot;: [&quot;Tortilla&quot;, &quot;Carne de Cerdo&quot;, &quot;Piña&quot;, &quot;Cebolla&quot;],
+            &quot;precio&quot;: 9.0
+        }
+        ],
+        &quot;precioTotal&quot;: 13.5
+    },
+    {
+        &quot;_id&quot;: &quot;6&quot;,
+        &quot;nombre&quot;: &quot;Menú Americano&quot;,
+        &quot;descripcion&quot;: &quot;Comida clásica de los Estados Unidos.&quot;,
+        &quot;fecha&quot;: &quot;2025-01-13&quot;,
+        &quot;platos&quot;: [
+        {
+            &quot;nombre&quot;: &quot;Alitas de Pollo&quot;,
+            &quot;categoria&quot;: &quot;Entrante&quot;,
+            &quot;ingredientes&quot;: [&quot;Pollo&quot;, &quot;Salsa BBQ&quot;, &quot;Especias&quot;],
+            &quot;precio&quot;: 6.0
+        },
+        {
+            &quot;nombre&quot;: &quot;Hamburguesa con Queso&quot;,
+            &quot;categoria&quot;: &quot;Principal&quot;,
+            &quot;ingredientes&quot;: [&quot;Pan&quot;, &quot;Carne de Res&quot;, &quot;Queso&quot;, &quot;Lechuga&quot;],
+            &quot;precio&quot;: 10.0
+        }
+        ],
+        &quot;precioTotal&quot;: 16.0
+    },
+    {
+        &quot;_id&quot;: &quot;7&quot;,
+        &quot;nombre&quot;: &quot;Menú de Mariscos&quot;,
+        &quot;descripcion&quot;: &quot;Frescos sabores del océano.&quot;,
+        &quot;fecha&quot;: &quot;2025-01-14&quot;,
+        &quot;platos&quot;: [
+        {
+            &quot;nombre&quot;: &quot;Cóctel de Camarones&quot;,
+            &quot;categoria&quot;: &quot;Entrante&quot;,
+            &quot;ingredientes&quot;: [&quot;Camarones&quot;, &quot;Salsa Cóctel&quot;, &quot;Limón&quot;],
+            &quot;precio&quot;: 7.0
+        },
+        {
+            &quot;nombre&quot;: &quot;Paella de Mariscos&quot;,
+            &quot;categoria&quot;: &quot;Principal&quot;,
+            &quot;ingredientes&quot;: [&quot;Arroz&quot;, &quot;Camarones&quot;, &quot;Mejillones&quot;, &quot;Calamares&quot;],
+            &quot;precio&quot;: 12.0
+        }
+        ],
+        &quot;precioTotal&quot;: 19.0
+    },
+    {
+        &quot;_id&quot;: &quot;8&quot;,
+        &quot;nombre&quot;: &quot;Menú Francés&quot;,
+        &quot;descripcion&quot;: &quot;Platos refinados y elegantes.&quot;,
+        &quot;fecha&quot;: &quot;2025-01-15&quot;,
+        &quot;platos&quot;: [
+        {
+            &quot;nombre&quot;: &quot;Quiche Lorraine&quot;,
+            &quot;categoria&quot;: &quot;Entrante&quot;,
+            &quot;ingredientes&quot;: [&quot;Huevo&quot;, &quot;Nata&quot;, &quot;Tocino&quot;, &quot;Queso Gruyère&quot;],
+            &quot;precio&quot;: 6.5
+        },
+        {
+            &quot;nombre&quot;: &quot;Ratatouille&quot;,
+            &quot;categoria&quot;: &quot;Principal&quot;,
+            &quot;ingredientes&quot;: [&quot;Berenjena&quot;, &quot;Calabacín&quot;, &quot;Tomate&quot;, &quot;Pimiento&quot;],
+            &quot;precio&quot;: 9.5
+        }
+        ],
+        &quot;precioTotal&quot;: 16.0
+    },
+    {
+        &quot;_id&quot;: &quot;9&quot;,
+        &quot;nombre&quot;: &quot;Menú Indio&quot;,
+        &quot;descripcion&quot;: &quot;Sabores especiados y exóticos.&quot;,
+        &quot;fecha&quot;: &quot;2025-01-16&quot;,
+        &quot;platos&quot;: [
+        {
+            &quot;nombre&quot;: &quot;Samosas&quot;,
+            &quot;categoria&quot;: &quot;Entrante&quot;,
+            &quot;ingredientes&quot;: [&quot;Papas&quot;, &quot;Especias&quot;, &quot;Masa Frita&quot;],
+            &quot;precio&quot;: 4.0
+        },
+        {
+            &quot;nombre&quot;: &quot;Pollo Tikka Masala&quot;,
+            &quot;categoria&quot;: &quot;Principal&quot;,
+            &quot;ingredientes&quot;: [&quot;Pollo&quot;, &quot;Salsa de Tomate&quot;, &quot;Especias&quot;, &quot;Crema&quot;],
+            &quot;precio&quot;: 11.0
+        }
+        ],
+        &quot;precioTotal&quot;: 15.0
+    },
+    {
+        &quot;_id&quot;: &quot;10&quot;,
+        &quot;nombre&quot;: &quot;Menú Japonés&quot;,
+        &quot;descripcion&quot;: &quot;Delicados sabores de Japón.&quot;,
+        &quot;fecha&quot;: &quot;2025-01-17&quot;,
+        &quot;platos&quot;: [
+        {
+            &quot;nombre&quot;: &quot;Sopa de Miso&quot;,
+            &quot;categoria&quot;: &quot;Entrante&quot;,
+            &quot;ingredientes&quot;: [&quot;Miso&quot;, &quot;Tofu&quot;, &quot;Alga Wakame&quot;],
+            &quot;precio&quot;: 3.5
+        },
+        {
+            &quot;nombre&quot;: &quot;Sushi Variado&quot;,
+            &quot;categoria&quot;: &quot;Principal&quot;,
+            &quot;ingredientes&quot;: [&quot;Arroz&quot;, &quot;Pescado&quot;, &quot;Alga Nori&quot;, &quot;Vegetales&quot;],
+            &quot;precio&quot;: 12.5
+        }
+        ],
+        &quot;precioTotal&quot;: 16.0
+    }
+    ]
+</code></pre>
+<p><strong class="azul">Modelo MVC</strong></p>
+<p><strong class="verde">Modelo</strong></p>
+<p>Los modelos son las clases que representan las colecciones en MongoDB. Deben incluir la anotación <strong>@Document</strong>.</p>
+<p><strong>Menu.kt</strong></p>
+<pre><code>import org.springframework.data.annotation.Id
+import org.springframework.data.mongodb.core.mapping.Document
+
+@Document(collection = "menus") // Nombre de la colección en MongoDB
+data class Menu(
+    @Id
+    val id: String, // Identificador único del menú
+    val nombre: String, // Nombre del menú
+    val descripcion: String, // Descripción del menú
+    val fecha: String, // Fecha asociada al menú
+    val platos: List&lt;Plato&gt; = emptyList(), // Lista de platos
+    val precioTotal: Double = 0.0 // Precio total del menú
+)
+
+data class Plato(
+    val nombre: String,
+    val categoria: String,
+    val ingredientes: List&lt;String&gt; = emptyList(),
+    val precio: Double = 0.0
+)
+</code></pre>
+<p><strong class="verde">Repositorios</strong></p>
+<p>proporciona una interfaz MongoRepository que simplifica las operaciones CRUD.</p>
+<p><strong>MenuRepository.kt</strong></p>
+<p>import org.springframework.data.mongodb.repository.MongoRepository
+import org.springframework.stereotype.Repository
+import org.example.primerspringmongo.model.*</p>
+<pre><code>@Repository
+interface MenuRepository : MongoRepository&lt;Menu, String&gt; {
+    fun findByNombre(nombre: String): List&lt;Menu&gt;
+    fun findByPlatosCategoria(categoria: String): List&lt;Menu&gt;
+
+}
+</code></pre>
+<p><strong class="verde">Controlador</strong></p>
+<p><strong>MenuController.kt</strong></p>
+<pre><code>import org.example.primerspringmongo.model.Menu
+import org.example.primerspringmongo.repository.MenuRepository
+import org.springframework.stereotype.Controller
+import org.springframework.ui.Model
+import org.springframework.web.bind.annotation.*
+
+@Controller
+@RequestMapping("/menus")
+class MenuController(private val menuRepository: MenuRepository) {
+
+    // Listar todos los menús
+    @GetMapping
+    fun listarMenus(model: Model): String {
+        val menus = menuRepository.findAll()
+        model.addAttribute("menus", menus)
+        return "menus/listar"
+    }
+
+    @GetMapping("/buscar")
+    fun buscarPorNombre(@RequestParam nombre: String, model: Model): String {
+        val menus = menuRepository.findByNombre(nombre) // Consulta en el repositorio
+        model.addAttribute("menus", menus) // Pasar los menús al modelo
+        model.addAttribute("nombre", nombre) // Pasar el nombre buscado
+        return "menus/listar" // Nombre de la plantilla Thymeleaf
+    }
+
+    // Guardar un nuevo menú
+    @PostMapping("/guardar")
+    fun guardarMenu(@ModelAttribute menu: Menu): String {
+        menuRepository.save(menu)
+        return "redirect:/menus"
+    }
+
+    // Ver detalles de un menú
+    @GetMapping("/{id}")
+    fun verDetalles(@PathVariable id: String, model: Model): String {
+        val menu = menuRepository.findById(id)
+        if (menu.isPresent) {
+            model.addAttribute("menu", menu.get())
+            return "menus/detalles"
+        }
+        return "redirect:/menus"
+    }
+
+    // Mostrar formulario para editar un menú
+    @GetMapping("/editar/{id}")
+    fun mostrarFormularioEditar(@PathVariable id: String, model: Model): String {
+        val menu = menuRepository.findById(id)
+        if (menu.isPresent) {
+            model.addAttribute("menu", menu.get())
+            return "menus/editar"
+        }
+        return "redirect:/menus"
+    }
+
+    // Actualizar un menú existente
+    @PostMapping("/actualizar/{id}")
+    fun actualizarMenu(@PathVariable id: String, @ModelAttribute menu: Menu): String {
+        if (menuRepository.existsById(id)) {
+            menuRepository.save(menu)
+        }
+        return "redirect:/menus"
+    }
+
+    // Eliminar un menú
+    @GetMapping("/eliminar/{id}")
+    fun eliminarMenu(@PathVariable id: String): String {
+        menuRepository.deleteById(id)
+        return "redirect:/menus"
+    }
+}
+</code></pre>
+<p><strong>PlatoController.kt</strong></p>
+<pre><code>import org.example.primerspringmongo.repository.MenuRepository
+import org.springframework.stereotype.Controller
+import org.springframework.ui.Model
+import org.springframework.web.bind.annotation.*
+
+@Controller
+@RequestMapping("/platos")
+class PlatoController(private val menuRepository: MenuRepository) {
+
+    // Listar todos los platos de un menú
+    @GetMapping("/{menuId}")
+    fun listarPlatos(@PathVariable menuId: String, model: Model): String {
+        val menu = menuRepository.findById(menuId)
+        if (menu.isPresent) {
+            model.addAttribute("menu", menu.get())
+            model.addAttribute("platos", menu.get().platos)
+            return "platos/listar"
+        }
+        return "redirect:/menus"
+    }
+
+    @GetMapping("/categoria")
+    fun buscarPorCategoria(@RequestParam categoria: String, model: Model): String {
+        val menus = menuRepository.findByPlatosCategoria(categoria) // Consulta en el repositorio
+        model.addAttribute("menus", menus) // Lista de menús encontrados
+        model.addAttribute("categoriaBuscada", categoria) // Categoría buscada
+        return "platos/buscarPorCategoria" // Plantilla Thymeleaf
+    }
+
+    @GetMapping("/{menuId}/ingredientes/{platoNombre}")
+    fun verIngredientes(
+        @PathVariable menuId: String,
+        @PathVariable platoNombre: String,
+        model: Model
+    ): String {
+        val menu = menuRepository.findById(menuId)
+        if (menu.isPresent) {
+            val plato = menu.get().platos.find { it.nombre == platoNombre }
+            if (plato != null) {
+                println("Plato encontrado: $plato")
+                println("Ingredientes: ${plato.ingredientes}")
+                model.addAttribute("menu", menu.get())
+                model.addAttribute("plato", plato)
+                model.addAttribute("ingredientes", plato.ingredientes ?: emptyList&lt;String&gt;())
+                return "platos/ingredientes"
+            }
+        }
+        model.addAttribute("error", "El plato o el menú no existen.")
+        return "error"
+    }
+
+}
+</code></pre>
+<p><strong class="verde">Vista</strong>   </p>
+<p>templates/menus/</p>
+<p><strong>listar.html</strong></p>
+<pre><code>&lt;!DOCTYPE html&gt;
+&lt;html xmlns:th="http://www.thymeleaf.org"&gt;
+&lt;head&gt;
+&lt;title&gt;Lista de Menús&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;h1&gt;Lista de Menús&lt;/h1&gt;
+&lt;a href="/menus/crear"&gt;Crear Nuevo Menú&lt;/a&gt;
+&lt;table border="1"&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+    &lt;th&gt;Nombre&lt;/th&gt;
+    &lt;th&gt;Descripción&lt;/th&gt;
+    &lt;th&gt;Acciones&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr th:each="menu : ${menus}"&gt;
+    &lt;td th:text="${menu.nombre}"&gt;&lt;/td&gt;
+    &lt;td th:text="${menu.descripcion}"&gt;&lt;/td&gt;
+    &lt;td&gt;
+    &lt;a th:href="@{'/menus/' + ${menu.id}}"&gt;Detalles&lt;/a&gt;
+    &lt;a th:href="@{'/menus/editar/' + ${menu.id}}"&gt;Editar&lt;/a&gt;
+    &lt;a th:href="@{'/menus/eliminar/' + ${menu.id}}" onclick="return confirm('¿Seguro que quieres eliminar este menú?')"&gt;Eliminar&lt;/a&gt;
+    &lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+<p><strong>crear.html</strong></p>
+<pre><code>    &lt;!DOCTYPE html&gt;
+    &lt;html xmlns:th="http://www.thymeleaf.org"&gt;
+    &lt;head&gt;
+        &lt;title&gt;Crear/Editar Menú&lt;/title&gt;
+    &lt;/head&gt;
+    &lt;body&gt;
+    &lt;h1 th:text="${#strings.equals(menu.id, '') ? 'Crear Nuevo Menú' : 'Editar Menú'}"&gt;&lt;/h1&gt;
+    &lt;form th:action="@{${#strings.equals(menu.id, '') ? '/menus/guardar' : '/menus/actualizar/' + menu.id}}" th:object="${menu}" method="post"&gt;
+        &lt;label for="nombre"&gt;Nombre:&lt;/label&gt;
+        &lt;input type="text" id="nombre" name="nombre" th:value="${menu.nombre}" required&gt;&lt;br&gt;
+
+        &lt;label for="descripcion"&gt;Descripción:&lt;/label&gt;
+        &lt;textarea id="descripcion" name="descripcion" th:text="${menu.descripcion}" required&gt;&lt;/textarea&gt;&lt;br&gt;
+
+        &lt;label for="fecha"&gt;Fecha:&lt;/label&gt;
+        &lt;input type="date" id="fecha" name="fecha" th:value="${menu.fecha}" required&gt;&lt;br&gt;
+
+        &lt;label for="precioTotal"&gt;Precio Total:&lt;/label&gt;
+        &lt;input type="number" id="precioTotal" name="precioTotal" th:value="${menu.precioTotal}" step="0.01" required&gt;&lt;br&gt;
+
+        &lt;button type="submit"&gt;Guardar&lt;/button&gt;
+        &lt;a href="/menus"&gt;Cancelar&lt;/a&gt;
+    &lt;/form&gt;
+    &lt;/body&gt;
+    &lt;/html&gt;
+</code></pre>
+<p><strong>detalles.html</strong></p>
+<pre><code>&lt;!DOCTYPE html&gt;
+&lt;html xmlns:th="http://www.thymeleaf.org"&gt;
+&lt;head&gt;
+    &lt;title&gt;Detalles del Menú&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;h1&gt;Detalles del Menú&lt;/h1&gt;
+&lt;p&gt;&lt;strong&gt;Nombre:&lt;/strong&gt; &lt;span th:text="${menu.nombre}"&gt;&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Descripción:&lt;/strong&gt; &lt;span th:text="${menu.descripcion}"&gt;&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Fecha:&lt;/strong&gt; &lt;span th:text="${menu.fecha}"&gt;&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Precio Total:&lt;/strong&gt; &lt;span th:text="${menu.precioTotal}"&gt;&lt;/span&gt;&lt;/p&gt;
+
+&lt;h2&gt;Platos&lt;/h2&gt;
+&lt;ul&gt;
+    &lt;li th:each="plato : ${menu.platos}"&gt;
+        &lt;strong th:text="${plato.nombre}"&gt;&lt;/strong&gt; - &lt;span th:text="${plato.categoria}"&gt;&lt;/span&gt;
+        (&lt;span th:text="${plato.precio}"&gt;&lt;/span&gt; €)
+    &lt;/li&gt;
+&lt;/ul&gt;
+&lt;a href="/menus"&gt;Volver&lt;/a&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+<p><strong>editar.html</strong></p>
+<pre><code>&lt;!DOCTYPE html&gt;
+&lt;html xmlns:th="http://www.thymeleaf.org"&gt;
+&lt;head&gt;
+&lt;title&gt;Crear/Editar Menú&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;h1 th:text="${#strings.equals(menu.id, '') ? 'Crear Nuevo Menú' : 'Editar Menú'}"&gt;&lt;/h1&gt;
+&lt;form th:action="@{${#strings.equals(menu.id, '') ? '/menus/guardar' : '/menus/actualizar/' + menu.id}}" th:object="${menu}" method="post"&gt;
+&lt;label for="nombre"&gt;Nombre:&lt;/label&gt;
+&lt;input type="text" id="nombre" name="nombre" th:value="${menu.nombre}" required&gt;&lt;br&gt;
+
+&lt;label for="descripcion"&gt;Descripción:&lt;/label&gt;
+&lt;textarea id="descripcion" name="descripcion" th:text="${menu.descripcion}" required&gt;&lt;/textarea&gt;&lt;br&gt;
+
+&lt;label for="fecha"&gt;Fecha:&lt;/label&gt;
+&lt;input type="date" id="fecha" name="fecha" th:value="${menu.fecha}" required&gt;&lt;br&gt;
+
+&lt;label for="precioTotal"&gt;Precio Total:&lt;/label&gt;
+&lt;input type="number" id="precioTotal" name="precioTotal" th:value="${menu.precioTotal}" step="0.01" required&gt;&lt;br&gt;
+
+&lt;button type="submit"&gt;Guardar&lt;/button&gt;
+&lt;a href="/menus"&gt;Cancelar&lt;/a&gt;
+&lt;/form&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+<p><strong>templates/platos/</strong></p>
+<p><strong>listar.kt</strong></p>
+<pre><code>&lt;!DOCTYPE html&gt;
+&lt;html xmlns:th="http://www.thymeleaf.org"&gt;
+&lt;head&gt;
+    &lt;title&gt;Platos del Menú&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;h1 th:text="'Platos del Menú: ' + ${menu.nombre}"&gt;&lt;/h1&gt;
+&lt;a th:href="@{/menus}"&gt;Volver a Menús&lt;/a&gt;
+&lt;table border="1"&gt;
+    &lt;thead&gt;
+    &lt;tr&gt;
+        &lt;th&gt;Nombre&lt;/th&gt;
+        &lt;th&gt;Categoría&lt;/th&gt;
+        &lt;th&gt;Precio&lt;/th&gt;
+        &lt;th&gt;Ingredientes&lt;/th&gt;
+    &lt;/tr&gt;
+    &lt;/thead&gt;
+    &lt;tbody&gt;
+    &lt;tr th:each="plato : ${platos}"&gt;
+        &lt;td th:text="${plato.nombre}"&gt;&lt;/td&gt;
+        &lt;td th:text="${plato.categoria}"&gt;&lt;/td&gt;
+        &lt;td th:text="${plato.precio} + ' €'"&gt;&lt;/td&gt;
+        &lt;td&gt;
+            &lt;a th:href="@{'/platos/' + ${menu.id} + '/ingredientes/' + ${plato.nombre}}"&gt;Ver Ingredientes&lt;/a&gt;
+        &lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+<p><strong>ingredientes.html</strong></p>
+<pre><code>&lt;!DOCTYPE html&gt;
+&lt;html xmlns:th="http://www.thymeleaf.org"&gt;
+&lt;head&gt;
+    &lt;title&gt;Ingredientes&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;h1 th:text="'Ingredientes del plato: ' + ${plato?.nombre}"&gt;&lt;/h1&gt;
+
+&lt;div th:if="${error}"&gt;
+    &lt;p th:text="${error}" style="color: red;"&gt;&lt;/p&gt;
+&lt;/div&gt;
+
+&lt;ul th:if="${ingredientes != null &amp;&amp; !ingredientes.isEmpty()}"&gt;
+    &lt;li th:each="ingrediente : ${ingredientes}" th:text="${ingrediente}"&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p th:if="${ingredientes == null || ingredientes.isEmpty()}" style="color: gray;"&gt;
+    No hay ingredientes disponibles para este plato.
+&lt;/p&gt;
+
+&lt;a th:href="@{'/platos/' + ${menu.id}}"&gt;Volver a los platos&lt;/a&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+<p><strong>buscarPorCategoria.html</strong></p>
+<pre><code>&lt;!DOCTYPE html&gt;
+&lt;html xmlns:th="http://www.thymeleaf.org"&gt;
+&lt;head&gt;
+&lt;title&gt;Buscar Menús por Categoría&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;h1&gt;Resultados para categoría: &lt;span th:text="${categoriaBuscada}"&gt;&lt;/span&gt;&lt;/h1&gt;
+
+&lt;table border="1" th:if="${menus}"&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+    &lt;th&gt;ID&lt;/th&gt;
+    &lt;th&gt;Nombre&lt;/th&gt;
+    &lt;th&gt;Descripción&lt;/th&gt;
+    &lt;th&gt;Platos&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr th:each="menu : ${menus}"&gt;
+    &lt;td th:text="${menu.id}"&gt;&lt;/td&gt;
+    &lt;td th:text="${menu.nombre}"&gt;&lt;/td&gt;
+    &lt;td th:text="${menu.descripcion}"&gt;&lt;/td&gt;
+    &lt;td&gt;
+    &lt;ul&gt;
+        &lt;li th:each="plato : ${menu.platos}" th:if="${plato.categoria == categoriaBuscada}" th:text="${plato.nombre}"&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+    &lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p th:if="${menus == null || menus.isEmpty()}" style="color: gray;"&gt;
+No se encontraron menús con platos de la categoría &lt;span th:text="${categoriaBuscada}"&gt;&lt;/span&gt;.
+&lt;/p&gt;
+
+&lt;a href="/menus"&gt;Volver a la lista de menús&lt;/a&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+              
+            </div>
+          </div><footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+      <script src="../js/copy-button.js"></script>
+      <script src="../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

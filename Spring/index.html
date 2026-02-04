@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://asalvadorc.github.io/AD_Componentes/Spring/" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>🔹 Spring Framework - AD - Accés a Dades</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="../css/extra.css" rel="stylesheet" />
+        <link href="../css/copy-button.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "\ud83d\udd39 Spring Framework";
+        var mkdocs_page_input_path = "Spring.md";
+        var mkdocs_page_url = "/AD_Componentes/Spring/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="..">
+          <img src="../assets/logocaminas.png" class="logo" alt="Logo"/>
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption"><span class="caption-text">Componentes</span></p>
+              <ul class="current">
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">🔹 Spring Framework</a>
+    <ul class="current">
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../Anotaciones/">🔹 Anotaciones</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../SpringBoot/">🔹 SpringBoot</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../SpringMVC/">🔹 Spring MVC</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../SpringData/">🔹 Spring Data</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../Docker/">🔹 Docker</a>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">AD - Accés a Dades</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">Componentes</li>
+      <li class="breadcrumb-item active">🔹 Spring Framework</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="spring-framework"><img alt="alt text" src="../image-2.png" />Spring Framework<a class="headerlink" href="#spring-framework" title="Permanent link">&para;</a></h1>
+<p>Spring es un framework de código abierto que te ayuda a crear aplicaciones en Java o Kotlin de forma más fácil, rápida y ordenada.<br />
+En vez de que tú tengas que hacer todo a mano (crear objetos, conectar clases, preparar la base de datos, configurar servidores…), Spring lo hace por ti automáticamente.  </p>
+<p>💭 Imagina que construir una aplicación es como montar un mueble enorme.  </p>
+<ul>
+<li>Sin Spring: tú haces todos los agujeros, ajustes y conexiones.  </li>
+<li>Con Spring: el mueble viene ya pre-montado y solo colocas las piezas que necesitas.  </li>
+</ul>
+<p>🪄 Spring te da la estructura y se encarga de la parte difícil.</p>
+<p><strong class="azul">Filosofía de Spring</strong></p>
+<p>Spring se basa principalmente en dos <strong>ideas fundamentales</strong>:</p>
+<ul>
+<li>
+<p>1️⃣<strong>Inversión de Control (IoC) 🔄</strong>: Spring se encarga de crear y gestionar los objetos de tu aplicación.</p>
+</li>
+<li>
+<p>2️⃣<strong>Inyección de Dependencias (DI)🔌</strong>: Spring coloca los objetos donde hacen falta automáticamente.</p>
+</li>
+</ul>
+<p>Es como si Spring fuera quien enchufa los cables para que todas las piezas funcionen juntas sin que tú los conectes.</p>
+<p>Además de IoC y DI, Spring se basa en tres <strong>pilares prácticos</strong>:</p>
+<ul>
+<li>
+<p>3️⃣<strong>Anotaciones</strong>: indican qué hace cada clase.</p>
+<ul>
+<li>@Controller → muestra páginas</li>
+<li>@RestController → devuelve JSON</li>
+<li>@Service → lógica de negocio</li>
+<li>@Repository → acceso a datos</li>
+<li>@Entity → tabla de la base de datos</li>
+</ul>
+</li>
+<li>
+<p>4️⃣<strong>Autoconfiguración (Spring Boot)</strong>: prepara el proyecto por ti.</p>
+<ul>
+<li>servidor web</li>
+<li>conexión a BD</li>
+<li>estructura de proyecto</li>
+<li>dependencias necesarias</li>
+</ul>
+</li>
+<li>
+<p>5️⃣<strong>Starters</strong>: paquetes listos para usar según lo que quieras hacer..</p>
+<ul>
+<li>spring-boot-starter-web → para rutas y controladores</li>
+<li>spring-boot-starter-data-jpa → para BD y CRUD</li>
+<li>spring-boot-starter-thymeleaf → para páginas HTML</li>
+</ul>
+</li>
+</ul>
+<p><strong class="azul">Componentes principales:</strong></p>
+<p>Los componentes principales de Spring Framework son:</p>
+<ul>
+<li><strong>Spring Core</strong>: El núcleo del framework, encargado de la inyección de dependencias.</li>
+<li><strong>Spring MVC</strong>: Permite el desarrollo de aplicaciones web utilizando el patrón Modelo-Vista-Controlador.</li>
+<li><strong>Spring Boot</strong>: Facilita la creación de aplicaciones basadas en Spring con una configuración mínima.</li>
+<li><strong>Spring Data</strong>: Simplifica el acceso a datos con soporte para JPA, MongoDB, Redis, entre otros.</li>
+<li><strong>Spring Security</strong>: Proporciona herramientas para implementar seguridad en aplicaciones.</li>
+<li><strong>Spring Cloud</strong>: Ayuda en la construcción de aplicaciones distribuidas y microservicios.</li>
+</ul>
+<p><strong class="azul">Requisitos previos para crear una aplicación con Spring</strong></p>
+<ul>
+<li>JDK: Asegúrate de tener Java Development Kit instalado.</li>
+<li>Maven o Gradle: Para gestionar dependencias.</li>
+<li>IDE: IntelliJ IDEA, Eclipse u otro entorno de desarrollo.</li>
+</ul>
+<!--
+
+**Spring Core**
+
+Es el núcleo del framework, encargado de la inyección de dependencias (DI).
+
+**Inyección de Dependencias (DI)**
+
+La Inyección de Dependencias es un patrón fundamental en Spring que permite a las clases declarar las dependencias que necesitan, dejando que el contenedor de Spring las proporcione automáticamente. Esto se logra mediante el uso de anotaciones o configuración explícita.
+
+
+**Tipos de inyección de dependencias:** Constructor, Setter o Campo.
+
+
+<u>Inyección por constructor (recomendada):</u>
+
+Se realiza pasando las dependencias necesarias como parámetros al constructor de la clase.
+
+    import org.springframework.stereotype.Service
+
+    @Service
+    class MiServicio(private val repositorio: MiRepositorio){
+        fun realizarAccion() {
+            println("Usando el repositorio: $miRepositorio")
+        }
+    }
+
+* Spring detecta el constructor y resuelve automáticamente las dependencias necesarias.
+
+* En Kotlin, el modificador private en el constructor asegura que la dependencia no se exponga como una propiedad pública.
+
+<u>Inyección por setter:</u>
+
+Se realiza proporcionando métodos setter para establecer las dependencias después de crear el objeto.
+
+    import org.springframework.beans.factory.annotation.Autowired
+    import org.springframework.stereotype.Service
+
+    @Service
+    class MiServicio {
+        private lateinit var miRepositorio: MiRepositorio
+
+        fun setMiRepositorio(miRepositorio: MiRepositorio) {
+            this.miRepositorio = miRepositorio
+        }
+
+        fun realizarAccion() {
+            println("Usando el repositorio: $miRepositorio")
+        }
+    }
+
+Spring llama al método setMiRepositorio y pasa la dependencia configurada.    
+
+<u>Inyección directa en campos:</u>
+
+Se realiza directamente en las propiedades de la clase, usando anotaciones como @Autowired o inyectándolas mediante el constructor en Kotlin.
+
+    import org.springframework.stereotype.Service
+
+    class MiServicio {
+        @Autowired
+        private lateinit var miRepositorio: MiRepositorio
+
+        fun realizarAccion() {
+            println("Usando el repositorio: $miRepositorio")
+        }
+    }
+
+Spring inyecta directamente la dependencia en el campo marcado con @Autowired.
+
+
+**Contenedor Spring**
+
+En Spring, los conceptos IoC y DI se implementan a través del
+contenedor Spring, que crea y gestiona los objetos de la aplicación,
+que se conocen como **beans**.
+Los beans y sus dependencias se configuran en archivos de
+configuración de Spring o mediante anotaciones en el código.
+
+**Beans**
+
+En el contexto de Spring, un **Bean** es un objeto que es gestionado por el contenedor de Spring.
+Estos beans son los componentes esenciales de una aplicación Spring y su ciclo de vida es manejado  por el framework, permitiendo una inyección de dependencias eficiente y una configuración centralizada, y que puede utilizarse para proporcionar servicios o funcionalidades a otras  partes de la aplicación.
+
+![ref](beans.png)
+
+
+Hay varias formas de definir beans en Spring Boot, y la más común es a través de **anotaciones**. 
+
+
+**Anotaciones**
+
+Las anotaciones son herramientas utilizadas para indicar a Spring cómo manejar un Bean o cómo configurar ciertos aspectos de la aplicación. Por ejemplo, @Bean le dice a Spring que cree y gestione un Bean, mientras que @Component marca una clase para ser detectada automáticamente como Bean.
+
+    @Configuration: Define una clase de configuración.
+
+    @Bean: Declara un Bean manualmente.
+
+Alternativamente, los Beans pueden configurarse mediante un **archivo XML** (menos común hoy en día).
+
+
+**Ejemplos de configuración con anotaciones:**
+
+**Definir un Bean con @Component**{.verde}
+
+    import org.springframework.stereotype.Component;
+
+    @Component
+    public class MiComponente {
+        public String saludar() {
+            return "Hola desde MiComponente";
+        }
+    }
+
+**Crear un servicio con @Service**{.verde}
+
+    import org.springframework.stereotype.Service;
+
+    @Service
+    public class MiServicio {
+        public String obtenerMensaje() {
+            return "Mensaje desde MiServicio";
+        }
+    }
+
+**Configurar un Bean manualmente con @Bean**{.verde}
+
+
+    import org.springframework.context.annotation.Bean;
+    import org.springframework.context.annotation.Configuration;
+
+    @Configuration
+    public class MiConfiguracion {
+        @Bean
+        public MiComponente miComponente() {
+            return new MiComponente();
+        }
+    }
+---
+
+-->
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../Anotaciones/" class="btn btn-neutral float-right" title="🔹 Anotaciones">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+    
+      <span><a href="../Anotaciones/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+      <script src="../js/copy-button.js"></script>
+      <script src="../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>
