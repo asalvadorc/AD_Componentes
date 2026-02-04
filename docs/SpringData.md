@@ -510,7 +510,7 @@ En este ejemplo vamos a visualizar los datos en un navegador con formato **JSON*
     spring.datasource.url=jdbc:postgresql://<HOST>:<PUERTO>/<DB_NAME>
     spring.datasource.username=<USUARIO>
     spring.datasource.password=<CONTRASEÑA>
-    spring.jpa.hibernate.ddl-auto=update
+    spring.jpa.hibernate.ddl-auto=none
 
 **Cambiaremos los datos de conexión al servidor externo: 89.36.214.106**{.verde}
 
